@@ -2,2300 +2,496 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#eee6ff">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eee7ff">
 <title>Ludo ♡</title>
-
 <style>
-:root {
-  --lavender: #eee6ff;
-  --purple: #a88ae8;
-  --deep: #594579;
-  --pink: #ffdce9;
-  --white: #fffdfd;
-  --red: #f16b79;
-  --yellow: #f4c94f;
-  --blue: #6ca9f5;
-  --green: #68c99a;
-  --ink: #514665;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: "Trebuchet MS", Arial, sans-serif;
-  color: var(--ink);
-  background:
-    radial-gradient(ellipse at top left, #fff9ff 0%, transparent 45%),
-    linear-gradient(145deg, #f5efff, #fceef5 55%, #e9e4ff);
-  background-attachment: fixed;
-}
-
-button, input, select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-button:focus-visible,
-input:focus-visible,
-select:focus-visible {
-  outline: 3px solid #a88ae8;
-  outline-offset: 3px;
-}
-
-.app {
-  width: min(100%, 900px);
-  margin: auto;
-  padding: 20px 14px 35px;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 25px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-mark {
-  width: 45px;
-  height: 45px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  background: linear-gradient(145deg, #fff, #e5d8ff);
-  box-shadow: 0 5px 18px #8e76bb20;
-  font-size: 25px;
-}
-
-.brand-name {
-  margin: 0;
-  font-size: 24px;
-  letter-spacing: -1px;
-}
-
-.brand-subtitle {
-  margin-top: 3px;
-  font-size: 11px;
-  opacity: .7;
-}
-
-.small-button {
-  border: 1px solid #ffffffc9;
-  border-radius: 15px;
-  padding: 10px 13px;
-  color: var(--deep);
-  background: #ffffffa8;
-}
-
-.screen {
-  display: none;
-  animation: appear .3s ease;
-}
-
-.screen.active {
-  display: block;
-}
-
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.panel {
-  border: 1px solid #ffffffd9;
-  border-radius: 27px;
-  padding: 23px;
-  background: #ffffffa6;
-  box-shadow: 0 12px 40px #8770ad15;
-  backdrop-filter: blur(14px);
-}
-
-.hero {
-  text-align: center;
-  padding: 30px 20px;
-}
-
-.eyebrow {
-  color: #9277c7;
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-}
-
-.hero h2 {
-  margin: 12px 0;
-  font-size: clamp(36px, 9vw, 62px);
-  line-height: 1.05;
-  letter-spacing: -2px;
-}
-
-.hero h2 span {
-  color: #a58add;
-}
-
-.hero-description {
-  max-width: 420px;
-  margin: 0 auto 22px;
-  line-height: 1.7;
-  font-size: 14px;
-  color: #796c8d;
-}
-
-.board-preview {
-  width: min(100%, 350px);
-  margin: 25px auto;
-  padding: 10px;
-  border-radius: 22px;
-  background: #fff;
-  box-shadow: 0 8px 25px #8066ad18;
-}
-
-.board-preview svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 14px;
-}
-
-.primary-button {
-  width: 100%;
-  border: 0;
-  border-radius: 17px;
-  padding: 15px 18px;
-  color: white;
-  background: linear-gradient(120deg, #a78be7, #c3a4ed);
-  box-shadow: 0 6px 18px #a78be738;
-  font-weight: 700;
-  transition: transform .18s, filter .18s;
-}
-
-.primary-button:active {
-  transform: scale(.98);
-}
-
-.primary-button:hover {
-  filter: brightness(1.04);
-}
-
-.secondary-button {
-  width: 100%;
-  border: 1px solid #e5daf9;
-  border-radius: 16px;
-  padding: 13px;
-  color: var(--deep);
-  background: #ffffffb8;
-}
-
-.button-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.button-row > * {
-  flex: 1;
-}
-
-.section-heading {
-  margin: 0 0 8px;
-  font-size: 25px;
-}
-
-.section-description {
-  margin: 0 0 22px;
-  color: #857895;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.field {
-  margin: 19px 0;
-}
-
-.field-label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.option-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.option {
-  border: 1px solid #e9def7;
-  border-radius: 17px;
-  padding: 14px 10px;
-  text-align: left;
-  color: var(--ink);
-  background: #ffffffb5;
-}
-
-.option.selected {
-  border: 2px solid #a88ae8;
-  background: #f1eaff;
-  box-shadow: 0 4px 12px #a88ae81a;
-}
-
-.option-icon {
-  display: block;
-  margin-bottom: 7px;
-  font-size: 24px;
-}
-
-.option-title {
-  display: block;
-  font-weight: 700;
-  font-size: 13px;
-}
-
-.option-detail {
-  display: block;
-  margin-top: 5px;
-  color: #8b7c9b;
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.text-input,
-.select-input {
-  width: 100%;
-  border: 1px solid #e8def5;
-  border-radius: 14px;
-  padding: 13px;
-  color: var(--ink);
-  background: #fffdfd;
-}
-
-.player-setup-list {
-  display: grid;
-  gap: 12px;
-}
-
-.player-card {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
-  padding: 13px;
-  border: 1px solid #eee5f8;
-  border-radius: 17px;
-  background: #ffffffa8;
-}
-
-.player-color-dot {
-  width: 43px;
-  height: 43px;
-  display: grid;
-  place-items: center;
-  border-radius: 15px;
-  font-size: 24px;
-  background: var(--player-color);
-  color: white;
-  box-shadow: inset 0 -4px 0 #0000000d;
-}
-
-.player-card label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 11px;
-  color: #857895;
-}
-
-.notice {
-  margin: 14px 0;
-  padding: 12px 14px;
-  border-radius: 14px;
-  color: #79648f;
-  background: #f1eaff;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-footer {
-  padding: 23px 0 5px;
-  text-align: center;
-  color: #9484a8;
-  font-size: 11px;
-}
-
-@media (max-width: 420px) {
-  .app {
-    padding: 13px 10px 25px;
-  }
-
-  .panel {
-    padding: 17px;
-    border-radius: 23px;
-  }
-
-  .hero {
-    padding: 22px 13px;
-  }
-
-  .brand-name {
-    font-size: 21px;
-  }
-}
+:root{--bg:#f5f0ff;--ink:#59476f;--muted:#8c7ba5;--purple:#9572cc;--line:#e5daf5}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 12% 0,#fff,#f6f0ff 45%,#e9ddff);font-family:system-ui,sans-serif;color:var(--ink);min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+header{text-align:center;padding:18px 12px 10px}
+h1{font-size:clamp(27px,6vw,40px);margin:0;color:#8e6dc5}
+.subtitle{font-size:13px;color:var(--muted);margin:3px 0}
+.app{width:min(100%,1000px);margin:auto;padding:0 12px 28px}
+.panel{background:#ffffffd9;border:1px solid #fff;border-radius:20px;padding:14px;box-shadow:0 8px 26px #8c70b51c;margin:10px 0}
+.section-title{font-size:13px;font-weight:800;letter-spacing:1px;color:#8e76b3;margin:0 0 10px}
+.setup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.player-setup{border:1px solid var(--line);border-radius:15px;padding:10px;background:#fff}
+.setup-top{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.avatar{width:45px;height:45px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;border:2px solid white;box-shadow:0 2px 8px #57446b22;font-size:24px;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.player-setup input[type=text]{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px;color:var(--ink);background:#fdfbff;font-size:13px;margin:3px 0}
+.player-setup input[type=file]{font-size:10px;width:100%;margin-top:5px}
+.player-setup label{font-size:11px;color:var(--muted)}
+.rowline{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:13px}
+.primary,.secondary{border:0;border-radius:12px;padding:11px 15px;font-weight:750}
+.primary{background:linear-gradient(135deg,#a88ad9,#8765bf);color:white;box-shadow:0 4px 0 #7352a8}
+.secondary{background:#f0e8ff;color:#775aa6;border:1px solid #e1d3f7}
+.primary:disabled{opacity:.5;box-shadow:none}
+.game-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.board-frame{background:#fff;border:1px solid #e4d8f6;padding:5px;border-radius:19px;box-shadow:0 9px 26px #725b9c20}
+#board{display:block;width:100%;height:auto;aspect-ratio:1;touch-action:manipulation}
+.status{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;text-align:center;font-size:14px;font-weight:650;margin:11px 0}
+.controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.die{width:60px;height:60px;background:#fff;color:#8968bd;border:2px solid #dfd1f4;border-radius:15px;font-size:36px;box-shadow:0 4px 0 #dfd2f2}
+.die:disabled{opacity:.6}
+.players{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.player-card{display:flex;align-items:center;gap:9px;border:2px solid transparent;border-radius:14px;padding:9px;background:#fff;min-width:0}
+.player-card.active{border-color:#ad8cde;box-shadow:0 0 0 2px #ad8cde22}
+.player-card .avatar{width:40px;height:40px;font-size:22px}
+.player-name{font-size:13px;font-weight:800;overflow-wrap:anywhere}
+.player-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.rules{font-size:12px;color:var(--muted);line-height:1.6;text-align:center;margin:12px 5px 0}
+.hidden{display:none!important}
+@media(min-width:720px){.app{width:min(100%,1050px)}.game-layout{grid-template-columns:minmax(0,1.5fr) minmax(250px,.8fr);align-items:start}.side{position:sticky;top:10px}}
+@media(max-width:380px){.app{padding-inline:7px}.panel{padding:10px}.player-setup{padding:7px}.avatar{width:38px;height:38px}}
 </style>
 </head>
-
 <body>
-<div class="app">
-
-<header class="topbar">
-  <div class="brand">
-    <div class="brand-mark">♡</div>
-    <div>
-      <h1 class="brand-name">Ludo</h1>
-      <div class="brand-subtitle">A little game, a lot of fun</div>
-    </div>
-  </div>
-
-  <button class="small-button" id="soundToggle" type="button">
-    ♫ Sound on
-  </button>
+<header>
+<h1>୨ৎ Ludo ♡</h1>
+<p class="subtitle">a little lavender game night</p>
 </header>
 
-<main>
-
-<section class="screen active" id="homeScreen">
-  <div class="panel hero">
-    <div class="eyebrow">♡ Let's play together ♡</div>
-
-    <h2>Your next<br><span>little adventure</span></h2>
-
-    <p class="hero-description">
-      Gather your favourite people, roll the dice, and race your tokens
-      home on a dreamy classic Ludo board.
-    </p>
-
-    <div class="board-preview">
-      <svg viewBox="0 0 300 300" role="img"
-           aria-label="Preview of a traditional four-colour square Ludo board">
-        <rect x="2" y="2" width="296" height="296" rx="10"
-              fill="#fff" stroke="#e2d8ee" stroke-width="2"/>
-
-        <rect x="8" y="8" width="112" height="112" rx="5" fill="#f16b79"/>
-        <rect x="180" y="8" width="112" height="112" rx="5" fill="#f4c94f"/>
-        <rect x="8" y="180" width="112" height="112" rx="5" fill="#68c99a"/>
-        <rect x="180" y="180" width="112" height="112" rx="5" fill="#6ca9f5"/>
-
-        <rect x="23" y="23" width="82" height="82" rx="9" fill="#fff8f9"/>
-        <rect x="195" y="23" width="82" height="82" rx="9" fill="#fffdf3"/>
-        <rect x="23" y="195" width="82" height="82" rx="9" fill="#f3fff8"/>
-        <rect x="195" y="195" width="82" height="82" rx="9" fill="#f5faff"/>
-
-        <g fill="#f16b79" stroke="#e3a5ae" stroke-width="1">
-          <circle cx="45" cy="45" r="10"/>
-          <circle cx="83" cy="45" r="10"/>
-          <circle cx="45" cy="83" r="10"/>
-          <circle cx="83" cy="83" r="10"/>
-        </g>
-
-        <g fill="#f4c94f" stroke="#d8b94e" stroke-width="1">
-          <circle cx="217" cy="45" r="10"/>
-          <circle cx="255" cy="45" r="10"/>
-          <circle cx="217" cy="83" r="10"/>
-          <circle cx="255" cy="83" r="10"/>
-        </g>
-
-        <g fill="#68c99a" stroke="#52aa80" stroke-width="1">
-          <circle cx="45" cy="217" r="10"/>
-          <circle cx="83" cy="217" r="10"/>
-          <circle cx="45" cy="255" r="10"/>
-          <circle cx="83" cy="255" r="10"/>
-        </g>
-
-        <g fill="#6ca9f5" stroke="#518dd7" stroke-width="1">
-          <circle cx="217" cy="217" r="10"/>
-          <circle cx="255" cy="217" r="10"/>
-          <circle cx="217" cy="255" r="10"/>
-          <circle cx="255" cy="255" r="10"/>
-        </g>
-
-        <g stroke="#e2d8ee" stroke-width="1">
-          <path d="M120 8V120 M137 8V120 M154 8V120 M171 8V120"/>
-          <path d="M8 120H120 M8 137H120 M8 154H120 M8 171H120"/>
-          <path d="M180 120H292 M180 137H292 M180 154H292 M180 171H292"/>
-          <path d="M120 180V292 M137 180V292 M154 180V292 M171 180V292"/>
-        </g>
-
-        <rect x="120" y="120" width="60" height="60"
-              fill="#fff" stroke="#e2d8ee"/>
-
-        <path d="M120 120 L150 150 L120 180 Z" fill="#68c99a"/>
-        <path d="M120 120 L150 150 L180 120 Z" fill="#f16b79"/>
-        <path d="M180 120 L150 150 L180 180 Z" fill="#f4c94f"/>
-        <path d="M120 180 L150 150 L180 180 Z" fill="#6ca9f5"/>
-      </svg>
-    </div>
-
-    <button class="primary-button" id="startBtn" type="button">
-      Play Ludo ♡
-    </button>
-
-    <div class="button-row">
-      <button class="secondary-button" id="rulesBtn" type="button">
-        How to play
-      </button>
-    </div>
-  </div>
+<main class="app">
+<section class="panel" id="setup">
+<h2 class="section-title">୨ৎ Player profiles</h2>
+<div class="setup-grid" id="setupGrid"></div>
+<div class="rowline">
+<button class="primary" id="startBtn">Start game ♡</button>
+<button class="secondary" id="defaultsBtn">Reset profiles</button>
+</div>
+<p class="rules">Choose your names and optional profile pictures. Local pass-and-play for four players on one device.</p>
 </section>
 
-<section class="screen" id="setupScreen">
-  <div class="panel">
-    <h2 class="section-heading">Set up your game ♡</h2>
-    <p class="section-description">
-      Choose your game mode, token style, and players.
-    </p>
-
-    <div class="field">
-      <span class="field-label">Choose a mode</span>
-
-      <div class="option-grid">
-        <button class="option selected" data-mode="pass" type="button">
-          <span class="option-icon">♡</span>
-          <span class="option-title">Pass & Play</span>
-          <span class="option-detail">Play together on one device</span>
-        </button>
-
-        <button class="option" data-mode="cpu" type="button">
-          <span class="option-icon">♙</span>
-          <span class="option-title">Vs Computer</span>
-          <span class="option-detail">Play against CPU opponents</span>
-        </button>
-
-        <button class="option" data-mode="online" type="button">
-          <span class="option-icon">⌘</span>
-          <span class="option-title">Online Rooms</span>
-          <span class="option-detail">Requires a multiplayer server</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="field-label" for="playerCount">
-        Number of players
-      </label>
-
-      <select class="select-input" id="playerCount">
-        <option value="2">2 players</option>
-        <option value="3">3 players</option>
-        <option value="4" selected>4 players</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <span class="field-label">Token style</span>
-
-      <div class="option-grid">
-        <button class="option selected" data-piece="heart" type="button">
-          <span class="option-icon">♥</span>
-          <span class="option-title">Glossy hearts</span>
-          <span class="option-detail">Cute heart-shaped tokens</span>
-        </button>
-
-        <button class="option" data-piece="circle" type="button">
-          <span class="option-icon">●</span>
-          <span class="option-title">Pearl circles</span>
-          <span class="option-detail">Smooth round tokens</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="field">
-      <span class="field-label">Player names</span>
-      <div class="player-setup-list" id="playerSetup"></div>
-    </div>
-
-    <div class="notice" id="onlineNotice" hidden>
-      Online rooms need a real server to connect different devices.
-      The online mode will stay unavailable until that backend exists.
-    </div>
-
-    <button class="primary-button" id="beginBtn" type="button">
-      Start game ♡
-    </button>
-
-    <div class="button-row">
-      <button class="secondary-button" id="backHomeBtn" type="button">
-        Back
-      </button>
-    </div>
-  </div>
+<section class="game-layout" id="game">
+<div>
+<div class="board-frame">
+<svg id="board" viewBox="0 0 600 600" role="img" aria-label="Four-colour Ludo board"></svg>
+</div>
+<div class="status" id="status" aria-live="polite">Set up your profiles, then start the game ♡</div>
+<div class="controls">
+<button class="die" id="die" aria-label="Roll dice" disabled>⚄</button>
+<button class="primary" id="rollBtn" disabled>Roll dice</button>
+<button class="secondary" id="newBtn">New game ↻</button>
+</div>
+<p class="rules">Roll a 6 to leave home. Tap a highlighted token to move. Star squares are safe. Roll the exact number to finish.</p>
+</div>
+<aside class="side">
+<section class="panel">
+<h2 class="section-title">♡ Players</h2>
+<div class="players" id="players"></div>
 </section>
-
-  <style>
-/* GAME BOARD */
-.game-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 205px;
-  gap: 16px;
-  align-items: start;
-}
-
-.board-shell {
-  padding: 8px;
-  border: 1px solid #fff;
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 0 8px 28px #7e68a51c;
-}
-
-#board {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  touch-action: manipulation;
-}
-
-.board-cell {
-  stroke: #cfc8d8;
-  stroke-width: 1;
-}
-
-.board-cell.safe {
-  fill: #f0e6ff;
-}
-
-.token {
-  cursor: pointer;
-  stroke: white;
-  stroke-width: 2;
-  filter: drop-shadow(0 2px 2px #3d2c542c);
-}
-
-.token:focus {
-  stroke: #594579;
-  stroke-width: 4;
-}
-
-.token.legal {
-  animation: tokenPulse .85s infinite alternate;
-}
-
-@keyframes tokenPulse {
-  from { opacity: .75; }
-  to { opacity: 1; }
-}
-
-.board-cell.clickable {
-  cursor: pointer;
-}
-
-.game-sidebar {
-  display: grid;
-  gap: 12px;
-}
-
-.game-card {
-  padding: 15px;
-  border: 1px solid #fff;
-  border-radius: 19px;
-  background: #ffffffc9;
-  box-shadow: 0 6px 20px #7e68a510;
-}
-
-.game-card h3 {
-  margin: 0 0 10px;
-  font-size: 14px;
-}
-
-.turn-chip {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 10px;
-  border-radius: 13px;
-  background: #f0e8ff;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.turn-dot {
-  width: 13px;
-  height: 13px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--active-color, #a88ae8);
-}
-
-.player-list {
-  display: grid;
-  gap: 8px;
-}
-
-.player-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-  border-radius: 12px;
-  background: #ffffffc2;
-  border: 1px solid transparent;
-  font-size: 12px;
-}
-
-.player-row.current {
-  border-color: var(--player-color);
-  background: #f5efff;
-}
-
-.player-mini {
-  width: 26px;
-  height: 26px;
-  display: grid;
-  place-items: center;
-  border-radius: 9px;
-  background: var(--player-color);
-  color: white;
-  font-size: 15px;
-}
-
-.player-row-name {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  flex: 1;
-}
-
-.player-row-count {
-  font-size: 10px;
-  color: #877993;
-}
-
-.dice-stage {
-  display: grid;
-  justify-items: center;
-  gap: 10px;
-  padding: 10px 0;
-  perspective: 650px;
-}
-
-.dice-scene {
-  width: 100px;
-  height: 100px;
-  perspective: 500px;
-}
-
-.dice-cube {
-  position: relative;
-  width: 76px;
-  height: 76px;
-  margin: 12px;
-  transform-style: preserve-3d;
-  transition: transform .7s cubic-bezier(.2,.8,.2,1);
-}
-
-.dice-cube.rolling {
-  animation: diceSpin 1s cubic-bezier(.15,.75,.25,1);
-}
-
-@keyframes diceSpin {
-  0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
-  30% { transform: rotateX(180deg) rotateY(210deg) rotateZ(90deg); }
-  65% { transform: rotateX(390deg) rotateY(400deg) rotateZ(200deg); }
-  100% { transform: rotateX(720deg) rotateY(720deg) rotateZ(360deg); }
-}
-
-.dice-face {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 3px;
-  padding: 11px;
-  border: 1px solid #ffffff;
-  border-radius: 17px;
-  background: linear-gradient(145deg, #fff, #e7dcff);
-  box-shadow:
-    inset 0 -5px 9px #ad96dc38,
-    inset 0 4px 8px #fff,
-    0 8px 18px #8066ad30;
-  backface-visibility: hidden;
-}
-
-.dice-face.front  { transform: translateZ(38px); }
-.dice-face.back   { transform: rotateY(180deg) translateZ(38px); }
-.dice-face.right  { transform: rotateY(90deg) translateZ(38px); }
-.dice-face.left   { transform: rotateY(-90deg) translateZ(38px); }
-.dice-face.top    { transform: rotateX(90deg) translateZ(38px); }
-.dice-face.bottom { transform: rotateX(-90deg) translateZ(38px); }
-
-.die-pip {
-  width: 11px;
-  height: 11px;
-  align-self: center;
-  justify-self: center;
-  border-radius: 50%;
-  background: #8063b5;
-  box-shadow: inset 0 1px 2px #46326535;
-}
-
-.die-pip.empty {
-  opacity: 0;
-}
-
-.dice-number {
-  font-size: 12px;
-  font-weight: 700;
-  color: #8974b4;
-}
-
-.dice-title {
-  margin: 0;
-  text-align: center;
-  font-size: 14px;
-}
-
-.dice-help {
-  margin: 0;
-  color: #8c7e9b;
-  text-align: center;
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.roll-button {
-  width: 100%;
-  border: 0;
-  border-radius: 14px;
-  padding: 13px 10px;
-  color: white;
-  background: linear-gradient(125deg, #a78be7, #c4a3ef);
-  box-shadow: 0 5px 13px #a78be733;
-  font-weight: 700;
-}
-
-.roll-button:disabled {
-  opacity: .5;
-  cursor: not-allowed;
-}
-
-.legal-moves {
-  display: grid;
-  gap: 7px;
-}
-
-.move-button {
-  width: 100%;
-  padding: 9px;
-  border: 1px solid #e5d8f8;
-  border-radius: 12px;
-  color: var(--deep);
-  background: #f7f2ff;
-  text-align: left;
-  font-size: 11px;
-}
-
-.game-status {
-  margin: 0;
-  color: #847493;
-  font-size: 12px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-}
-
-.game-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.game-actions button {
-  flex: 1;
-  border: 1px solid #e6dbf4;
-  border-radius: 12px;
-  padding: 10px 6px;
-  color: var(--deep);
-  background: #fff;
-  font-size: 11px;
-}
-
-.game-log {
-  max-height: 110px;
-  overflow-y: auto;
-  font-size: 10px;
-  line-height: 1.7;
-  color: #897b98;
-}
-
-.result-panel {
-  text-align: center;
-  padding: 35px 20px;
-}
-
-.winner-symbol {
-  font-size: 58px;
-  margin-bottom: 10px;
-}
-
-.result-panel h2 {
-  font-size: 30px;
-  margin: 8px 0;
-}
-
-.result-panel p {
-  color: #867694;
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.rules-list {
-  padding-left: 20px;
-  color: #786b89;
-  font-size: 13px;
-  line-height: 1.9;
-}
-
-@media (max-width: 650px) {
-  .game-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .game-sidebar {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .game-card.dice-card {
-    grid-column: 1 / -1;
-  }
-
-  .board-shell {
-    padding: 5px;
-  }
-
-  .game-card {
-    padding: 12px;
-  }
-}
-
-@media (max-width: 360px) {
-  .game-sidebar {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .game-card.dice-card {
-    grid-column: auto;
-  }
-}
-</style>
-
-<section class="screen" id="gameScreen">
-  <div class="panel">
-    <h2 class="section-heading">Game on ♡</h2>
-    <p class="section-description">
-      Roll a six to release a token. Choose a highlighted token to move.
-    </p>
-
-    <div class="turn-chip" id="turnChip">
-      <span class="turn-dot"></span>
-      <span id="turnName">Getting the board ready...</span>
-    </div>
-
-    <div class="game-layout" style="margin-top:15px">
-
-      <div class="board-shell">
-        <svg id="board"
-             viewBox="0 0 600 600"
-             role="img"
-             aria-label="Traditional square Ludo game board">
-          <rect x="2" y="2" width="596" height="596"
-                rx="5" fill="#fff" stroke="#d8cde6" stroke-width="3"/>
-
-          <!-- The game engine will draw the complete playable board here. -->
-          <g id="boardArtwork"></g>
-          <g id="boardTokens"></g>
-        </svg>
-      </div>
-
-      <aside class="game-sidebar">
-
-        <div class="game-card">
-          <h3>Players ♡</h3>
-          <div class="player-list" id="playersStrip"></div>
-        </div>
-
-        <div class="game-card dice-card">
-          <h3 style="text-align:center">Your dice</h3>
-
-          <div class="dice-stage">
-            <div class="dice-scene">
-              <div class="dice-cube" id="diceCube">
-                <div class="dice-face front" id="diceFace">
-                  <span class="die-pip"></span>
-                  <span class="die-pip empty"></span>
-                  <span class="die-pip empty"></span>
-                  <span class="die-pip empty"></span>
-                  <span class="die-pip"></span>
-                  <span class="die-pip empty"></span>
-                  <span class="die-pip empty"></span>
-                  <span class="die-pip empty"></span>
-                  <span class="die-pip"></span>
-                </div>
-
-                <div class="dice-face back"></div>
-                <div class="dice-face right"></div>
-                <div class="dice-face left"></div>
-                <div class="dice-face top"></div>
-                <div class="dice-face bottom"></div>
-              </div>
-            </div>
-
-            <h4 class="dice-title" id="diceTitle">Ready to roll?</h4>
-            <p class="dice-help" id="diceHelp">
-              Tap the button when it's your turn.
-            </p>
-          </div>
-
-          <button class="roll-button" id="rollBtn" type="button">
-            Roll dice ♡
-          </button>
-        </div>
-
-        <div class="game-card">
-          <h3>Game status</h3>
-          <p class="game-status" id="gameStatus">
-            Your game will appear here.
-          </p>
-
-          <div id="legalMoves" class="legal-moves"
-               style="margin-top:10px"></div>
-        </div>
-
-        <div class="game-card">
-          <h3>Game log</h3>
-          <div id="gameLog" class="game-log">
-            Your adventure starts here.
-          </div>
-        </div>
-
-      </aside>
-    </div>
-
-    <div class="game-actions">
-      <button id="restartBtn" type="button">↻ Restart</button>
-      <button id="leaveBtn" type="button">← Leave game</button>
-    </div>
-  </div>
-<script>
-window.addEventListener("error", function (event) {
-  alert(
-    "Ludo error: " + event.message +
-    "\nLine: " + event.lineno
-  );
-});
-</script>
-
-<section class="screen" id="resultScreen">
-  <div class="panel result-panel">
-    <div class="winner-symbol">♡</div>
-    <div class="eyebrow">A lovely victory</div>
-    <h2 id="winnerTitle">We have a winner!</h2>
-    <p id="resultText">
-      Congratulations on your game.
-    </p>
-
-    <button class="primary-button" id="playAgainBtn" type="button">
-      Play again ♡
-    </button>
-
-    <div class="button-row">
-      <button class="secondary-button" id="resultHomeBtn" type="button">
-        Home
-      </button>
-    </div>
-  </div>
+<section class="panel">
+<h2 class="section-title">How to play</h2>
+<p class="rules" style="text-align:left;margin:0">
+• Roll a 6 to enter the track.<br>
+• Move clockwise around the shared path.<br>
+• Safe stars protect tokens.<br>
+• Capture opponents on unsafe squares.<br>
+• Finish all four tokens to win.<br>
+• Rolling a 6 gives another turn.
+</p>
 </section>
-
-<section class="screen" id="rulesScreen">
-  <div class="panel">
-    <h2 class="section-heading">How to play ♡</h2>
-
-    <p class="section-description">
-      Classic Ludo rules for your game night.
-    </p>
-
-    <ol class="rules-list">
-      <li>Each player has four tokens in their coloured home base.</li>
-      <li>Roll a six to bring a token onto the starting square.</li>
-      <li>Move a token forward by the number shown on the dice.</li>
-      <li>Land on an opponent's token on a capturable square to send it home.</li>
-      <li>Safe squares protect tokens from capture.</li>
-      <li>You need an exact roll to reach the final home space.</li>
-      <li>The first player to bring all four tokens home wins.</li>
-    </ol>
-
-    <div class="notice">
-      The game engine will enforce the actual move rules. Online play
-      needs a connected server and is not enabled by this page alone.
-    </div>
-
-    <button class="primary-button" id="rulesBack" type="button">
-      Back ♡
-    </button>
-  </div>
+</aside>
 </section>
+</main>
 
 <script>
-(() => {
+(()=>{
 "use strict";
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
+const NS="http://www.w3.org/2000/svg";
 
-const COLORS = [
-  { id:"red", name:"Red", hex:"#f16b79", start:0 },
-  { id:"yellow", name:"Yellow", hex:"#e9b92e", start:13 },
-  { id:"blue", name:"Blue", hex:"#6ca9f5", start:26 },
-  { id:"green", name:"Green", hex:"#52b987", start:39 }
+const COLORS=[
+ {name:"Red",hex:"#ed6578",pale:"#ffe1e7",start:0,emoji:"🌷"},
+ {name:"Green",hex:"#55bd91",pale:"#dcf7e9",start:13,emoji:"🍀"},
+ {name:"Yellow",hex:"#dfb43b",pale:"#fff2c4",start:26,emoji:"🌼"},
+ {name:"Blue",hex:"#62a4e9",pale:"#ddecff",start:39,emoji:"🫧"}
 ];
 
-const BASES = [
-  { x:0, y:0, color:0 },
-  { x:9, y:0, color:1 },
-  { x:9, y:9, color:2 },
-  { x:0, y:9, color:3 }
+const DEFAULT_NAMES=["Player 1","Player 2","Player 3","Player 4"];
+
+/* 52 distinct squares around the traditional four-arm track. */
+const TRACK=[
+[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],
+[6,5],[6,4],[6,3],[6,2],[6,1],[7,1],[8,1],
+[8,2],[8,3],[8,4],[8,5],[8,6],[9,6],[10,6],[11,6],[12,6],[13,6],[14,6],[14,7],[14,8],
+[13,8],[12,8],[11,8],[10,8],[9,8],[8,8],[8,9],[8,10],[8,11],[8,12],[8,13],[8,14],[7,14],
+[6,14],[6,13],[6,12],[6,11],[6,10],[6,9],[6,8],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8]
 ];
 
-const SVG_NS = "http://www.w3.org/2000/svg";
-const CELL = 40;
-const BOARD_SIZE = 600;
-
-let mode = "pass";
-let pieceStyle = "heart";
-let soundOn = true;
-let players = [];
-let currentPlayer = 0;
-let dice = null;
-let gameOver = false;
-let gameLog = [];
-let busy = false;
-let gameStarted = false;
-let cpuTimer = null;
-
-/* Each position is a cell on the traditional 15 × 15 board.
-   The outer route has 52 spaces. */
-
-const TRACK = [
-  [6,1],[6,2],[6,3],[6,4],[6,5],
-  [5,6],[4,6],[3,6],[2,6],[1,6],[0,6],
-  [0,7],[0,8],
-  [1,8],[2,8],[3,8],[4,8],[5,8],
-  [6,9],[6,10],[6,11],[6,12],[6,13],[6,14],
-  [7,14],[8,14],
-  [8,13],[8,12],[8,11],[8,10],[8,9],
-  [9,8],[10,8],[11,8],[12,8],[13,8],[14,8],
-  [14,7],[14,6],
-  [13,6],[12,6],[11,6],[10,6],[9,6],
-  [8,5],[8,4],[8,3],[8,2],[8,1],[8,0],
-  [7,0],[6,0]
+const HOME_SPOTS=[
+ [[2,2],[4,2],[2,4],[4,4]],
+ [[2,10],[4,10],[2,12],[4,12]],
+ [[10,10],[12,10],[10,12],[12,12]],
+ [[10,2],[12,2],[10,4],[12,4]]
 ];
 
-/* Four home lanes, each with six positions. */
-
-const HOME_LANES = [
-  [[7,1],[7,2],[7,3],[7,4],[7,5],[7,6]],
-  [[13,7],[12,7],[11,7],[10,7],[9,7],[8,7]],
-  [[7,13],[7,12],[7,11],[7,10],[7,9],[7,8]],
-  [[1,7],[2,7],[3,7],[4,7],[5,7],[6,7]]
+const HOME_LANES=[
+ [[7,2],[7,3],[7,4],[7,5],[7,6],[7,7]],
+ [[2,7],[3,7],[4,7],[5,7],[6,7],[7,7]],
+ [[7,12],[7,11],[7,10],[7,9],[7,8],[7,7]],
+ [[12,7],[11,7],[10,7],[9,7],[8,7],[7,7]]
 ];
 
-const SAFE_CELLS = [
-  "6,1","1,8","8,13","13,6",
-  "2,6","6,12","12,8","8,2"
-];
+const SAFE=new Set([0,8,13,21,26,34,39,47]);
 
-const SAFE_SET = new Set(SAFE_CELLS);
+let profiles=COLORS.map((c,i)=>({
+ name:DEFAULT_NAMES[i],avatar:"",emoji:c.emoji
+}));
+let pieces=COLORS.map(()=>[-1,-1,-1,-1]);
+let turn=0,dice=null,over=false,started=false;
 
-const SVG = (tag, attrs = {}) => {
-  const el = document.createElementNS(SVG_NS, tag);
-  Object.entries(attrs).forEach(([key, value]) => {
-    el.setAttribute(key, value);
+function el(tag,attrs,parent=$("board")){
+ const n=document.createElementNS(NS,tag);
+ Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,String(v)));
+ parent.appendChild(n);
+ return n;
+}
+
+function cell(p){return [20+p[0]*40,20+p[1]*40]}
+
+function rect(x,y,w,h,fill,stroke="#fff",rx=2,parent=$("board")){
+ return el("rect",{x,y,width:w,height:h,fill,stroke,"stroke-width":2,rx},parent);
+}
+
+function label(x,y,str,size,fill="#fff",parent=$("board")){
+ const t=el("text",{
+  x,y,"font-size":size,"font-weight":800,
+  "text-anchor":"middle","dominant-baseline":"central",fill
+ },parent);
+ t.textContent=str;
+ return t;
+}
+
+function drawBase(i,x,y){
+ const c=COLORS[i];
+ rect(x,y,240,240,c.hex,"#fff",14);
+ rect(x+22,y+22,196,196,c.pale,c.pale,12);
+ HOME_SPOTS[i].forEach(p=>{
+  const [cx,cy]=cell(p);
+  el("circle",{cx,cy,r:18,fill:"#fff",stroke:c.hex,"stroke-width":3});
+  el("circle",{cx:cx-4,cy:cy-5,r:5,fill:c.pale});
+ });
+}
+
+function tokenPosition(pi,step,ti){
+ if(step===-1)return HOME_SPOTS[pi][ti];
+ if(step<=50)return TRACK[(COLORS[pi].start+step)%52];
+ if(step<=56)return HOME_LANES[pi][step-51];
+ return [7,7];
+}
+
+function drawBoard(){
+ const board=$("board");
+ board.innerHTML="";
+
+ el("rect",{x:2,y:2,width:596,height:596,rx:12,fill:"#fff",stroke:"#d8c7f0","stroke-width":4});
+
+ drawBase(0,20,20);
+ drawBase(3,340,20);
+ drawBase(2,340,340);
+ drawBase(1,20,340);
+
+ TRACK.forEach((p,i)=>{
+  const [x,y]=cell(p);
+  let fill="#fff";
+  const starter=COLORS.findIndex(c=>c.start===i);
+  if(starter>=0)fill=COLORS[starter].pale;
+  if(SAFE.has(i))fill="#f0e8ff";
+  rect(x-19,y-19,38,38,fill,"#cfc2e2",3);
+  if(SAFE.has(i))label(x,y,"★",14,"#a48acb");
+ });
+
+ HOME_LANES.forEach((lane,i)=>lane.forEach((p,j)=>{
+  const [x,y]=cell(p);
+  rect(x-19,y-19,38,38,j===5?COLORS[i].hex:COLORS[i].pale,COLORS[i].hex,3);
+ }));
+
+ el("polygon",{points:"260,260 340,260 300,300",fill:COLORS[0].hex,stroke:"#fff","stroke-width":2});
+ el("polygon",{points:"340,260 340,340 300,300",fill:COLORS[3].hex,stroke:"#fff","stroke-width":2});
+ el("polygon",{points:"340,340 260,340 300,300",fill:COLORS[2].hex,stroke:"#fff","stroke-width":2});
+ el("polygon",{points:"260,340 260,260 300,300",fill:COLORS[1].hex,stroke:"#fff","stroke-width":2});
+ label(300,300,"♡",19,"#fff");
+
+ pieces.forEach((arr,pi)=>arr.forEach((step,ti)=>{
+  const p=tokenPosition(pi,step,ti);
+  const [x,y]=cell(p);
+  const same=[];
+  pieces.forEach((otherArr,qi)=>otherArr.forEach((otherStep,si)=>{
+   if(qi===pi&&si===ti)return;
+   const q=tokenPosition(qi,otherStep,si);
+   if(q[0]===p[0]&&q[1]===p[1])same.push([qi,si]);
+  }));
+  const index=same.findIndex(a=>a[0]===pi&&a[1]===ti);
+  const offsets=[[0,0],[-8,-7],[8,-7],[-8,8],[8,8]];
+  const off=offsets[Math.max(0,index)%offsets.length];
+  const tx=x+off[0],ty=y+off[1];
+
+  const g=el("g",{
+   role:"button",tabindex:0,
+   "aria-label":profiles[pi].name+" token "+(ti+1),
+   style:"cursor:pointer"
   });
-  return el;
-};
 
-function addSvg(parent, tag, attrs = {}) {
-  const el = SVG(tag, attrs);
-  parent.appendChild(el);
-  return el;
-}
-
-function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(screen => {
-    screen.classList.toggle("active", screen.id === id);
-  });
-
-  window.scrollTo({ top:0, behavior:"smooth" });
-}
-
-function playTone(frequency = 500, duration = 0.08) {
-  if (!soundOn) return;
-
-  try {
-    const AudioContextClass =
-      window.AudioContext || window.webkitAudioContext;
-
-    if (!AudioContextClass) return;
-
-    const ctx = new AudioContextClass();
-    const oscillator = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    oscillator.frequency.value = frequency;
-    oscillator.type = "sine";
-
-    gain.gain.setValueAtTime(0.06, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(
-      0.001, ctx.currentTime + duration
-    );
-
-    oscillator.connect(gain);
-    gain.connect(ctx.destination);
-
-    oscillator.start();
-    oscillator.stop(ctx.currentTime + duration);
-
-    oscillator.onended = () => ctx.close();
-  } catch (_) {}
-}
-
-function randomDie() {
-  const values = new Uint32Array(1);
-
-  if (window.crypto && window.crypto.getRandomValues) {
-    const limit = Math.floor(4294967296 / 6) * 6;
-
-    do {
-      window.crypto.getRandomValues(values);
-    } while (values[0] >= limit);
-
-    return values[0] % 6 + 1;
+  if(started&&pi===turn&&dice!==null&&legalMoves().includes(ti)){
+   el("circle",{
+    cx:tx,cy:ty,r:19,fill:"none",stroke:"#9a71d1",
+    "stroke-width":4,"stroke-dasharray":"4 3"
+   },g);
   }
 
-  return Math.floor(Math.random() * 6) + 1;
+  el("circle",{cx:tx,cy:ty,r:15,fill:COLORS[pi].hex,stroke:"#fff","stroke-width":3},g);
+  el("circle",{cx:tx-4,cy:ty-5,r:5,fill:"#ffffffaa"},g);
+  label(tx,ty+1,String(ti+1),10,"#fff",g);
+
+  const act=()=>moveToken(pi,ti);
+  g.addEventListener("click",act);
+  g.addEventListener("keydown",e=>{
+   if(e.key==="Enter"||e.key===" "){e.preventDefault();act()}
+  });
+ }));
 }
 
-function logMessage(message) {
-  gameLog.unshift(message);
-  gameLog = gameLog.slice(0, 25);
-
-  const box = $("gameLog");
-  if (!box) return;
-
-  box.replaceChildren();
-
-  gameLog.forEach(line => {
-    const div = document.createElement("div");
-    div.textContent = "♡ " + line;
-    box.appendChild(div);
-  });
+function legalMoves(){
+ if(!started||dice===null||over)return [];
+ return pieces[turn].map((s,i)=>({s,i})).filter(o=>{
+  if(o.s===57)return false;
+  if(o.s===-1)return dice===6;
+  return o.s+dice<=57;
+ }).map(o=>o.i);
 }
 
-/* Draw the four large home bases. */
+function moveToken(pi,ti){
+ if(!started||over||pi!==turn||dice===null||!legalMoves().includes(ti))return;
 
-function drawBase(layer, base) {
-  const color = COLORS[base.color];
-  const x = base.x * CELL;
-  const y = base.y * CELL;
+ let s=pieces[pi][ti];
+ s=s===-1?0:s+dice;
+ pieces[pi][ti]=s;
 
-  addSvg(layer, "rect", {
-    x, y,
-    width:6 * CELL,
-    height:6 * CELL,
-    fill:color.hex,
-    stroke:"#cfc5d8",
-    "stroke-width":1
-  });
-
-  addSvg(layer, "rect", {
-    x:x + 20,
-    y:y + 20,
-    width:200,
-    height:200,
-    rx:15,
-    fill:"#fffdfd",
-    stroke:"#ffffff",
-    "stroke-width":4
-  });
-
-  const tokenSpots = [
-    [x+85,y+85],
-    [x+155,y+85],
-    [x+85,y+155],
-    [x+155,y+155]
-  ];
-
-  tokenSpots.forEach(([cx, cy]) => {
-    addSvg(layer, "circle", {
-      cx, cy, r:23,
-      fill:color.hex,
-      opacity:.12
+ if(s<=50){
+  const index=(COLORS[pi].start+s)%52;
+  if(!SAFE.has(index)){
+   pieces.forEach((arr,qi)=>{
+    if(qi===pi)return;
+    arr.forEach((other,j)=>{
+     if(other>=0&&other<=50&&(COLORS[qi].start+other)%52===index){
+      arr[j]=-1;
+     }
     });
-
-    addSvg(layer, "circle", {
-      cx, cy, r:16,
-      fill:"#fff",
-      stroke:color.hex,
-      "stroke-width":3
-    });
-  });
-}
-
-/* Draw all 52 outer squares using the traditional grid. */
-
-function drawTrack(layer) {
-  TRACK.forEach(([col,row], index) => {
-    const x = col * CELL;
-    const y = row * CELL;
-
-    const isSafe = SAFE_SET.has(`${col},${row}`);
-
-    addSvg(layer, "rect", {
-      x, y,
-      width:CELL,
-      height:CELL,
-      fill:isSafe ? "#f0e6ff" : "#fffdfd",
-      stroke:"#cfc5d8",
-      "stroke-width":1,
-      class:isSafe ? "board-cell safe" : "board-cell",
-      "data-track-index":index
-    });
-
-    if (isSafe) {
-      addSvg(layer, "path", {
-        d:`M ${x+20} ${y+8}
-           L ${x+24} ${y+16}
-           L ${x+33} ${y+17}
-           L ${x+26} ${y+23}
-           L ${x+28} ${y+32}
-           L ${x+20} ${y+27}
-           L ${x+12} ${y+32}
-           L ${x+14} ${y+23}
-           L ${x+7} ${y+17}
-           L ${x+16} ${y+16} Z`,
-        fill:"#b49bdf",
-        opacity:.75,
-        "pointer-events":"none"
-      });
-    }
-  });
-}
-
-/* Draw the six coloured home-lane spaces for each player. */
-
-function drawHomeLanes(layer) {
-  HOME_LANES.forEach((lane, playerIndex) => {
-    const color = COLORS[playerIndex];
-
-    lane.forEach(([col,row], step) => {
-      addSvg(layer, "rect", {
-        x:col * CELL,
-        y:row * CELL,
-        width:CELL,
-        height:CELL,
-        fill:step === 5 ? color.hex : color.hex + "c8",
-        stroke:"#fff",
-        "stroke-width":1.5,
-        "data-home-player":playerIndex,
-        "data-home-step":step
-      });
-    });
-  });
-}
-
-/* Draw the coloured centre finish. */
-
-function drawFinish(layer) {
-  const x = 6 * CELL;
-  const y = 6 * CELL;
-  const size = 3 * CELL;
-
-  addSvg(layer, "rect", {
-    x, y, width:size, height:size,
-    fill:"#fff",
-    stroke:"#cfc5d8",
-    "stroke-width":1
-  });
-
-  addSvg(layer, "path", {
-    d:`M ${x} ${y}
-       L ${x+size} ${y}
-       L ${x+size/2} ${y+size/2} Z`,
-    fill:COLORS[1].hex
-  });
-
-  addSvg(layer, "path", {
-    d:`M ${x+size} ${y}
-       L ${x+size} ${y+size}
-       L ${x+size/2} ${y+size/2} Z`,
-    fill:COLORS[2].hex
-  });
-
-  addSvg(layer, "path", {
-    d:`M ${x+size} ${y+size}
-       L ${x} ${y+size}
-       L ${x+size/2} ${y+size/2} Z`,
-    fill:COLORS[3].hex
-  });
-
-  addSvg(layer, "path", {
-    d:`M ${x} ${y+size}
-       L ${x} ${y}
-       L ${x+size/2} ${y+size/2} Z`,
-    fill:COLORS[0].hex
-  });
-
-  addSvg(layer, "circle", {
-    cx:300, cy:300, r:14,
-    fill:"#fff",
-    stroke:"#fff",
-    "stroke-width":2
-  });
-
-  const heart = addSvg(layer, "text", {
-    x:300, y:306,
-    "text-anchor":"middle",
-    "font-size":19,
-    fill:"#a58add"
-  });
-
-  heart.textContent = "♡";
-}
-
-/* Rebuild the complete square board. */
-
-function drawBoard() {
-  const artwork = $("boardArtwork");
-  const tokensLayer = $("boardTokens");
-
-  if (!artwork || !tokensLayer) return;
-
-  artwork.replaceChildren();
-  tokensLayer.replaceChildren();
-
-  addSvg(artwork, "rect", {
-    x:0, y:0,
-    width:BOARD_SIZE,
-    height:BOARD_SIZE,
-    fill:"#fff"
-  });
-
-  BASES.forEach(base => drawBase(artwork, base));
-  drawTrack(artwork);
-  drawHomeLanes(artwork);
-  drawFinish(artwork);
-
-  if (typeof drawTokens === "function") {
-    drawTokens();
+   });
   }
+ }
+
+ const rolled=dice;
+ dice=null;
+
+ if(pieces[pi].every(v=>v===57)){
+  over=true;
+  $("status").textContent=profiles[pi].name+" wins! ♡";
+ }else if(rolled!==6){
+  turn=(turn+1)%4;
+ }
+
+ drawBoard();
+ updateUI();
 }
 
-/* Dice faces: one to six pips. */
+function rollDice(){
+ if(!started||over||dice!==null)return;
 
-const PIP_PATTERNS = {
-  1:[0,0,0,0,1,0,0,0,0],
-  2:[1,0,0,0,0,0,0,0,1],
-  3:[1,0,0,0,1,0,0,0,1],
-  4:[1,0,1,0,0,0,1,0,1],
-  5:[1,0,1,0,1,0,1,0,1],
-  6:[1,0,1,1,0,1,1,0,1]
-};
+ dice=1+Math.floor(Math.random()*6);
+ $("die").textContent=["⚀","⚁","⚂","⚃","⚄","⚅"][dice-1];
 
-function drawDie(number) {
-  const face = $("diceFace");
-  if (!face) return;
+ if(legalMoves().length===0){
+  const rolled=dice;
+  $("status").textContent=profiles[turn].name+" rolled "+dice+" — no possible move.";
+  dice=null;
+  $("rollBtn").disabled=true;
+  $("die").disabled=true;
 
-  face.replaceChildren();
+  setTimeout(()=>{
+   if(!over&&started){
+    if(rolled!==6)turn=(turn+1)%4;
+    drawBoard();
+    updateUI();
+   }
+  },650);
+  return;
+ }
 
-  (PIP_PATTERNS[number] || PIP_PATTERNS[1]).forEach(on => {
-    const pip = document.createElement("span");
-    pip.className = "die-pip" + (on ? "" : " empty");
-    face.appendChild(pip);
+ drawBoard();
+ updateUI();
+}
+
+function updateUI(){
+ $("rollBtn").disabled=!started||over||dice!==null;
+ $("die").disabled=!started||over||dice!==null;
+ $("players").innerHTML="";
+
+ profiles.forEach((p,i)=>{
+  const card=document.createElement("div");
+  card.className="player-card"+(started&&i===turn&&!over?" active":"");
+
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.style.background=COLORS[i].pale;
+
+  if(p.avatar){
+   const img=document.createElement("img");
+   img.src=p.avatar;
+   img.alt="";
+   img.onerror=()=>{avatar.textContent=p.emoji||COLORS[i].emoji};
+   avatar.appendChild(img);
+  }else{
+   avatar.textContent=p.emoji||COLORS[i].emoji;
+  }
+
+  const info=document.createElement("div");
+  const name=document.createElement("div");
+  name.className="player-name";
+  name.textContent=p.name||DEFAULT_NAMES[i];
+  name.style.color=COLORS[i].hex;
+
+  const meta=document.createElement("div");
+  meta.className="player-meta";
+  meta.textContent=pieces[i].filter(v=>v===57).length+
+   " finished · "+pieces[i].filter(v=>v===-1).length+" at home";
+
+  info.append(name,meta);
+  card.append(avatar,info);
+  $("players").appendChild(card);
+ });
+
+ if(!started){
+  $("status").textContent="Set up your profiles, then start the game ♡";
+ }else if(!over&&dice===null){
+  $("status").textContent=profiles[turn].name+"'s turn — roll the dice!";
+ }else if(!over){
+  $("status").textContent=profiles[turn].name+" rolled "+dice+" — tap a highlighted token.";
+ }
+}
+
+function makeSetup(){
+ const grid=$("setupGrid");
+ grid.innerHTML="";
+
+ profiles.forEach((p,i)=>{
+  const card=document.createElement("div");
+  card.className="player-setup";
+
+  const top=document.createElement("div");
+  top.className="setup-top";
+
+  const av=document.createElement("div");
+  av.className="avatar";
+  av.style.background=COLORS[i].pale;
+  av.textContent=p.emoji||COLORS[i].emoji;
+
+  const info=document.createElement("div");
+  info.style.flex="1";
+  info.style.minWidth="0";
+
+  const color=document.createElement("label");
+  color.textContent=COLORS[i].name+" player";
+
+  const name=document.createElement("input");
+  name.type="text";
+  name.maxLength=20;
+  name.placeholder=DEFAULT_NAMES[i];
+  name.value=p.name;
+  name.setAttribute("aria-label",COLORS[i].name+" player name");
+  name.addEventListener("input",()=>{
+   profiles[i].name=name.value.trim()||DEFAULT_NAMES[i];
+   updateUI();
   });
 
-  face.setAttribute("aria-label", "Dice showing " + number);
+  const fileLabel=document.createElement("label");
+  fileLabel.textContent="Avatar picture (optional)";
+
+  const file=document.createElement("input");
+  file.type="file";
+  file.accept="image/*";
+  file.setAttribute("aria-label",COLORS[i].name+" avatar picture");
+
+  file.addEventListener("change",()=>{
+   const f=file.files&&file.files[0];
+   if(!f)return;
+
+   if(f.size>2*1024*1024){
+    alert("Please choose an image under 2 MB.");
+    file.value="";
+    return;
+   }
+
+   const reader=new FileReader();
+   reader.onload=()=>{
+    profiles[i].avatar=String(reader.result);
+    av.innerHTML="";
+    const img=document.createElement("img");
+    img.src=profiles[i].avatar;
+    img.alt="";
+    av.appendChild(img);
+    updateUI();
+   };
+   reader.readAsDataURL(f);
+  });
+
+  info.append(color,name);
+  top.append(av,info);
+  card.append(top,fileLabel,file);
+  grid.appendChild(card);
+ });
 }
 
-/* The following setup and gameplay functions continue in the next section. */
+function startGame(){
+ profiles.forEach((p,i)=>{
+  p.name=(p.name||"").trim()||DEFAULT_NAMES[i];
+ });
 
+ pieces=COLORS.map(()=>[-1,-1,-1,-1]);
+ turn=0;
+ dice=null;
+ over=false;
+ started=true;
+
+ $("setup").classList.add("hidden");
+ drawBoard();
+ updateUI();
+}
+
+function resetGame(){
+ pieces=COLORS.map(()=>[-1,-1,-1,-1]);
+ turn=0;
+ dice=null;
+ over=false;
+ $("die").textContent="⚄";
+ drawBoard();
+ updateUI();
+}
+
+function resetProfiles(){
+ profiles=COLORS.map((c,i)=>({
+  name:DEFAULT_NAMES[i],avatar:"",emoji:c.emoji
+ }));
+ makeSetup();
+ updateUI();
+}
+
+$("startBtn").addEventListener("click",startGame);
+$("defaultsBtn").addEventListener("click",resetProfiles);
+$("rollBtn").addEventListener("click",rollDice);
+$("die").addEventListener("click",rollDice);
+$("newBtn").addEventListener("click",resetGame);
+
+makeSetup();
+drawBoard();
+updateUI();
 })();
 </script>
-
-  /* PLAYER SETUP */
-
-function makePlayer(index, name, isCPU = false) {
-  return {
-    id: index,
-    name,
-    color: COLORS[index],
-    isCPU,
-    pieces: [-1, -1, -1, -1]
-  };
-}
-
-function renderSetupPlayers() {
-  const container = $("playerSetup");
-  if (!container) return;
-
-  const count = Number($("playerCount")?.value || 4);
-  container.replaceChildren();
-
-  for (let i = 0; i < count; i++) {
-    const color = COLORS[i];
-    const card = document.createElement("div");
-    card.className = "player-card";
-
-    const avatar = document.createElement("div");
-    avatar.className = "player-color-dot";
-    avatar.style.setProperty("--player-color", color.hex);
-    avatar.textContent = "♡";
-
-    const fields = document.createElement("div");
-
-    const label = document.createElement("label");
-    label.textContent = color.name + " player's name";
-    label.htmlFor = "playerName" + i;
-
-    const input = document.createElement("input");
-    input.className = "text-input";
-    input.id = "playerName" + i;
-    input.maxLength = 18;
-    input.placeholder = "Player " + (i + 1);
-    input.value = color.name + " player";
-
-    fields.append(label, input);
-    card.append(avatar, fields);
-    container.appendChild(card);
-  }
-}
-
-function getPlayerNames() {
-  const count = Number($("playerCount")?.value || 4);
-  const names = [];
-
-  for (let i = 0; i < count; i++) {
-    const value = $("playerName" + i)?.value.trim();
-    names.push(value || ("Player " + (i + 1)));
-  }
-
-  return names;
-}
-
-/* TOKEN POSITIONS */
-
-function getPiecePosition(playerIndex, pieceIndex) {
-  const player = players[playerIndex];
-  if (!player) return { x: 0, y: 0 };
-
-  const step = player.pieces[pieceIndex];
-
-  // Token is still in its coloured home base.
-  if (step < 0) {
-    const base = BASES[playerIndex];
-    const spots = [
-      [2.1, 2.1],
-      [3.9, 2.1],
-      [2.1, 3.9],
-      [3.9, 3.9]
-    ];
-
-    const [dx, dy] = spots[pieceIndex];
-
-    return {
-      x: (base.x + dx) * CELL,
-      y: (base.y + dy) * CELL
-    };
-  }
-
-  // Finished tokens gather in the centre.
-  if (step >= 57) {
-    const homeSpots = [
-      [[6.65,6.65],[7.15,6.65],[6.65,7.15],[7.15,7.15]],
-      [[7.85,6.65],[8.35,6.65],[7.85,7.15],[8.35,7.15]],
-      [[7.85,7.85],[8.35,7.85],[7.85,8.35],[8.35,8.35]],
-      [[6.65,7.85],[7.15,7.85],[6.65,8.35],[7.15,8.35]]
-    ];
-
-    const [x, y] = homeSpots[playerIndex][pieceIndex];
-
-    return { x: x * CELL, y: y * CELL };
-  }
-
-  // Steps 0–51 use the shared outer track.
-  if (step <= 51) {
-    const trackIndex =
-      (COLORS[playerIndex].start + step) % TRACK.length;
-
-    const [col, row] = TRACK[trackIndex];
-
-    return {
-      x: col * CELL + CELL / 2,
-      y: row * CELL + CELL / 2
-    };
-  }
-
-  // Steps 52–56 use the player's coloured home lane.
-  const laneStep = step - 52;
-  const lane = HOME_LANES[playerIndex];
-  const [col, row] = lane[laneStep];
-
-  return {
-    x: col * CELL + CELL / 2,
-    y: row * CELL + CELL / 2
-  };
-}
-
-/* DRAW HEART OR CIRCLE TOKENS */
-
-function drawHeart(parent, x, y, color) {
-  const path = addSvg(parent, "path", {
-    d: `M ${x} ${y+10}
-        C ${x-25} ${y-5}, ${x-17} ${y-21}, ${x} ${y-9}
-        C ${x+17} ${y-21}, ${x+25} ${y-5}, ${x} ${y+10} Z`,
-    fill: color,
-    stroke: "#fff",
-    "stroke-width": 2,
-    class: "token",
-    "pointer-events": "none"
-  });
-
-  return path;
-}
-
-function drawTokens() {
-  const layer = $("boardTokens");
-  if (!layer || !players.length) return;
-
-  layer.replaceChildren();
-
-  players.forEach((player, playerIndex) => {
-    player.pieces.forEach((step, pieceIndex) => {
-      const pos = getPiecePosition(playerIndex, pieceIndex);
-
-      // Slightly separate tokens sharing the same square.
-      const sameSquare = [];
-
-      players.forEach((other, otherIndex) => {
-        other.pieces.forEach((otherStep, otherPiece) => {
-          if (otherIndex === playerIndex &&
-              otherPiece === pieceIndex) return;
-
-          if (otherStep < 0 || otherStep >= 57 ||
-              step < 0 || step >= 57) return;
-
-          const otherPos =
-            getPiecePosition(otherIndex, otherPiece);
-
-          if (Math.abs(otherPos.x - pos.x) < 1 &&
-              Math.abs(otherPos.y - pos.y) < 1) {
-            sameSquare.push([otherIndex, otherPiece]);
-          }
-        });
-      });
-
-      const offsetIndex = sameSquare.length;
-      const offsets = [
-        [0, 0], [-7, -7], [7, -7],
-        [-7, 7], [7, 7]
-      ];
-
-      const [ox, oy] = offsets[
-        Math.min(offsetIndex, offsets.length - 1)
-      ];
-
-      const x = pos.x + ox;
-      const y = pos.y + oy;
-
-      const group = addSvg(layer, "g", {
-        role: "button",
-        tabindex: "0",
-        "aria-label":
-          player.name + ", token " + (pieceIndex + 1),
-        "data-player": playerIndex,
-        "data-piece": pieceIndex,
-        style: "cursor:pointer"
-      });
-
-      // Token shadow.
-      addSvg(group, "ellipse", {
-        cx: x,
-        cy: y + 10,
-        rx: 13,
-        ry: 5,
-        fill: "#3d2c54",
-        opacity: .15
-      });
-
-      if (pieceStyle === "heart") {
-        drawHeart(group, x, y - 2, player.color.hex);
-      } else {
-        addSvg(group, "circle", {
-          cx: x,
-          cy: y,
-          r: 12,
-          fill: player.color.hex,
-          stroke: "#fff",
-          "stroke-width": 2,
-          class: "token"
-        });
-      }
-
-      // Glossy highlight.
-      addSvg(group, "ellipse", {
-        cx: x - 4,
-        cy: y - 5,
-        rx: 4,
-        ry: 2,
-        fill: "#fff",
-        opacity: .65,
-        "pointer-events": "none"
-      });
-
-      if (dice !== null &&
-          playerIndex === currentPlayer &&
-          getLegalMoves().includes(pieceIndex)) {
-        group.classList.add("legal");
-        group.setAttribute("aria-label",
-          "Move " + player.name + "'s token " +
-          (pieceIndex + 1));
-
-        group.addEventListener("click", () => {
-          movePiece(pieceIndex);
-        });
-
-        group.addEventListener("keydown", event => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            movePiece(pieceIndex);
-          }
-        });
-      }
-    });
-  });
-}
-
-/* CONNECT SETUP CONTROLS */
-
-document.querySelectorAll("[data-mode]").forEach(button => {
-  button.addEventListener("click", () => {
-    mode = button.dataset.mode;
-
-    document.querySelectorAll("[data-mode]").forEach(option => {
-      option.classList.toggle(
-        "selected",
-        option.dataset.mode === mode
-      );
-    });
-
-    const notice = $("onlineNotice");
-    if (notice) notice.hidden = mode !== "online";
-
-    const begin = $("beginBtn");
-    if (begin) {
-      begin.disabled = mode === "online";
-      begin.textContent = mode === "online"
-        ? "Online server required"
-        : "Start game ♡";
-    }
-  });
-});
-
-document.querySelectorAll("[data-piece]").forEach(button => {
-  button.addEventListener("click", () => {
-    pieceStyle = button.dataset.piece;
-
-    document.querySelectorAll("[data-piece]").forEach(option => {
-      option.classList.toggle(
-        "selected",
-        option.dataset.piece === pieceStyle
-      );
-    });
-
-    if (gameStarted) drawBoard();
-  });
-});
-
-$("playerCount")?.addEventListener("change", renderSetupPlayers);
-
-$("soundToggle")?.addEventListener("click", () => {
-  soundOn = !soundOn;
-  $("soundToggle").textContent =
-    soundOn ? "♫ Sound on" : "♫ Sound off";
-});
-
-$("startBtn")?.addEventListener("click", () => {
-  showScreen("setupScreen");
-});
-
-$("rulesBtn")?.addEventListener("click", () => {
-  showScreen("rulesScreen");
-});
-
-$("rulesBack")?.addEventListener("click", () => {
-  showScreen("homeScreen");
-});
-
-$("backHomeBtn")?.addEventListener("click", () => {
-  showScreen("homeScreen");
-});
-
-renderSetupPlayers();
-
-  /* =========================================
-   PART 5 — LUDO GAME ENGINE
-========================================= */
-
-function getLegalMoves() {
-  if (dice === null || !players[currentPlayer]) return [];
-
-  const player = players[currentPlayer];
-  const legal = [];
-
-  player.pieces.forEach((step, index) => {
-    if (step === -1) {
-      if (dice === 6) legal.push(index);
-      return;
-    }
-
-    if (step < 57 && step + dice <= 57) {
-      legal.push(index);
-    }
-  });
-
-  return legal;
-}
-
-function updateTurnUI() {
-  if (!players.length) return;
-
-  const player = players[currentPlayer];
-
-  if ($("turnName")) {
-    $("turnName").textContent = player.name + "'s turn";
-  }
-
-  if ($("turnChip")) {
-    $("turnChip").style.setProperty(
-      "--active-color",
-      player.color.hex
-    );
-
-    $("turnChip").querySelector(".turn-dot").style.background =
-      player.color.hex;
-  }
-
-  if ($("diceTitle")) {
-    $("diceTitle").textContent = player.name + "'s turn";
-  }
-
-  if ($("diceHelp")) {
-    $("diceHelp").textContent = player.isCPU
-      ? "Your computer opponent is thinking..."
-      : "Roll the dice to continue.";
-  }
-
-  if ($("gameStatus")) {
-    $("gameStatus").textContent =
-      player.name + ", it's your turn!";
-  }
-
-  if ($("rollBtn")) {
-    $("rollBtn").disabled = busy || player.isCPU || gameOver;
-  }
-
-  const strip = $("playersStrip");
-
-  if (strip) {
-    strip.replaceChildren();
-
-    players.forEach((p, index) => {
-      const row = document.createElement("div");
-
-      row.className =
-        "player-row" + (index === currentPlayer ? " current" : "");
-
-      row.style.setProperty("--player-color", p.color.hex);
-
-      const dot = document.createElement("span");
-      dot.className = "player-mini";
-      dot.textContent = pieceStyle === "heart" ? "♥" : "●";
-
-      const name = document.createElement("span");
-      name.className = "player-row-name";
-      name.textContent = p.name + (p.isCPU ? " · CPU" : "");
-
-      const count = document.createElement("span");
-      count.className = "player-row-count";
-      count.textContent =
-        p.pieces.filter(step => step === 57).length + "/4";
-
-      row.append(dot, name, count);
-      strip.appendChild(row);
-    });
-  }
-}
-
-function showLegalMoves() {
-  const container = $("legalMoves");
-  if (!container) return;
-
-  container.replaceChildren();
-
-  const legal = getLegalMoves();
-
-  if (dice === null || gameOver) return;
-
-  if (!legal.length) {
-    const message = document.createElement("p");
-    message.className = "game-status";
-    message.textContent =
-      "No legal moves. Your turn will pass automatically.";
-    container.appendChild(message);
-    return;
-  }
-
-  legal.forEach(pieceIndex => {
-    const button = document.createElement("button");
-
-    button.className = "move-button";
-    button.type = "button";
-    button.textContent =
-      (pieceStyle === "heart" ? "♥ " : "● ") +
-      "Move token " + (pieceIndex + 1);
-
-    button.addEventListener("click", () => {
-      movePiece(pieceIndex);
-    });
-
-    container.appendChild(button);
-  });
-}
-
-function movePiece(pieceIndex) {
-  if (busy || gameOver || dice === null) return;
-  if (!getLegalMoves().includes(pieceIndex)) return;
-
-  const player = players[currentPlayer];
-  const roll = dice;
-  const oldStep = player.pieces[pieceIndex];
-
-  busy = true;
-
-  if (oldStep === -1) {
-    player.pieces[pieceIndex] = 0;
-    logMessage(player.name + " brought a token onto the board!");
-  } else {
-    player.pieces[pieceIndex] += roll;
-
-    if (player.pieces[pieceIndex] === 57) {
-      logMessage(player.name + " brought a token home!");
-    } else {
-      logMessage(player.name + " moved a token " + roll + " spaces.");
-    }
-  }
-
-  let captured = false;
-  const newStep = player.pieces[pieceIndex];
-
-  // Only tokens on the shared outer route can be captured.
-  if (newStep >= 0 && newStep <= 51) {
-    const landingIndex =
-      (player.color.start + newStep) % TRACK.length;
-
-    const landing = TRACK[landingIndex];
-    const landingKey = landing[0] + "," + landing[1];
-
-    if (!SAFE_SET.has(landingKey)) {
-      players.forEach((opponent, opponentIndex) => {
-        if (opponentIndex === currentPlayer) return;
-
-        opponent.pieces.forEach((opponentStep, otherPieceIndex) => {
-          if (opponentStep < 0 || opponentStep > 51) return;
-
-          const opponentTrackIndex =
-            (opponent.color.start + opponentStep) % TRACK.length;
-
-          if (opponentTrackIndex === landingIndex) {
-            opponent.pieces[otherPieceIndex] = -1;
-            captured = true;
-
-            logMessage(
-              player.name + " captured " +
-              opponent.name + "'s token!"
-            );
-          }
-        });
-      });
-    }
-  }
-
-  dice = null;
-
-  drawBoard();
-  updateTurnUI();
-
-  if (player.pieces.every(step => step === 57)) {
-    gameOver = true;
-    busy = false;
-    showWinner(player);
-    return;
-  }
-
-  const extraTurn = roll === 6 || captured;
-
-  setTimeout(() => {
-    busy = false;
-
-    if (extraTurn) {
-      logMessage(player.name + " gets another turn!");
-      updateTurnUI();
-      scheduleCPU();
-    } else {
-      nextTurn();
-    }
-
-    drawBoard();
-  }, 450);
-}
-
-async function animateDie(result) {
-  const cube = $("diceCube");
-  if (!cube) return;
-
-  cube.classList.remove("rolling");
-
-  // Restart the CSS animation.
-  void cube.offsetWidth;
-  cube.classList.add("rolling");
-
-  if ($("diceTitle")) {
-    $("diceTitle").textContent = "Rolling...";
-  }
-
-  if ($("diceHelp")) {
-    $("diceHelp").textContent = "Let's see what you get ♡";
-  }
-
-  // Show the actual result after the animation.
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  cube.classList.remove("rolling");
-  drawDie(result);
-
-  // Rotate the cube to a readable front face.
-  cube.style.transform = "rotateX(0deg) rotateY(0deg)";
-
-  playTone(650, 0.12);
-}
-
-async function rollTurn() {
-  if (busy || gameOver || !players.length) return;
-  if (players[currentPlayer].isCPU) return;
-
-  busy = true;
-
-  if ($("rollBtn")) $("rollBtn").disabled = true;
-
-  const result = randomDie();
-
-  await animateDie(result);
-
-  dice = result;
-  busy = false;
-
-  logMessage(players[currentPlayer].name + " rolled " + result + ".");
-
-  if ($("diceTitle")) {
-    $("diceTitle").textContent = "You rolled a " + result + "!";
-  }
-
-  if ($("diceHelp")) {
-    $("diceHelp").textContent =
-      result === 6
-        ? "A six! Choose a token to release or move."
-        : "Choose one of the highlighted tokens.";
-  }
-
-  const legal = getLegalMoves();
-
-  drawBoard();
-  showLegalMoves();
-
-  if (!legal.length) {
-    if ($("gameStatus")) {
-      $("gameStatus").textContent =
-        "No valid move this time.";
-    }
-
-    if ($("diceHelp")) {
-      $("diceHelp").textContent =
-        "No token can move. Passing your turn...";
-    }
-
-    setTimeout(() => {
-      if (!gameOver && dice !== null) {
-        dice = null;
-        nextTurn();
-      }
-    }, 900);
-
-    return;
-  }
-
-  if (players[currentPlayer].isCPU) {
-    setTimeout(cpuChooseMove, 600);
-  }
-}
-
-function nextTurn() {
-  dice = null;
-  busy = false;
-
-  if (gameOver || !players.length) return;
-
-  currentPlayer = (currentPlayer + 1) % players.length;
-
-  updateTurnUI();
-  drawBoard();
-  scheduleCPU();
-}
-
-function scheduleCPU() {
-  if (cpuTimer) {
-    clearTimeout(cpuTimer);
-    cpuTimer = null;
-  }
-
-  if (gameOver || !players.length) return;
-  if (mode !== "cpu") return;
-  if (!players[currentPlayer].isCPU) return;
-
-  cpuTimer = setTimeout(() => {
-    cpuTimer = null;
-
-    if (!gameOver &&
-        players[currentPlayer] &&
-        players[currentPlayer].isCPU) {
-      rollTurnCPU();
-    }
-  }, 750);
-}
-
-async function rollTurnCPU() {
-  if (busy || gameOver) return;
-
-  busy = true;
-
-  if ($("rollBtn")) $("rollBtn").disabled = true;
-
-  const result = randomDie();
-
-  await animateDie(result);
-
-  if (gameOver) {
-    busy = false;
-    return;
-  }
-
-  dice = result;
-  busy = false;
-
-  logMessage(players[currentPlayer].name + " rolled " + result + ".");
-
-  drawBoard();
-  showLegalMoves();
-
-  const legal = getLegalMoves();
-
-  if (!legal.length) {
-    dice = null;
-    setTimeout(nextTurn, 700);
-    return;
-  }
-
-  setTimeout(cpuChooseMove, 650);
-}
-
-function cpuChooseMove() {
-  if (gameOver || dice === null) return;
-  if (!players[currentPlayer]?.isCPU) return;
-
-  const legal = getLegalMoves();
-
-  if (!legal.length) {
-    dice = null;
-    nextTurn();
-    return;
-  }
-
-  const player = players[currentPlayer];
-
-  // Prefer finishing, then capturing, then releasing a new token.
-  let chosen = legal.find(index =>
-    player.pieces[index] + dice === 57
-  );
-
-  if (chosen === undefined) {
-    chosen = legal.find(index =>
-      player.pieces[index] === -1
-    );
-  }
-
-  if (chosen === undefined) {
-    chosen = legal.reduce((best, index) =>
-      player.pieces[index] > player.pieces[best]
-        ? index
-        : best
-    , legal[0]);
-  }
-
-  movePiece(chosen);
-}
-
-function showWinner(player) {
-  gameOver = true;
-  dice = null;
-  busy = false;
-
-  if ($("winnerTitle")) {
-    $("winnerTitle").textContent = player.name + " wins!";
-  }
-
-  if ($("resultText")) {
-    $("resultText").textContent =
-      "All four tokens are home. Congratulations on your victory! ♡";
-  }
-
-  showScreen("resultScreen");
-  playTone(780, 0.2);
-}
-
-function startGame() {
-  if (mode === "online") {
-    alert("Online multiplayer needs a real server first.");
-    return;
-  }
-
-  if (cpuTimer) {
-    clearTimeout(cpuTimer);
-    cpuTimer = null;
-  }
-
-  const names = getPlayerNames();
-
-  players = names.map((name, index) =>
-    makePlayer(
-      index,
-      name,
-      mode === "cpu" && index > 0
-    )
-  );
-
-  currentPlayer = 0;
-  dice = null;
-  gameOver = false;
-  busy = false;
-  gameStarted = true;
-  gameLog = [];
-
-  if ($("gameLog")) {
-    $("gameLog").textContent = "Your adventure starts here.";
-  }
-
-  drawDie(1);
-  drawBoard();
-  updateTurnUI();
-  showScreen("gameScreen");
-
-  logMessage("The game has begun!");
-
-  scheduleCPU();
-}
-
-function restartGame() {
-  if (!players.length) {
-    showScreen("setupScreen");
-    return;
-  }
-
-  if (cpuTimer) {
-    clearTimeout(cpuTimer);
-    cpuTimer = null;
-  }
-
-  players.forEach(player => {
-    player.pieces = [-1, -1, -1, -1];
-  });
-
-  currentPlayer = 0;
-  dice = null;
-  gameOver = false;
-  busy = false;
-  gameLog = [];
-
-  drawDie(1);
-  drawBoard();
-  updateTurnUI();
-  showScreen("gameScreen");
-
-  logMessage("A new game has started!");
-  scheduleCPU();
-}
-
-function leaveGame() {
-  if (cpuTimer) {
-    clearTimeout(cpuTimer);
-    cpuTimer = null;
-  }
-
-  dice = null;
-  busy = false;
-  gameOver = false;
-  gameStarted = false;
-
-  showScreen("homeScreen");
-}
-
-$("beginBtn")?.addEventListener("click", startGame);
-$("rollBtn")?.addEventListener("click", rollTurn);
-$("restartBtn")?.addEventListener("click", restartGame);
-$("leaveBtn")?.addEventListener("click", leaveGame);
-$("playAgainBtn")?.addEventListener("click", restartGame);
-
-$("resultHomeBtn")?.addEventListener("click", () => {
-  leaveGame();
-});
-
-    renderSetupPlayers();
-    drawDie(1);
-  })();
-</script>
 </body>
-          </html>
+</html>
