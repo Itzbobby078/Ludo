@@ -1004,7 +1004,14 @@ footer {
       <button id="leaveBtn" type="button">← Leave game</button>
     </div>
   </div>
-</section>
+<script>
+window.addEventListener("error", function (event) {
+  alert(
+    "Ludo error: " + event.message +
+    "\nLine: " + event.lineno
+  );
+});
+</script>
 
 <section class="screen" id="resultScreen">
   <div class="panel result-panel">
