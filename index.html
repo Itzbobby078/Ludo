@@ -3,290 +3,288 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#eee8ff">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#f1eaff">
 <title>Ludo ♡</title>
+
 <style>
-:root {
-  --bg:#f5f1ff;
-  --panel:#ffffff;
-  --ink:#37304c;
-  --muted:#938aa9;
-  --purple:#a994ed;
-  --purple-dark:#7962bd;
-  --line:#e9e2fa;
-  --green:#42b88a;
-  --red:#f0788b;
-  --yellow:#f0c85b;
-  --blue:#7198f1;
+:root{
+  --bg:#f5f0ff;
+  --ink:#393149;
+  --muted:#9388a8;
+  --purple:#a88de8;
+  --line:#e8dff7;
+  --red:#ed718b;
+  --green:#39b98a;
+  --yellow:#e8bd4e;
+  --blue:#7295ed;
 }
-* {box-sizing:border-box}
-body {
+*{box-sizing:border-box}
+body{
   margin:0;
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  background:radial-gradient(ellipse at top,#fff 0%,var(--bg) 65%);
+  background:linear-gradient(160deg,#fff,#f1eaff 70%);
   color:var(--ink);
-  min-height:100vh;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
 }
-button,input,select {font:inherit}
-button {cursor:pointer;touch-action:manipulation}
-button:focus-visible,input:focus-visible {outline:3px solid #c2b1ff;outline-offset:3px}
-.topbar {
-  max-width:1100px;margin:auto;padding:17px 16px 8px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
+button,input{font:inherit}
+button{cursor:pointer;touch-action:manipulation}
+header{
+  max-width:1100px;margin:auto;padding:16px;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.brand {display:flex;align-items:center;gap:10px}
-.brandmark {
-  width:43px;height:43px;border-radius:16px;
-  background:linear-gradient(135deg,#d8caff,#a993ec);
-  display:grid;place-items:center;font-size:24px;color:white;
-  box-shadow:0 5px 15px #a994ed50;
+.brand{display:flex;align-items:center;gap:11px}
+.logo{
+  width:45px;height:45px;border-radius:16px;
+  display:grid;place-items:center;
+  color:white;font-size:25px;
+  background:linear-gradient(140deg,#d5c5ff,#957bd7);
+  box-shadow:0 5px 16px #a88de844;
 }
-.brand h1 {font-size:23px;margin:0;letter-spacing:-1px}
-.brand p {font-size:11px;margin:1px 0 0;color:var(--muted)}
-.coins {
-  background:white;border:1px solid var(--line);border-radius:20px;
-  padding:9px 13px;font-size:13px;font-weight:750;white-space:nowrap;
+h1{font-size:23px;letter-spacing:-1px;margin:0}
+.subtitle{font-size:11px;color:var(--muted)}
+.coins{
+  background:white;border:1px solid var(--line);
+  border-radius:20px;padding:10px 13px;font-size:12px;
 }
-main {max-width:1100px;margin:auto;padding:12px 14px 35px}
-.page-title {text-align:center;margin:12px 0 22px}
-.page-title h2 {font-size:clamp(25px,5vw,36px);letter-spacing:-1px;margin:0}
-.page-title p {color:var(--muted);font-size:13px;margin:7px 0}
-.layout {display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.8fr);gap:18px;align-items:start}
-.panel {
-  background:#ffffffdf;border:1px solid #e8e0f8;border-radius:25px;
-  padding:15px;box-shadow:0 9px 30px #8b74bd0b;
+main{max-width:1100px;margin:auto;padding:8px 14px 30px}
+.heading{text-align:center;margin:10px 0 22px}
+.heading h2{font-size:clamp(26px,5vw,36px);margin:0;letter-spacing:-1px}
+.heading p{color:var(--muted);font-size:13px}
+.layout{
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(275px,.8fr);
+  gap:16px;align-items:start;
 }
-.board-wrap {width:100%;max-width:660px;margin:auto;position:relative}
-#board {display:block;width:100%;height:auto;overflow:visible}
-.board-shell {
-  border-radius:22px;background:#fff;padding:7px;
-  box-shadow:0 8px 28px #7864a91a;border:1px solid #ece6f8;
+.panel{
+  background:#ffffffdf;border:1px solid var(--line);
+  border-radius:23px;padding:14px;
+  box-shadow:0 8px 28px #6e57980b;
 }
-.board-caption {text-align:center;color:var(--muted);font-size:11px;margin-top:10px}
-.panel h3 {font-size:16px;margin:2px 0 12px}
-.section-label {
-  display:block;font-size:10px;text-transform:uppercase;letter-spacing:1.4px;
-  color:var(--muted);font-weight:800;margin:16px 0 8px;
+.board-shell{
+  background:white;padding:5px;border-radius:18px;
+  border:1px solid var(--line);
 }
-.field {
-  width:100%;min-width:0;border:1px solid var(--line);border-radius:12px;
-  padding:11px 12px;background:#fff;color:var(--ink);font-size:13px;
+#board{width:100%;height:auto;display:block}
+.caption{text-align:center;color:var(--muted);font-size:11px;margin-top:10px}
+h3{font-size:15px;margin:4px 0 12px}
+.status{
+  border:1px solid var(--line);border-radius:15px;
+  background:#faf7ff;padding:12px;margin-bottom:12px;
 }
-.players-grid {display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.player-edit {
-  border:1px solid var(--line);border-radius:15px;padding:10px;min-width:0;
-  background:#fff;
+.status strong{font-size:13px}
+.status p{font-size:11px;color:var(--muted);margin:5px 0 0;line-height:1.5}
+.section-label{
+  display:block;margin:16px 0 8px;
+  font-size:10px;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--muted);font-weight:800;
 }
-.player-edit-top {display:flex;align-items:center;gap:7px;margin-bottom:9px}
-.avatar {
-  width:35px;height:35px;flex-shrink:0;border-radius:12px;object-fit:cover;
-  display:grid;place-items:center;font-size:22px;background:#f1eaff;
+button:focus-visible,input:focus-visible{
+  outline:3px solid #c3afff;outline-offset:2px;
 }
-.player-edit small {display:block;font-size:10px;color:var(--muted)}
-.player-edit strong {font-size:12px}
-.player-edit input[type=text] {padding:9px;font-size:12px}
-.avatar-choices {display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
-.avatar-choice {
-  width:29px;height:29px;border-radius:9px;border:1px solid #eee6fa;
-  background:#faf8ff;font-size:17px;padding:0;
+.action{
+  border:0;border-radius:12px;padding:12px;
+  color:white;font-size:12px;font-weight:750;
+  background:linear-gradient(130deg,#b7a1f3,#8f76d4);
 }
-.avatar-choice.selected {border:2px solid var(--purple-dark);background:#eee7ff}
-.upload-label {
-  display:block;font-size:10px;color:var(--purple-dark);margin-top:7px;cursor:pointer;
+.action:disabled{opacity:.4;cursor:not-allowed}
+.secondary{background:#f0eaff;color:#7862b7}
+.full{width:100%}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mode{
+  background:white;border:1px solid var(--line);
+  border-radius:12px;padding:11px 5px;font-size:12px;
 }
-.upload-label input {width:100%;font-size:10px;margin-top:4px}
-.mode-grid {display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.mode-button {
-  border:1px solid var(--line);background:#fff;border-radius:13px;
-  padding:11px 8px;text-align:center;color:var(--ink);font-size:12px;
+.mode span{display:block;font-size:21px;margin-bottom:4px}
+.mode.active{background:#eee7ff;border:2px solid var(--purple);padding:10px 4px}
+.players-edit{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.edit-card{border:1px solid var(--line);border-radius:14px;padding:9px;min-width:0}
+.edit-head{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.avatar{
+  width:35px;height:35px;flex-shrink:0;
+  display:grid;place-items:center;border-radius:11px;
+  background:#f0eaff;font-size:21px;overflow:hidden;
 }
-.mode-button.active {background:#f0eaff;border:2px solid var(--purple);padding:10px 7px}
-.mode-button span {display:block;font-size:20px;margin-bottom:4px}
-.action {
-  border:0;border-radius:13px;padding:12px 14px;font-weight:750;font-size:13px;
-  background:linear-gradient(135deg,#b8a5f5,#9078d8);color:white;
-  box-shadow:0 5px 13px #a38ce93b;
+.avatar img{width:100%;height:100%;object-fit:cover}
+.edit-head strong{font-size:12px}
+.edit-head small{display:block;color:var(--muted);font-size:10px}
+.field{
+  width:100%;border:1px solid var(--line);border-radius:10px;
+  padding:9px;background:white;color:var(--ink);font-size:12px;
 }
-.action.secondary {background:#f2edff;color:#7762b3;box-shadow:none}
-.action:disabled {opacity:.42;cursor:not-allowed}
-.actions {display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.action.full {width:100%;margin-top:10px}
-.status {
-  border:1px solid var(--line);background:#fbf9ff;border-radius:16px;
-  padding:13px;margin-bottom:12px;
+.avatars{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.avatar-pick{
+  width:27px;height:27px;padding:0;
+  border:1px solid var(--line);border-radius:8px;background:white;font-size:16px;
 }
-.status-head {display:flex;align-items:center;gap:9px}
-.status-dot {width:11px;height:11px;border-radius:50%;background:var(--purple)}
-.status strong {font-size:13px}
-.status p {margin:5px 0 0 20px;color:var(--muted);font-size:11px;line-height:1.5}
-.dice-area {display:flex;align-items:center;gap:15px;padding:9px 0}
-.dice {
-  width:75px;height:75px;flex-shrink:0;border:1px solid #e8e0fa;
-  border-radius:19px;background:linear-gradient(145deg,#fff,#f0eaff);
-  display:grid;place-items:center;font-size:49px;color:#7962bd;
-  box-shadow:0 5px 16px #8d77bf19;
+.avatar-pick.selected{border:2px solid var(--purple);background:#f0eaff}
+.upload{display:block;font-size:10px;color:#8268be;margin-top:7px}
+.upload input{width:100%;font-size:10px;margin-top:4px}
+.dice-area{display:flex;align-items:center;gap:13px;margin:12px 0}
+#roll{
+  width:72px;height:72px;flex-shrink:0;border:1px solid var(--line);
+  border-radius:18px;background:linear-gradient(140deg,#fff,#eee7ff);
+  color:#8269c0;font-size:43px;box-shadow:0 5px 15px #a88de822;
 }
-.dice.rolling {animation:roll .45s ease}
-@keyframes roll {0%{transform:rotate(0) scale(1)}40%{transform:rotate(14deg) scale(1.1)}100%{transform:rotate(0) scale(1)}}
-.dice-copy strong {display:block;font-size:14px}
-.dice-copy p {margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
-.players-list {display:grid;gap:7px;margin-top:8px}
-.player-row {
-  display:flex;align-items:center;gap:9px;padding:9px;
-  border:1px solid var(--line);border-radius:13px;background:white;
+#roll.rolling{animation:shake .35s ease}
+@keyframes shake{50%{transform:rotate(14deg) scale(1.08)}}
+.dice-copy strong{font-size:13px}
+.dice-copy p{font-size:11px;color:var(--muted);line-height:1.5}
+.player-list{display:grid;gap:7px}
+.player-row{
+  display:flex;align-items:center;gap:8px;padding:8px;
+  border:1px solid var(--line);border-radius:12px;background:white;
 }
-.player-row.current {border:2px solid var(--purple);padding:8px;background:#f9f6ff}
-.player-row .avatar {width:37px;height:37px}
-.player-info {flex:1;min-width:0}
-.player-info strong {font-size:12px;display:block;overflow-wrap:anywhere}
-.player-info small {font-size:10px;color:var(--muted)}
-.pieces-count {font-size:11px;font-weight:750;color:var(--purple-dark)}
-.log {max-height:125px;overflow:auto;font-size:11px;color:var(--muted);line-height:1.7}
-.note {font-size:11px;color:var(--muted);line-height:1.65;margin:12px 2px 0}
-.footer {text-align:center;font-size:11px;color:var(--muted);padding:20px}
-.hidden {display:none!important}
-#toast {
+.player-row.current{border:2px solid var(--purple);padding:7px;background:#faf7ff}
+.player-info{flex:1;min-width:0}
+.player-info strong{display:block;font-size:12px;overflow-wrap:anywhere}
+.player-info small{font-size:10px;color:var(--muted)}
+.progress{font-size:10px;color:#856cbe;font-weight:800}
+.log{font-size:11px;color:var(--muted);line-height:1.8;max-height:125px;overflow:auto}
+.note{font-size:10px;color:var(--muted);line-height:1.6}
+footer{text-align:center;padding:20px;color:var(--muted);font-size:11px}
+#toast{
   position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  background:#413653;color:white;padding:12px 18px;border-radius:14px;
+  padding:12px 18px;border-radius:14px;background:#443653;color:white;
   font-size:12px;z-index:10;max-width:90%;text-align:center;
-  box-shadow:0 6px 24px #30244235;
 }
-@media(max-width:760px) {
-  main {padding:8px 10px 25px}
-  .layout {grid-template-columns:1fr;gap:12px}
-  .panel {padding:12px;border-radius:21px}
-  .board-panel {padding:9px}
-  .board-shell {padding:4px;border-radius:17px}
-  .page-title {margin:7px 0 15px}
-  .page-title h2 {font-size:27px}
-  .side-panel {display:grid;grid-template-columns:1fr;gap:0}
-  .topbar {padding-top:12px}
-}
-@media(min-width:761px) {
-  .board-panel {position:sticky;top:10px}
+.hide{display:none!important}
+@media(max-width:760px){
+  main{padding:4px 9px 25px}
+  .layout{grid-template-columns:1fr;gap:12px}
+  .panel{padding:10px;border-radius:19px}
+  .board-panel{padding:8px}
+  .heading{margin:5px 0 14px}
+  .heading h2{font-size:27px}
 }
 </style>
 </head>
+
 <body>
-<header class="topbar">
+<header>
   <div class="brand">
-    <div class="brandmark">♡</div>
-    <div><h1>Ludo</h1><p>ROLL · PLAY · BLOOM</p></div>
+    <div class="logo">♡</div>
+    <div><h1>Ludo</h1><div class="subtitle">ROLL · PLAY · BLOOM</div></div>
   </div>
-  <div class="coins">♡ <span id="coinCount">0</span> coins</div>
+  <div class="coins">♡ <b id="coins">0</b> coins</div>
 </header>
 
 <main>
-  <section class="page-title">
+  <section class="heading">
     <h2>Your little Ludo world</h2>
-    <p>A dreamy board, your people, your game.</p>
+    <p>Four colours, your people, your game.</p>
   </section>
 
   <div class="layout">
     <section class="panel board-panel">
       <div class="board-shell">
-        <div class="board-wrap">
-          <svg id="board" viewBox="0 0 600 600" role="img" aria-label="Playable four-colour Ludo board"></svg>
-        </div>
+        <svg id="board" viewBox="0 0 600 600"
+             role="img" aria-label="Traditional Ludo board"></svg>
       </div>
-      <div class="board-caption">Tap one of your glowing tokens after rolling.</div>
+      <div class="caption">Tap a highlighted token to move it ♡</div>
     </section>
 
-    <aside class="panel side-panel">
+    <section class="panel">
       <div class="status">
-        <div class="status-head">
-          <span class="status-dot" id="turnDot"></span>
-          <strong id="turnTitle">Set up your game</strong>
-        </div>
-        <p id="turnMessage">Choose a mode and start playing.</p>
+        <strong id="turnTitle">Welcome to Ludo ♡</strong>
+        <p id="turnMessage">Choose a mode, then start your game.</p>
       </div>
 
       <h3>Game controls</h3>
       <div class="dice-area">
-        <button id="rollButton" class="dice" aria-label="Roll dice">⚄</button>
+        <button id="roll" aria-label="Roll dice" disabled>⚄</button>
         <div class="dice-copy">
           <strong id="diceTitle">Ready to roll?</strong>
-          <p id="diceMessage">Your turn begins when you start a game.</p>
+          <p id="diceMessage">Start a game first.</p>
         </div>
       </div>
-      <button id="startButton" class="action full">♡ Start new game</button>
+
+      <button id="start" class="action full">♡ Start new game</button>
       <div class="actions">
-        <button id="undoButton" class="action secondary">Reset game</button>
-        <button id="helpButton" class="action secondary">How to play</button>
+        <button id="reset" class="action secondary">Reset</button>
+        <button id="help" class="action secondary">How to play</button>
       </div>
 
-      <span class="section-label">Choose your mode</span>
+      <span class="section-label">Game mode</span>
       <div class="mode-grid">
-        <button class="mode-button active" data-mode="pass"><span>♟</span>Pass & Play</button>
-        <button class="mode-button" data-mode="computer"><span>✧</span>Vs Computer</button>
+        <button class="mode active" data-mode="pass"><span>♟</span>Pass & Play</button>
+        <button class="mode" data-mode="computer"><span>✧</span>Vs Computer</button>
       </div>
 
-      <span class="section-label">Players</span>
-      <div class="players-grid" id="playerEditors"></div>
+      <span class="section-label">Players & avatars</span>
+      <div id="editors" class="players-edit"></div>
 
-      <span class="section-label">Turn order & progress</span>
-      <div class="players-list" id="playersList"></div>
+      <span class="section-label">Player progress</span>
+      <div id="playerList" class="player-list"></div>
 
-      <span class="section-label">Game notes</span>
-      <div id="gameLog" class="log">Welcome! Start a new game to begin.</div>
-
-      <p class="note">Fair play: each roll uses the browser's cryptographic random number generator when available. This is a local game; online rooms between different devices need a server.</p>
-    </aside>
+      <span class="section-label">Game activity</span>
+      <div id="log" class="log">Your game is waiting to begin.</div>
+      <p class="note">Local multiplayer and computer mode are supported. Playing online with people on other devices requires a server.</p>
+    </section>
   </div>
 </main>
 
-<footer class="footer">Made with ♡ · Your Ludo, your little world</footer>
-<div id="toast" class="hidden" role="status"></div>
+<footer>Made with ♡ · Ludo</footer>
+<div id="toast" class="hide" role="status"></div>
 
 <script>
 "use strict";
 
-/* =========================
-   LUDO: SINGLE-FILE GAME
-   ========================= */
+/* =========================================
+   LUDO BOARD
+   15 x 15 traditional cross-shaped grid
+   ========================================= */
 
 const $ = id => document.getElementById(id);
 
 const COLORS = [
-  {id:"red",name:"Rose",hex:"#ef7189",pale:"#ffe2e9",start:0,avatar:"🐰"},
-  {id:"green",name:"Mint",hex:"#36b987",pale:"#d9f7e9",start:13,avatar:"🐸"},
-  {id:"yellow",name:"Butter",hex:"#e8b83e",pale:"#fff2c7",start:26,avatar:"🐥"},
-  {id:"blue",name:"Sky",hex:"#7193ed",pale:"#e0e9ff",start:39,avatar:"🐻"}
+  {id:"red",name:"Rose",hex:"#ed718b",pale:"#ffe0e8",start:0,emoji:"🐰"},
+  {id:"green",name:"Mint",hex:"#39b98a",pale:"#d8f6e8",start:13,emoji:"🐸"},
+  {id:"yellow",name:"Butter",hex:"#e8bd4e",pale:"#fff0bf",start:26,emoji:"🐥"},
+  {id:"blue",name:"Sky",hex:"#7295ed",pale:"#dfe8ff",start:39,emoji:"🐻"}
 ];
 
-const AVATARS = ["🐰","🐱","🐻","🐼","🦊","🐸","🐥","🦋","🌷","🍓","🩷","🌙"];
+const AVATARS=["🐰","🐱","🐻","🐼","🦊","🐸","🐥","🦋","🌷","🍓","🩷","🌙"];
+const CELL=40;
 
-const HOME_SPOTS = [
-  [[95,95],[145,95],[95,145],[145,145]],
-  [[455,95],[505,95],[455,145],[505,145]],
-  [[455,455],[505,455],[455,505],[505,505]],
-  [[95,455],[145,455],[95,505],[145,505]]
-];
+function makeTrack(){
+  const a=[];
+  const add=(r,c)=>a.push([r,c]);
 
-/* The 52-cell outer route, arranged around the central finish. */
-function buildTrack() {
-  const result=[];
-  const left=180, top=180, right=420, bottom=420;
-  const length=4*(right-left);
-  for(let i=0;i<52;i++){
-    let d=i*length/52, x,y;
-    if(d<right-left){x=left+d;y=top;}
-    else if((d-=right-left)<bottom-top){x=right;y=top+d;}
-    else if((d-=bottom-top)<right-left){x=right-d;y=bottom;}
-    else {d-=right-left;x=left;y=bottom-d;}
-    result.push({x,y});
-  }
-  return result;
+  // Red's starting square, moving clockwise.
+  for(let c=1;c<=5;c++) add(6,c);
+  for(let r=5;r>=0;r--) add(r,6);
+  add(0,7); add(0,8);
+  for(let r=1;r<=5;r++) add(r,8);
+  for(let c=9;c<=14;c++) add(6,c);
+  add(7,14); add(8,14);
+  for(let c=13;c>=9;c--) add(8,c);
+  for(let r=9;r<=14;r++) add(r,8);
+  add(14,7); add(14,6);
+  for(let r=13;r>=9;r--) add(r,6);
+  for(let c=5;c>=0;c--) add(8,c);
+  add(7,0); add(6,0);
+
+  if(a.length!==52) throw new Error("Invalid Ludo track: expected 52 squares.");
+  return a;
 }
 
-const TRACK=buildTrack();
+const TRACK=makeTrack();
 const SAFE=new Set([0,8,13,21,26,34,39,47]);
-const HOME_LANES=[
-  [[205,190],[230,190],[255,190],[280,190],[305,190],[330,190]],
-  [[410,205],[410,230],[410,255],[410,280],[410,305],[410,330]],
-  [[395,410],[370,410],[345,410],[320,410],[295,410],[270,410]],
-  [[190,395],[190,370],[190,345],[190,320],[190,295],[190,270]]
+
+// Each lane has five squares; the centre is the finishing square.
+const LANES=[
+  [[7,1],[7,2],[7,3],[7,4],[7,5]],
+  [[1,7],[2,7],[3,7],[4,7],[5,7]],
+  [[7,13],[7,12],[7,11],[7,10],[7,9]],
+  [[13,7],[12,7],[11,7],[10,7],[9,7]]
+];
+
+// Four token positions inside each 6 x 6 home yard.
+const YARDS=[
+  [[1.7,1.7],[1.7,3.7],[3.7,1.7],[3.7,3.7]],
+  [[1.7,10.7],[1.7,12.7],[3.7,10.7],[3.7,12.7]],
+  [[10.7,10.7],[10.7,12.7],[12.7,10.7],[12.7,12.7]],
+  [[10.7,1.7],[10.7,3.7],[12.7,1.7],[12.7,3.7]]
 ];
 
 let mode="pass";
@@ -295,234 +293,315 @@ let gameOver=false;
 let current=0;
 let diceValue=null;
 let canRoll=false;
-let validPieces=[];
-let toastTimer=null;
+let legal=[];
 let coins=0;
-let moveCount=0;
 let logEntries=[];
-let players=COLORS.map((c,i)=>({
-  color:c.id,name:["Rose","Mint","Butter","Sky"][i],
-  avatar:c.avatar,customImage:"",
-  isAI:false,
+let toastTimer;
+let aiTimer;
+let gameId=0;
+
+const players=COLORS.map((c,i)=>({
+  color:c.id,
+  name:["Rose","Mint","Butter","Sky"][i],
+  avatar:c.emoji,
+  image:"",
   pieces:[-1,-1,-1,-1],
-  finished:0
+  finished:0,
+  isAI:false
 }));
 
-function safeRandomInt(max) {
-  if(window.crypto && window.crypto.getRandomValues){
+function esc(v){
+  return String(v).replace(/[&<>"']/g,ch=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[ch]);
+}
+
+function rand(max){
+  if(window.crypto&&window.crypto.getRandomValues){
     const limit=Math.floor(4294967296/max)*max;
     const a=new Uint32Array(1);
-    do {window.crypto.getRandomValues(a);} while(a[0]>=limit);
+    do{window.crypto.getRandomValues(a)}while(a[0]>=limit);
     return a[0]%max;
   }
   return Math.floor(Math.random()*max);
 }
 
-function toast(message) {
+function notify(msg){
   const el=$("toast");
-  el.textContent=message;
-  el.classList.remove("hidden");
+  el.textContent=msg;
+  el.classList.remove("hide");
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>el.classList.add("hidden"),2400);
+  toastTimer=setTimeout(()=>el.classList.add("hide"),2200);
 }
 
-function addLog(message) {
-  logEntries.unshift(message);
+function log(msg){
+  logEntries.unshift(msg);
   logEntries=logEntries.slice(0,15);
-  $("gameLog").innerHTML=logEntries.map(x=>`<div>♡ ${escapeHTML(x)}</div>`).join("");
+  $("log").innerHTML=logEntries.map(s=>`<div>♡ ${esc(s)}</div>`).join("");
 }
 
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[c]);
+function xy(r,c){
+  return [(c+.5)*CELL,(r+.5)*CELL];
 }
 
-function avatarMarkup(player,size=35) {
-  if(player.customImage) {
-    return `<img src="${player.customImage}" alt="" style="width:${size}px;height:${size}px;object-fit:cover;border-radius:12px">`;
-  }
-  return `<span style="width:${size}px;height:${size}px;display:grid;place-items:center;background:${COLORS.find(c=>c.id===player.color).pale};border-radius:12px;font-size:${Math.round(size*.6)}px">${escapeHTML(player.avatar)}</span>`;
+function svg(tag,attrs={},parent=$("board"),textContent=""){
+  const el=document.createElementNS("http://www.w3.org/2000/svg",tag);
+  for(const [k,v] of Object.entries(attrs)) el.setAttribute(k,String(v));
+  if(textContent!=="") el.textContent=textContent;
+  parent.appendChild(el);
+  return el;
 }
 
-function playerIndexByColor(color) {
-  return players.findIndex(p=>p.color===color);
-}
-
-function trackIndex(playerIndex,progress) {
-  return (COLORS[playerIndex].start+progress)%52;
-}
-
-function positionFor(playerIndex,pieceIndex) {
-  const progress=players[playerIndex].pieces[pieceIndex];
-  if(progress<0) return HOME_SPOTS[playerIndex][pieceIndex];
-  if(progress>=57) return [300,300];
-  if(progress>=52) return HOME_LANES[playerIndex][progress-52];
-  return [TRACK[trackIndex(playerIndex,progress)].x,TRACK[trackIndex(playerIndex,progress)].y];
-}
-
-function svgEl(tag,attrs={},content="") {
-  const node=document.createElementNS("http://www.w3.org/2000/svg",tag);
-  Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,String(v)));
-  if(content) node.textContent=content;
-  return node;
-}
-
-function add(parent,tag,attrs,content) {
-  const node=svgEl(tag,attrs,content);
-  parent.appendChild(node);
-  return node;
-}
-
-function drawBoard() {
-  const svg=$("board");
-  svg.innerHTML="";
-  add(svg,"rect",{x:2,y:2,width:596,height:596,rx:25,fill:"#fff",stroke:"#e9e0f6","stroke-width":4});
-
-  // Four traditional home yards.
-  const yards=[
-    {x:15,y:15,c:0},{x:405,y:15,c:1},
-    {x:405,y:405,c:2},{x:15,y:405,c:3}
-  ];
-  yards.forEach(y=>{
-    const c=COLORS[y.c];
-    add(svg,"rect",{x:y.x,y:y.y,width:180,height:180,rx:13,fill:c.pale,stroke:c.hex,"stroke-width":2});
-    add(svg,"rect",{x:y.x+23,y:y.y+23,width:134,height:134,rx:13,fill:"#fff",stroke:c.hex,"stroke-width":2});
-    HOME_SPOTS[y.c].forEach(([cx,cy])=>{
-      add(svg,"circle",{cx,cy,r:18,fill:c.pale,stroke:c.hex,"stroke-width":1.5});
-    });
-    add(svg,"text",{x:y.x+90,y:y.y+12,"text-anchor":"middle","font-size":10,"font-weight":800,fill:c.hex},c.name.toUpperCase());
+function rectCell(r,c,fill,stroke="#e5dfed",width=1){
+  svg("rect",{
+    x:c*CELL+.7,y:r*CELL+.7,width:CELL-1.4,height:CELL-1.4,
+    fill,stroke,"stroke-width":width
   });
+}
 
-  // The 52 playable squares.
-  TRACK.forEach((p,i)=>{
-    const owner=playerIndexByColor(COLORS.find(c=>c.start===i)?.id);
-    let fill="#fff",stroke="#e8e1f2";
-    if(SAFE.has(i)){fill="#f3edff";stroke="#c9b7f5";}
-    COLORS.forEach((c,j)=>{
-      if(i===c.start){fill=c.hex;stroke=c.hex;}
+function trackIndex(pi,progress){
+  return (COLORS[pi].start+progress)%52;
+}
+
+function position(pi,ti){
+  const p=players[pi].pieces[ti];
+  if(p===-1){
+    const [r,c]=YARDS[pi][ti];
+    return [(c+.5)*CELL,(r+.5)*CELL];
+  }
+  if(p>=57)return [300,300];
+  if(p>=52){
+    const [r,c]=LANES[pi][p-52];
+    return xy(r,c);
+  }
+  const [r,c]=TRACK[trackIndex(pi,p)];
+  return xy(r,c);
+}
+
+function renderBoard(){
+  const b=$("board");
+  b.replaceChildren();
+
+  svg("rect",{x:1,y:1,width:598,height:598,rx:10,fill:"#fff",stroke:"#e5ddf2","stroke-width":2});
+
+  // Four full-size 6 x 6 home yards.
+  const yards=[
+    {r:0,c:0,pi:0},
+    {r:0,c:9,pi:1},
+    {r:9,c:9,pi:2},
+    {r:9,c:0,pi:3}
+  ];
+
+  for(const y of yards){
+    const color=COLORS[y.pi];
+    svg("rect",{
+      x:y.c*CELL+2,y:y.r*CELL+2,width:238,height:238,
+      rx:8,fill:color.pale,stroke:color.hex,"stroke-width":2
     });
-    add(svg,"rect",{
-      x:p.x-10.4,y:p.y-10.4,width:20.8,height:20.8,rx:3.2,
-      fill,stroke,"stroke-width":1.15
+
+    svg("rect",{
+      x:y.c*CELL+36,y:y.r*CELL+36,width:168,height:168,
+      rx:8,fill:"#fff",stroke:color.hex,"stroke-width":1.5
     });
+
+    for(let t=0;t<4;t++){
+      const [x,yy]=position(y.pi,t);
+      svg("circle",{cx:x,cy:yy,r:18,fill:color.pale,stroke:color.hex,"stroke-width":1.5});
+    }
+
+    svg("text",{
+      x:y.c*CELL+120,y:y.r*CELL+22,
+      "text-anchor":"middle","font-size":11,"font-weight":800,
+      fill:color.hex
+    },b,color.name.toUpperCase());
+  }
+
+  // The real 52-cell cross-shaped route.
+  TRACK.forEach(([r,c],i)=>{
+    let fill="#fff";
+    let stroke="#ded7e9";
+    let width=1;
+
     if(SAFE.has(i)){
-      add(svg,"text",{x:p.x,y:p.y+4.4,"text-anchor":"middle","font-size":12,fill:"#9b82d4"},"✦");
+      fill="#f0e9ff";
+      stroke="#bda8ed";
+      width=1.5;
+    }
+
+    COLORS.forEach(color=>{
+      if(i===color.start){
+        fill=color.hex;
+        stroke=color.hex;
+        width=2;
+      }
+    });
+
+    rectCell(r,c,fill,stroke,width);
+
+    if(SAFE.has(i)){
+      const [x,y]=xy(r,c);
+      svg("text",{
+        x,y:y+4,"text-anchor":"middle",
+        "font-size":13,fill:"#987ecb"
+      },b,"✦");
     }
   });
 
-  // Home lanes.
-  HOME_LANES.forEach((lane,i)=>{
-    const c=COLORS[i];
-    lane.forEach((p,j)=>{
-      add(svg,"rect",{
-        x:p[0]-10.5,y:p[1]-10.5,width:21,height:21,rx:3,
-        fill:j===5?c.hex:c.pale,stroke:c.hex,"stroke-width":1.2
-      });
+  // Coloured home lanes.
+  LANES.forEach((lane,pi)=>{
+    const color=COLORS[pi];
+    lane.forEach(([r,c],i)=>{
+      rectCell(r,c,i===4?color.hex:color.pale,color.hex,1.5);
     });
   });
 
-  // Centre: four-colour finish.
-  add(svg,"polygon",{points:"270,270 330,270 300,300",fill:COLORS[0].hex});
-  add(svg,"polygon",{points:"330,270 330,330 300,300",fill:COLORS[1].hex});
-  add(svg,"polygon",{points:"330,330 270,330 300,300",fill:COLORS[2].hex});
-  add(svg,"polygon",{points:"270,330 270,270 300,300",fill:COLORS[3].hex});
-  add(svg,"circle",{cx:300,cy:300,r:12,fill:"#fff",stroke:"#fff","stroke-width":2});
-  add(svg,"text",{x:300,y:303,"text-anchor":"middle","font-size":9,"font-weight":900,fill:"#8e79c5"},"♡");
+  // Four-colour centre finish.
+  svg("polygon",{points:"240,240 360,240 300,300",fill:COLORS[0].hex});
+  svg("polygon",{points:"360,240 360,360 300,300",fill:COLORS[1].hex});
+  svg("polygon",{points:"360,360 240,360 300,300",fill:COLORS[2].hex});
+  svg("polygon",{points:"240,360 240,240 300,300",fill:COLORS[3].hex});
+  svg("circle",{cx:300,cy:300,r:12,fill:"#fff",stroke:"#fff","stroke-width":2});
+  svg("text",{
+    x:300,y:304,"text-anchor":"middle",
+    "font-size":12,"font-weight":900,fill:"#8c73c7"
+  },b,"♡");
 
-  // Tokens are separate buttons via SVG click targets.
+  // Draw all tokens after all board cells.
+  const stackCounts=new Map();
+
   players.forEach((p,pi)=>{
     p.pieces.forEach((progress,ti)=>{
-      const [x,y]=positionFor(pi,ti);
-      const clickable=pi===current && validPieces.includes(ti);
-      const token=add(svg,"g",{
-        "data-player":pi,"data-piece":ti,
+      let [x,y]=position(pi,ti);
+      const clickable=started&&!gameOver&&pi===current&&legal.includes(ti);
+
+      // Slightly separate tokens sharing a square.
+      let key="";
+      if(progress>=0&&progress<52){
+        key="t"+trackIndex(pi,progress);
+      }else if(progress>=52&&progress<57){
+        key="l"+pi+"-"+progress;
+      }else if(progress===-1){
+        key="y"+pi+"-"+ti;
+      }else{
+        key="home-"+pi;
+      }
+
+      const n=stackCounts.get(key)||0;
+      stackCounts.set(key,n+1);
+
+      if(progress>=0&&progress<52&&n>0){
+        const offsets=[[0,0],[-7,-7],[7,-7],[-7,7],[7,7]];
+        const off=offsets[n%offsets.length];
+        x+=off[0];y+=off[1];
+      }
+
+      const g=svg("g",{
         style:clickable?"cursor:pointer":"cursor:default",
-        opacity:started?1:.88
+        "data-player":pi,"data-piece":ti
       });
-      if(clickable) {
-        add(token,"circle",{cx:x,cy:y,r:18,fill:"none",stroke:"#a38ae8","stroke-width":3});
+
+      if(clickable){
+        svg("circle",{cx:x,cy:y,r:17,fill:"none",stroke:"#9475dc","stroke-width":3},g);
       }
-      const c=COLORS[pi];
-      // Short, rounded custom game pieces; not tall pawns.
-      add(token,"ellipse",{cx:x,cy:y+6,rx:12,ry:5,fill:"#372c4b","opacity":".14"});
-      add(token,"circle",{cx:x,cy:y,r:12,fill:c.hex,stroke:"#fff","stroke-width":2});
-      add(token,"circle",{cx:x-3.2,cy:y-3.5,r:3.2,fill:"#fff","opacity":".7"});
-      add(token,"text",{x,y:y+3.5,"text-anchor":"middle","font-size":10,"font-weight":900,fill:"#fff"},String(ti+1));
-      if(clickable) {
-        token.addEventListener("click",()=>movePiece(pi,ti));
-      }
+
+      const color=COLORS[pi];
+      svg("ellipse",{cx:x,cy:y+6,rx:11,ry:4,fill:"#332744",opacity:.18},g);
+      svg("circle",{cx:x,cy:y,r:11,fill:color.hex,stroke:"#fff","stroke-width":2},g);
+      svg("circle",{cx:x-3,cy:y-3,r:3,fill:"#fff",opacity:.8},g);
+      svg("text",{
+        x,y:y+3.5,"text-anchor":"middle",
+        "font-size":9,"font-weight":900,fill:"#fff"
+      },g,String(ti+1));
+
+      if(clickable)g.addEventListener("click",()=>movePiece(pi,ti));
     });
   });
 }
 
-function getLegalPieces(pi,roll) {
-  const result=[];
-  players[pi].pieces.forEach((progress,ti)=>{
-    if(progress===57) return;
-    if(progress===-1) {
-      if(roll===6) result.push(ti);
-    } else if(progress+roll<=57) {
-      result.push(ti);
-    }
-  });
-  return result;
+function legalPieces(pi,roll){
+  return players[pi].pieces
+    .map((progress,ti)=>({progress,ti}))
+    .filter(({progress})=>{
+      if(progress===57)return false;
+      if(progress===-1)return roll===6;
+      return progress+roll<=57;
+    })
+    .map(x=>x.ti);
 }
 
-function rollDice() {
-  if(!started || gameOver || !canRoll) return;
-  if(mode==="computer" && players[current].isAI) return;
+function rollDice(){
+  if(!started||gameOver||!canRoll)return;
+  if(mode==="computer"&&players[current].isAI)return;
 
   canRoll=false;
-  const die=$("rollButton");
+  diceValue=rand(6)+1;
+
+  const die=$("roll");
   die.classList.remove("rolling");
   void die.offsetWidth;
   die.classList.add("rolling");
-  diceValue=safeRandomInt(6)+1;
-  $("rollButton").textContent=["","⚀","⚁","⚂","⚃","⚄","⚅"][diceValue];
-  $("diceTitle").textContent=`You rolled ${diceValue}`;
-  validPieces=getLegalPieces(current,diceValue);
 
-  const name=players[current].name;
-  addLog(`${name} rolled ${diceValue}.`);
-  if(validPieces.length===0) {
-    $("diceMessage").textContent="No legal move. Passing the turn…";
-    $("turnMessage").textContent=diceValue===6?"No piece can move even with a six.":"No legal moves available.";
-    drawBoard();
-    setTimeout(()=>{
-      if(!started||gameOver)return;
-      if(diceValue===6) {
-        canRoll=true;
-        $("diceMessage").textContent="A six! Roll again.";
-        updateUI();
-        maybeComputerTurn();
-      } else nextTurn();
-    },650);
-  } else {
-    $("diceMessage").textContent=validPieces.length===1?"Tap the highlighted token.":"Choose one of your highlighted tokens.";
-    $("turnMessage").textContent=diceValue===6?"A six! You may release a token or move six spaces.":"Choose a glowing token to move.";
-    drawBoard();
+  die.textContent=["","⚀","⚁","⚂","⚃","⚄","⚅"][diceValue];
+  $("diceTitle").textContent=`You rolled ${diceValue}`;
+  $("diceMessage").textContent="Checking possible moves…";
+
+  legal=legalPieces(current,diceValue);
+  log(`${players[current].name} rolled ${diceValue}.`);
+
+  if(legal.length===0){
+    renderBoard();
     updateUI();
+    $("diceMessage").textContent="No legal move.";
+    $("turnMessage").textContent="No token can move with this roll.";
+
+    const id=gameId;
+    setTimeout(()=>{
+      if(id!==gameId||!started||gameOver)return;
+      if(diceValue===6){
+        canRoll=true;
+        $("diceMessage").textContent="Six! Roll again.";
+        $("turnMessage").textContent="Roll again.";
+        updateUI();
+        computerTurn();
+      }else{
+        nextTurn();
+      }
+    },600);
+    return;
   }
+
+  canRoll=false;
+  $("diceMessage").textContent="Tap a highlighted token.";
+  $("turnMessage").textContent=diceValue===6
+    ?"Six! Bring a token out or move one."
+    :"Choose one of your highlighted tokens.";
+
+  renderBoard();
+  updateUI();
 }
 
-function movePiece(pi,ti) {
-  if(!started||gameOver||pi!==current||!validPieces.includes(ti)) return;
+function movePiece(pi,ti){
+  if(!started||gameOver||pi!==current||!legal.includes(ti))return;
+
   const roll=diceValue;
   const old=players[pi].pieces[ti];
-  players[pi].pieces[ti]=old===-1?0:old+roll;
-  moveCount++;
+  const progress=old===-1?0:old+roll;
+
+  players[pi].pieces[ti]=progress;
 
   let captured=0;
-  const newProgress=players[pi].pieces[ti];
-  if(newProgress>=0&&newProgress<52) {
-    const landed=trackIndex(pi,newProgress);
-    if(!SAFE.has(landed)) {
-      players.forEach((other,oi)=>{
+
+  // Captures happen only on an unprotected outer-track square.
+  if(progress>=0&&progress<52){
+    const square=trackIndex(pi,progress);
+
+    if(!SAFE.has(square)){
+      players.forEach((opponent,oi)=>{
         if(oi===pi)return;
-        other.pieces.forEach((op,oiPiece)=>{
-          if(op>=0&&op<52&&trackIndex(oi,op)===landed) {
-            other.pieces[oiPiece]=-1;
+
+        opponent.pieces.forEach((op,oiPiece)=>{
+          if(op>=0&&op<52&&trackIndex(oi,op)===square){
+            opponent.pieces[oiPiece]=-1;
             captured++;
           }
         });
@@ -530,63 +609,366 @@ function movePiece(pi,ti) {
     }
   }
 
-  if(newProgress===57) {
+  if(progress===57){
     players[pi].finished++;
     coins+=10;
-    $("coinCount").textContent=coins;
-    addLog(`${players[pi].name} finished a token! +10 coins.`);
-    toast("Token home! +10 coins ♡");
-  } else if(old===-1) {
-    addLog(`${players[pi].name} brought a token out.`);
-  } else {
-    addLog(`${players[pi].name} moved ${roll} spaces.`);
+    log(`${players[pi].name} finished a token! +10 coins.`);
+    notify("Token home! +10 coins ♡");
+  }else if(old===-1){
+    log(`${players[pi].name} brought a token out.`);
+  }else{
+    log(`${players[pi].name} moved ${roll} spaces.`);
   }
 
-  if(captured) {
+  if(captured){
     coins+=captured*5;
-    $("coinCount").textContent=coins;
-    addLog(`${players[pi].name} captured ${captured} token${captured>1?"s":""}!`);
-    toast(`Captured a token! +$
-  if(captured) {
-    coins += captured * 5;
-    $("coinCount").textContent = coins;
-    addLog(`${players[pi].name} captured ${captured} token${captured > 1 ? "s" : ""}!`);
-    toast(`Captured a token! +${captured * 5} coins`);
+    log(`${players[pi].name} captured ${captured} token${captured===1?"":"s"}!`);
+    notify(`Capture! +${captured*5} coins ♡`);
   }
 
-  validPieces = [];
-  diceValue = null;
-  $("rollButton").textContent = "⚄";
+  $("coins").textContent=coins;
+  legal=[];
+  diceValue=null;
+  $("roll").textContent="⚄";
 
-  if(players[pi].finished === 4) {
-    gameOver = true;
-    canRoll = false;
-    $("turnTitle").textContent = `${players[pi].name} wins! ♡`;
-    $("turnMessage").textContent = "All four tokens reached home. Start a new game to play again.";
-    $("diceTitle").textContent = "Victory!";
-    $("diceMessage").textContent = "Beautifully played.";
-    addLog(`${players[pi].name} won the game!`);
-    toast(`${players[pi].name} wins! ♡`);
-    drawBoard();
+  if(players[pi].finished===4){
+    gameOver=true;
+    canRoll=false;
+    $("turnTitle").textContent=`${players[pi].name} wins! ♡`;
+    $("turnMessage").textContent="All four tokens reached the centre. Start a new game to play again.";
+    $("diceTitle").textContent="Victory!";
+    $("diceMessage").textContent="Beautifully played.";
+    log(`${players[pi].name} won the game!`);
+    notify(`${players[pi].name} wins! ♡`);
+    renderBoard();
     updateUI();
     return;
   }
 
-  if(roll === 6 || captured > 0) {
-    canRoll = true;
-    $("diceTitle").textContent = roll === 6 ? "Roll again!" : "Bonus turn!";
-    $("diceMessage").textContent = roll === 6
-      ? "You rolled a six."
-      : "You made a capture.";
-    addLog(`${players[pi].name} gets another turn.`);
-    drawBoard();
+  // A six or a capture grants another turn.
+  if(roll===6||captured>0){
+    canRoll=true;
+    $("diceTitle").textContent=roll===6?"Roll again!":"Bonus turn!";
+    $("diceMessage").textContent="You earned another turn.";
+    log(`${players[pi].name} gets another turn.`);
+    renderBoard();
     updateUI();
-    maybeComputerTurn();
+    computerTurn();
     return;
   }
 
   nextTurn();
- }
- </script>
+}
+
+function nextTurn(){
+  if(gameOver||!started)return;
+
+  current=(current+1)%4;
+  diceValue=null;
+  legal=[];
+  canRoll=true;
+
+  $("roll").textContent="⚄";
+  $("diceTitle").textContent="Ready to roll?";
+  $("diceMessage").textContent=`${players[current].name}'s turn.`;
+  $("turnMessage").textContent=`Roll the dice for ${players[current].name}.`;
+
+  renderBoard();
+  updateUI();
+  computerTurn();
+}
+
+function computerTurn(){
+  if(!started||gameOver||mode!=="computer"||!players[current].isAI||!canRoll)return;
+
+  const id=gameId;
+
+  aiTimer=setTimeout(()=>{
+    if(id!==gameId||!started||gameOver||
+       !players[current].isAI||!canRoll)return;
+
+    rollDice();
+
+    if(id!==gameId||!started||gameOver)return;
+
+    aiTimer=setTimeout(()=>{
+      if(id!==gameId||!started||gameOver||
+         !players[current].isAI)return;
+
+      if(legal.length>0){
+        let best=legal[0];
+        let bestScore=-Infinity;
+
+        for(const ti of legal){
+          const old=players[current].pieces[ti];
+          const next=old===-1?0:old+diceValue;
+          let score=old===-1?20:next;
+
+          if(next===57)score+=10000;
+
+          if(next>=0&&next<52){
+            const square=trackIndex(current,next);
+
+            if(!SAFE.has(square)){
+              players.forEach((op,oi)=>{
+                if(oi===current)return;
+
+                if(op.pieces.some(p=>
+                  p>=0&&p<52&&trackIndex(oi,p)===square
+                )){
+                  score+=200;
+                }
+              });
+            }
+          }
+
+          if(score>bestScore){
+            bestScore=score;
+            best=ti;
+          }
+        }
+
+        movePiece(current,best);
+      }
+    },550);
+  },450);
+}
+
+function updateUI(){
+  if(!gameOver){
+    $("turnTitle").textContent=started
+      ?`${players[current].name}'s turn`
+      :"Welcome to Ludo ♡";
+
+    if(!started){
+      $("turnMessage").textContent="Choose a mode, then start your game.";
+    }else if(legal.length){
+      $("turnMessage").textContent="Tap a highlighted token.";
+    }else if(canRoll){
+      $("turnMessage").textContent=`Roll the dice for ${players[current].name}.`;
+    }
+  }
+
+  $("roll").disabled=!started||gameOver||!canRoll||
+    (mode==="computer"&&players[current].isAI);
+
+  $("playerList").innerHTML=players.map((p,i)=>{
+    const home=p.pieces.filter(x=>x===57).length;
+    const onBoard=p.pieces.filter(x=>x>=0&&x<57).length;
+
+    return `<div class="player-row ${started&&i===current&&!gameOver?"current":""}">
+      <div class="avatar">${p.image
+        ?`<img src="${p.image}" alt="">`
+        :esc(p.avatar)}</div>
+      <div class="player-info">
+        <strong>${esc(p.name)}${p.isAI?" · CPU":""}</strong>
+        <small>${home}/4 home · ${onBoard} moving</small>
+      </div>
+      <span class="progress">${home===4?"WIN":`${home}/4`}</span>
+    </div>`;
+  }).join("");
+
+  $("start").textContent=started&&!gameOver
+    ?"♡ Restart game"
+    :"♡ Start new game";
+}
+
+function renderEditors(){
+  $("editors").innerHTML=players.map((p,i)=>`
+    <div class="edit-card">
+      <div class="edit-head">
+        <div class="avatar">${p.image
+          ?`<img src="${p.image}" alt="">`
+          :esc(p.avatar)}</div>
+        <div>
+          <strong style="color:${COLORS[i].hex}">${COLORS[i].name}</strong>
+          <small>Player ${i+1}${p.isAI?" · CPU":""}</small>
+        </div>
+      </div>
+
+      <input class="field" maxlength="18" data-name="${i}"
+        aria-label="${COLORS[i].name} player name"
+        value="${esc(p.name)}">
+
+      <div class="avatars">
+        ${AVATARS.slice(0,6).map(a=>`
+          <button class="avatar-pick ${p.avatar===a&&!p.image?"selected":""}"
+            type="button" data-avatar="${i}" data-value="${a}">${a}</button>
+        `).join("")}
+      </div>
+
+      <label class="upload">Upload profile picture
+        <input type="file" data-upload="${i}" accept="image/*">
+      </label>
+    </div>
+  `).join("");
+
+  $("editors").querySelectorAll("[data-name]").forEach(input=>{
+    input.addEventListener("input",()=>{
+      const i=Number(input.dataset.name);
+      players[i].name=input.value.trim()||COLORS[i].name;
+      updateUI();
+    });
+  });
+
+  $("editors").querySelectorAll("[data-avatar]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      const i=Number(button.dataset.avatar);
+      players[i].avatar=button.dataset.value;
+      players[i].image="";
+      renderEditors();
+      updateUI();
+      renderBoard();
+    });
+  });
+
+  $("editors").querySelectorAll("[data-upload]").forEach(input=>{
+    input.addEventListener("change",()=>{
+      const file=input.files&&input.files[0];
+      if(!file)return;
+
+      const i=Number(input.dataset.upload);
+
+      if(!file.type.startsWith("image/")){
+        notify("Choose an image file.");
+        return;
+      }
+
+      if(file.size>2*1024*1024){
+        notify("Choose an image under 2 MB.");
+        input.value="";
+        return;
+      }
+
+      const reader=new FileReader();
+
+      reader.onload=()=>{
+        players[i].image=String(reader.result);
+        renderEditors();
+        updateUI();
+        renderBoard();
+      };
+
+      reader.readAsDataURL(file);
+    });
+  });
+}
+
+function startGame(){
+  gameId++;
+  clearTimeout(aiTimer);
+
+  players.forEach(p=>{
+    p.pieces=[-1,-1,-1,-1];
+    p.finished=0;
+  });
+
+  players.forEach((p,i)=>{
+    p.isAI=mode==="computer"&&i===1;
+  });
+
+  current=0;
+  diceValue=null;
+  legal=[];
+  canRoll=true;
+  started=true;
+  gameOver=false;
+  logEntries=[];
+
+  $("roll").textContent="⚄";
+  $("diceTitle").textContent="Ready to roll?";
+  $("diceMessage").textContent="Roll a six to release a token.";
+
+  log(mode==="computer"
+    ?"New game against the computer."
+    :"New Pass & Play game.");
+
+  renderEditors();
+  renderBoard();
+  updateUI();
+  computerTurn();
+  notify("Your Ludo game begins! ♡");
+}
+
+function resetGame(){
+  gameId++;
+  clearTimeout(aiTimer);
+
+  started=false;
+  gameOver=false;
+  current=0;
+  diceValue=null;
+  canRoll=false;
+  legal=[];
+  logEntries=[];
+
+  players.forEach(p=>{
+    p.pieces=[-1,-1,-1,-1];
+    p.finished=0;
+    p.isAI=false;
+  });
+
+  $("roll").textContent="⚄";
+  $("diceTitle").textContent="Ready to roll?";
+  $("diceMessage").textContent="Start a game first.";
+  $("log").textContent="Your game is waiting to begin.";
+
+  renderEditors();
+  renderBoard();
+  updateUI();
+}
+
+function help(){
+  alert(
+`HOW TO PLAY LUDO ♡
+
+• Each player has four tokens.
+• Roll a 6 to release a token from the yard.
+• Move clockwise around the 52-square track.
+• Tap a highlighted token to move it.
+• Capture opponents on unprotected squares.
+• Star squares are safe.
+• A 6 or a capture grants another turn.
+• Reach the centre with an exact roll.
+• The first player to finish all four tokens wins.
+
+Pass & Play: share one device.
+Vs Computer: play against a basic AI.
+
+Online multiplayer requires a server.`
+  );
+}
+
+$("roll").addEventListener("click",rollDice);
+$("start").addEventListener("click",startGame);
+$("reset").addEventListener("click",resetGame);
+$("help").addEventListener("click",help);
+
+document.querySelectorAll("[data-mode]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    mode=button.dataset.mode;
+
+    document.querySelectorAll("[data-mode]").forEach(b=>{
+      b.classList.toggle("active",b===button);
+    });
+
+    players.forEach((p,i)=>{
+      p.isAI=mode==="computer"&&i===1;
+    });
+
+    updateUI();
+    notify(mode==="computer"
+      ?"Computer mode selected ♡"
+      :"Pass & Play selected ♡");
+  });
+});
+
+// Initial page setup.
+renderEditors();
+renderBoard();
+updateUI();
+</script>
 </body>
 </html>
+
+ 
