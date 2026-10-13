@@ -668,93 +668,7 @@ function drawBase(pi,x,y){
  ctx.fillText(c.symbol,x+216,y+216);
 }
 
-function drawCentre(){
- const x=240,y=240,size=120;
- const mid=x+size/2;
- const end=y+size;
 
- // Centre square
- ctx.fillStyle="#ffffff";
- ctx.fillRect(x,y,size,size);
-
- // Four coloured diamond-style sections
- const diamonds=[
-  {
-   p:[[x,y],[mid,y],[mid,mid]],
-   c:COLORS[0]
-  },
-  {
-   p:[[mid,y],[x+size,y],[mid,mid]],
-   c:COLORS[1]
-  },
-  {
-   p:[[x+size,mid],[x+size,end],[mid,mid]],
-   c:COLORS[2]
-  },
-  {
-   p:[[mid,mid],[x,end],[x,mid]],
-   c:COLORS[3]
-  }
- ];
-
- diamonds.forEach(d=>{
-  ctx.beginPath();
-  d.p.forEach(([px,py],i)=>{
-   if(i===0) ctx.moveTo(px,py);
-   else ctx.lineTo(px,py);
-  });
-  ctx.closePath();
-
-  const g=ctx.createLinearGradient(
-   d.p[0][0],d.p[0][1],mid,mid
-  );
-  g.addColorStop(0,d.c.light);
-  g.addColorStop(1,d.c.hex);
-
-  ctx.fillStyle=g;
-  ctx.fill();
-
-  ctx.strokeStyle="#ffffff";
-  ctx.lineWidth=2;
-  ctx.stroke();
- });
-
- // Four-colour centre diamond
- ctx.beginPath();
- ctx.moveTo(mid,y+34);
- ctx.lineTo(mid+34,mid);
- ctx.lineTo(mid,end-34);
- ctx.lineTo(mid-34,mid);
- ctx.closePath();
-
- ctx.fillStyle="#ffffff";
- ctx.fill();
-
- ctx.strokeStyle="#d8c9ed";
- ctx.lineWidth=2;
- ctx.stroke();
-
- // Small diamond in the exact centre
- ctx.beginPath();
- ctx.moveTo(mid,mid-13);
- ctx.lineTo(mid+13,mid);
- ctx.lineTo(mid,mid+13);
- ctx.lineTo(mid-13,mid);
- ctx.closePath();
-
- ctx.fillStyle="#b9a0f5";
- ctx.fill();
-
- ctx.strokeStyle="#ffffff";
- ctx.lineWidth=2;
- ctx.stroke();
-
- // Centre point
- ctx.beginPath();
- ctx.arc(mid,mid,3,0,Math.PI*2);
- ctx.fillStyle="#ffffff";
- ctx.fill();
-  }
 
 function getTokenPosition(pi,ti,progress){
  const C=40;
@@ -767,7 +681,62 @@ function getTokenPosition(pi,ti,progress){
    finished:true
   };
  }
+function drawCentre(){
+ const x=240,y=240,size=120;
+ const mid=x+size/2;
+ const end=y+size;
 
+ // Four-colour winning square
+ const triangles=[
+  {p:[[x,y],[x+size,y],[mid,mid]],c:COLORS[0]},
+  {p:[[x+size,y],[x+size,end],[mid,mid]],c:COLORS[1]},
+  {p:[[x+size,end],[x,end],[mid,mid]],c:COLORS[2]},
+  {p:[[x,end],[x,y],[mid,mid]],c:COLORS[3]}
+ ];
+
+ triangles.forEach(t=>{
+  ctx.beginPath();
+  t.p.forEach(([px,py],i)=>{
+   if(i===0) ctx.moveTo(px,py);
+   else ctx.lineTo(px,py);
+  });
+  ctx.closePath();
+
+  ctx.fillStyle=t.c.hex;
+  ctx.fill();
+
+  ctx.strokeStyle="#ffffff";
+  ctx.lineWidth=2;
+  ctx.stroke();
+ });
+
+ // Four-colour diamond at the finish
+ ctx.beginPath();
+ ctx.moveTo(mid,mid-20);
+ ctx.lineTo(mid+20,mid);
+ ctx.lineTo(mid,mid+20);
+ ctx.lineTo(mid-20,mid);
+ ctx.closePath();
+
+ ctx.fillStyle="#ffffff";
+ ctx.fill();
+
+ ctx.strokeStyle="#b9a0f5";
+ ctx.lineWidth=2;
+ ctx.stroke();
+
+ // Small centre diamond
+ ctx.beginPath();
+ ctx.moveTo(mid,mid-9);
+ ctx.lineTo(mid+9,mid);
+ ctx.lineTo(mid,mid+9);
+ ctx.lineTo(mid-9,mid);
+ ctx.closePath();
+
+ ctx.fillStyle="#b9a0f5";
+ ctx.fill();
+  }
+  
  if(progress===-1){
   const base=BASES[pi];
   const coords=[
