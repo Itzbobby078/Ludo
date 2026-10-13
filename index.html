@@ -669,50 +669,92 @@ function drawBase(pi,x,y){
 }
 
 function drawCentre(){
- const C=40,x=240,y=240;
- ctx.fillStyle="#fff";
- ctx.fillRect(x,y,120,120);
+ const x=240,y=240,size=120;
+ const mid=x+size/2;
+ const end=y+size;
 
- const triangles=[
-  {p:[[240,240],[360,240],[300,300]],c:COLORS[0]},
-  {p:[[360,240],[360,360],[300,300]],c:COLORS[1]},
-  {p:[[360,360],[240,360],[300,300]],c:COLORS[2]},
-  {p:[[240,360],[240,240],[300,300]],c:COLORS[3]}
+ // Centre square
+ ctx.fillStyle="#ffffff";
+ ctx.fillRect(x,y,size,size);
+
+ // Four coloured diamond-style sections
+ const diamonds=[
+  {
+   p:[[x,y],[mid,y],[mid,mid]],
+   c:COLORS[0]
+  },
+  {
+   p:[[mid,y],[x+size,y],[mid,mid]],
+   c:COLORS[1]
+  },
+  {
+   p:[[x+size,mid],[x+size,end],[mid,mid]],
+   c:COLORS[2]
+  },
+  {
+   p:[[mid,mid],[x,end],[x,mid]],
+   c:COLORS[3]
+  }
  ];
 
- triangles.forEach(t=>{
+ diamonds.forEach(d=>{
   ctx.beginPath();
-  t.p.forEach(([px,py],i)=>
-   i?ctx.lineTo(px,py):ctx.moveTo(px,py)
-  );
+  d.p.forEach(([px,py],i)=>{
+   if(i===0) ctx.moveTo(px,py);
+   else ctx.lineTo(px,py);
+  });
   ctx.closePath();
 
   const g=ctx.createLinearGradient(
-   t.p[0][0],t.p[0][1],300,300
+   d.p[0][0],d.p[0][1],mid,mid
   );
-  g.addColorStop(0,t.c.light);
-  g.addColorStop(1,t.c.hex);
+  g.addColorStop(0,d.c.light);
+  g.addColorStop(1,d.c.hex);
+
   ctx.fillStyle=g;
   ctx.fill();
-  ctx.strokeStyle="#fff";
+
+  ctx.strokeStyle="#ffffff";
   ctx.lineWidth=2;
   ctx.stroke();
  });
 
+ // Four-colour centre diamond
  ctx.beginPath();
- ctx.arc(300,300,11,0,Math.PI*2);
- ctx.fillStyle="#fff";
+ ctx.moveTo(mid,y+34);
+ ctx.lineTo(mid+34,mid);
+ ctx.lineTo(mid,end-34);
+ ctx.lineTo(mid-34,mid);
+ ctx.closePath();
+
+ ctx.fillStyle="#ffffff";
  ctx.fill();
- ctx.strokeStyle="#ddc9a2";
+
+ ctx.strokeStyle="#d8c9ed";
  ctx.lineWidth=2;
  ctx.stroke();
 
- ctx.fillStyle="#8e73bb";
- ctx.font="bold 11px Georgia";
- ctx.textAlign="center";
- ctx.textBaseline="middle";
- ctx.fillText("♡",300,300);
-}
+ // Small diamond in the exact centre
+ ctx.beginPath();
+ ctx.moveTo(mid,mid-13);
+ ctx.lineTo(mid+13,mid);
+ ctx.lineTo(mid,mid+13);
+ ctx.lineTo(mid-13,mid);
+ ctx.closePath();
+
+ ctx.fillStyle="#b9a0f5";
+ ctx.fill();
+
+ ctx.strokeStyle="#ffffff";
+ ctx.lineWidth=2;
+ ctx.stroke();
+
+ // Centre point
+ ctx.beginPath();
+ ctx.arc(mid,mid,3,0,Math.PI*2);
+ ctx.fillStyle="#ffffff";
+ ctx.fill();
+  }
 
 function getTokenPosition(pi,ti,progress){
  const C=40;
