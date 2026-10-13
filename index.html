@@ -1,904 +1,727 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#f5f0ff">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#191425">
 <title>Ludo ♡</title>
 <style>
 :root {
-  --bg:#f6f2ff;
-  --ink:#302744;
-  --muted:#81758f;
-  --purple:#a78bfa;
-  --gold:#e9bd55;
-  --line:#40364e;
+  --bg:#191425;
+  --panel:#292139;
+  --line:#554567;
+  --text:#fff9ff;
+  --muted:#c9bbd8;
+  --accent:#c7a9ff;
 }
 *{box-sizing:border-box}
 body{
-  margin:0;
-  color:var(--ink);
-  background:
-    radial-gradient(ellipse at 10% 0%,#e4d8ff 0,transparent 42%),
-    radial-gradient(ellipse at 100% 30%,#fff0d5 0,transparent 36%),
-    #f8f5ff;
-  font-family:Georgia,"Times New Roman",serif;
+  margin:0;background:radial-gradient(ellipse at top,#382946,var(--bg) 75%);
+  color:var(--text);font-family:system-ui,-apple-system,sans-serif;
 }
-button,input,select{font:inherit}
-button{cursor:pointer}
-button:focus-visible,input:focus-visible,select:focus-visible{
-  outline:3px solid #a78bfa;
-  outline-offset:3px
-}
-.page{width:min(100%,760px);margin:auto;padding:16px 12px 35px}
-header{text-align:center;padding:10px 0 20px}
-.eyebrow{
-  color:#8a6dba;font:11px Arial,sans-serif;
-  letter-spacing:5px;text-transform:uppercase
-}
-h1{font-size:clamp(42px,10vw,65px);font-weight:normal;margin:8px 0}
-.subtitle{font:13px Arial,sans-serif;color:var(--muted)}
+button,input{font:inherit}
+button{cursor:pointer;touch-action:manipulation}
+button:focus-visible,input:focus-visible{outline:3px solid #f1d5ff}
+.screen{display:none;min-height:100dvh;padding:18px 12px 28px}
+.screen.active{display:flex;flex-direction:column;align-items:center}
+h1{font-size:clamp(30px,7vw,46px);margin:6px 0;letter-spacing:5px}
+h2{font-size:17px;margin:0 0 12px}
+p{color:var(--muted);font-size:13px;line-height:1.5}
 .panel{
-  background:#ffffffd9;
-  border:1px solid #e3d9f2;
-  border-radius:23px;padding:18px;
-  margin-bottom:15px;
-  box-shadow:0 12px 35px #65517b14
+  width:min(760px,100%);padding:16px;margin:8px 0;
+  background:linear-gradient(145deg,#302541,#211a2e);
+  border:1px solid var(--line);border-radius:19px;
+  box-shadow:0 10px 32px #0003;
 }
-h2{font-size:23px;font-weight:normal;margin:0 0 8px}
-.description{font:13px/1.6 Arial,sans-serif;color:var(--muted)}
-.section-label{
-  display:block;font:10px Arial,sans-serif;
-  letter-spacing:2px;color:#8c7c9c;margin:18px 0 9px
-}
-.mode-row,.count-row{display:flex;gap:8px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .choice{
-  flex:1;min-width:100px;border:1px solid #e0d4ef;
-  border-radius:13px;padding:12px 8px;
-  color:#766781;background:#fff
+  border:1px solid #5c4a70;border-radius:12px;padding:12px;
+  background:#211a2d;color:var(--text);text-align:left;
 }
-.choice.active{
-  background:linear-gradient(135deg,#e6d9ff,#f8edff);
-  color:#573b83;border-color:#b69ae9;
-  box-shadow:inset 0 0 0 1px #b69ae9
+.choice.selected{background:#49375e;border-color:#ddc3ff;box-shadow:inset 0 0 0 1px #ddc3ff}
+.choice small{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.primary,.secondary{
+  border-radius:12px;padding:12px 16px;font-weight:800;
 }
-.player-list{display:grid;gap:9px}
-.player-row{
-  display:grid;grid-template-columns:42px minmax(0,1fr) 112px;
-  align-items:center;gap:10px;padding:10px;
-  border:1px solid #eee5f7;border-radius:14px;background:#fff
+.primary{border:0;background:linear-gradient(135deg,#ead7ff,#bca0f5);color:#241832}
+.secondary{border:1px solid #625074;background:#30253f;color:white}
+#start{width:min(760px,100%);margin-top:10px;font-size:17px}
+.player-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.player-card{border:1px solid #574765;border-radius:14px;padding:10px;min-width:0}
+.player-heading{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.avatar{width:44px;height:44px;flex-shrink:0;border-radius:12px;border:1px solid #78628b;background:#3a2c4a;font-size:24px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.player-card input{
+  width:100%;min-width:0;background:#181323;color:white;
+  border:1px solid #5c4a70;border-radius:8px;padding:9px;
 }
-.avatar{
-  display:grid;place-items:center;width:40px;height:40px;
-  border-radius:13px;font-size:22px;
-  background:linear-gradient(145deg,#fff,#f1e9ff);
-  box-shadow:inset 0 0 0 1px #fff
-}
-.player-fields{min-width:0}
-.player-fields input{
-  width:100%;min-width:0;border:0;background:transparent;
-  color:var(--ink);font-size:15px;padding:3px 0
-}
-.player-meta{
-  font:9px Arial,sans-serif;letter-spacing:1px;
-  color:#96879f;margin-top:4px
-}
-.player-row select{
-  width:112px;max-width:100%;padding:8px 4px;
-  border:1px solid #e5dced;border-radius:9px;
-  background:#fff;color:#51445e;font:12px Arial,sans-serif
-}
-.primary,.secondary,.roll-button{
-  border:0;border-radius:13px;padding:14px 17px;
-  transition:transform .12s,filter .12s
-}
-.primary:active,.secondary:active,.roll-button:active{transform:scale(.98)}
-.primary{
-  width:100%;margin-top:16px;color:#fff;
-  background:linear-gradient(120deg,#9c7ae0,#7652b8);
-  box-shadow:0 5px 0 #62439d,0 10px 20px #8b68ca25
-}
-.secondary{
-  background:#f0e9fa;border:1px solid #dfd2ef;color:#6c528f
-}
-.game-layout{display:grid;gap:13px}
-.board-wrap{
-  width:100%;padding:7px;background:#fff;
-  border:1px solid #e4d9f0;border-radius:18px;
-  box-shadow:0 12px 30px #4c385f18
-}
-canvas{display:block;width:100%;height:auto;touch-action:manipulation}
-.turn-card{
-  display:flex;align-items:center;gap:12px;
-  padding:13px;border-radius:15px;
-  background:linear-gradient(120deg,#fff,#f6efff);
-  border:1px solid #e7d9f5
-}
-.turn-dot{
-  width:43px;height:43px;flex-shrink:0;
-  border-radius:14px;border:2px solid #fff;
-  box-shadow:0 3px 10px #0001
-}
-.turn-copy{flex:1;min-width:0}
-.turn-copy strong{display:block;font-size:17px}
-.turn-copy small{display:block;color:var(--muted);font:11px Arial,sans-serif;margin-top:4px}
-.roll-button{
-  min-width:68px;height:66px;border:1px solid #e7d7b0;
-  color:#5a4319;background:linear-gradient(145deg,#fff8df,#f4d68b);
-  font:bold 34px Arial,sans-serif;
-  box-shadow:0 4px 0 #d6b35d
-}
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
-.status{
-  min-height:48px;padding:13px;margin-top:11px;
-  border:1px solid #e6d9f2;border-radius:12px;
-  background:#fbf8ff;color:#665675;
-  font:13px/1.5 Arial,sans-serif;text-align:center
-}
-.roster{display:grid;gap:7px;margin-top:12px}
-.roster-item{
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  padding:10px 12px;border:1px solid #eee5f5;border-radius:11px;
-  font:12px Arial,sans-serif;color:#756780;background:#fff
-}
-.roster-item.current{border-color:#b89ae9;background:#f2eaff}
-.roster-name{display:flex;align-items:center;gap:8px}
-.roster-dot{width:11px;height:11px;border-radius:50%;display:inline-block}
-.rules{font:12px/1.8 Arial,sans-serif;color:#82768e}
-.rules strong{color:#564366}
+.field-label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px}
 .hidden{display:none!important}
-footer{text-align:center;color:#a094ac;font:11px Arial,sans-serif;padding-top:14px}
-@media(max-width:390px){
- .page{padding:10px 8px 25px}
- .panel{padding:13px;border-radius:17px}
- .player-row{grid-template-columns:36px minmax(0,1fr) 94px;gap:7px;padding:8px}
- .avatar{width:35px;height:35px}
- .player-row select{width:94px;font-size:11px}
- .turn-card{gap:8px;padding:9px}
- .roll-button{min-width:58px;width:58px;height:60px}
+
+/* Game screen */
+#game{padding:0;gap:0}
+.topbar{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:7px;padding:8px 10px;background:#1d1729;
+  border-bottom:1px solid var(--line);
+}
+.topbar strong{letter-spacing:2px}
+.topbar button{font-size:12px;padding:8px 10px}
+.game-layout{width:100%;max-width:850px;margin:auto;display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px}
+.status{
+  width:100%;display:flex;justify-content:space-between;align-items:center;
+  gap:8px;padding:10px 12px;background:var(--panel);
+  border:1px solid var(--line);border-radius:12px;font-size:13px;
+}
+.board-wrap{
+  width:min(calc(100vw - 12px),calc(100dvh - 205px),760px);
+  aspect-ratio:1;flex-shrink:0;
+}
+#board{width:100%;height:100%;display:block;filter:drop-shadow(0 8px 16px #0005)}
+.token{cursor:pointer;stroke:white;stroke-width:2.5;filter:drop-shadow(0 2px 2px #0004)}
+.token.movable{stroke:#fff2a5;stroke-width:4}
+.controls{width:100%;display:grid;grid-template-columns:1fr auto;gap:8px}
+.dice-box{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px}
+.dice{
+  display:grid;place-items:center;flex-shrink:0;width:45px;height:45px;
+  background:#fff;color:#322440;border-radius:10px;font-size:28px;font-weight:900;
+}
+.dice-info{font-size:12px;color:var(--muted)}
+#roll{min-width:112px}
+.players-strip{width:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.player-mini{min-width:0;text-align:center;padding:6px 2px;background:var(--panel);border:1px solid var(--line);border-radius:9px;opacity:.7}
+.player-mini.active{opacity:1;border-color:#e0c2ff;background:#49375e}
+.mini-avatar{font-size:19px}
+.mini-name{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-score{font-size:10px;color:var(--muted)}
+.hint{min-height:16px;font-size:11px;color:var(--muted);text-align:center}
+.overlay{display:none;position:fixed;inset:0;z-index:10;background:#100a1bdc;align-items:center;justify-content:center;padding:18px}
+.overlay.show{display:flex}
+.modal{width:min(420px,100%);text-align:center;background:#2b213a;border:1px solid #75618c;border-radius:22px;padding:24px;box-shadow:0 20px 70px #0009}
+.modal .emoji{font-size:54px}
+.modal h2{font-size:25px}
+.modal p{line-height:1.6}
+.modal button{margin:4px}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:12}
+.confetti i{position:absolute;top:-15px;width:7px;height:12px;animation:fall 2.8s linear forwards}
+@keyframes fall{to{transform:translateY(110dvh) rotate(650deg);opacity:.1}}
+@media(min-width:650px){
+ .player-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .board-wrap{width:min(calc(100vw - 24px),calc(100dvh - 205px),760px)}
+}
+@media(max-height:620px) and (orientation:landscape){
+ .game-layout{display:grid;grid-template-columns:minmax(0,1fr) 205px;gap:6px;max-width:none;padding:5px}
+ .status{grid-column:1/3}
+ .board-wrap{grid-column:1;grid-row:2/5;width:min(calc(100dvh - 70px),calc(100vw - 225px))}
+ .controls,.players-strip,.hint{grid-column:2;width:100%}
+ .controls{grid-template-columns:1fr}
+ .players-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 </head>
 <body>
-<div class="page">
-<header>
-  <div class="eyebrow">A little game of luck</div>
-  <h1>Ludo <span style="color:#a78bfa">♡</span></h1>
-  <div class="subtitle">Roll the dice. Find your way home.</div>
-</header>
 
-<section id="setup" class="panel">
-  <h2>Let's play</h2>
-  <div class="description">Choose your game mode, players and colours.</div>
+<section id="setup" class="screen active">
+  <h1>LUDO <span style="color:#d9c0ff">♡</span></h1>
+  <p style="text-align:center;margin-top:0">A dreamy little game night</p>
 
-  <span class="section-label">GAME MODE</span>
-  <div class="mode-row">
-    <button class="choice active" data-mode="pass">♡ Pass &amp; Play</button>
-    <button class="choice" data-mode="computer">✦ Vs Computer</button>
+  <div class="panel">
+    <h2>Game mode</h2>
+    <div class="grid">
+      <button class="choice selected" data-mode="pass">♡ Pass &amp; Play<small>Play together on one device</small></button>
+      <button class="choice" data-mode="computer">☾ Play with Computer<small>Computer controls the other players</small></button>
+    </div>
   </div>
 
-  <span class="section-label">NUMBER OF PLAYERS</span>
-  <div class="count-row">
-    <button class="choice active" data-count="2">2 Players</button>
-    <button class="choice" data-count="3">3 Players</button>
-    <button class="choice" data-count="4">4 Players</button>
+  <div class="panel">
+    <h2>Number of players</h2>
+    <div class="grid">
+      <button class="choice" data-count="2">2 players</button>
+      <button class="choice selected" data-count="3">3 players</button>
+      <button class="choice" data-count="4">4 players</button>
+      <button class="choice" data-count="5">5 players</button>
+    </div>
+    <p>Five available colours: Gold, Emerald, Blood, Space and Rose. Five-player games use the Rose bonus base shown on the board.</p>
   </div>
 
-  <span class="section-label">PLAYERS &amp; COLOURS</span>
-  <div id="playerList" class="player-list"></div>
+  <div class="panel">
+    <h2>Board theme</h2>
+    <div class="grid">
+      <button class="choice selected" data-theme="lavender">♡ Lavender Mist<small>Dreamy purple and white paths</small></button>
+      <button class="choice" data-theme="midnight">☾ Midnight<small>Deeper, cooler board</small></button>
+      <button class="choice" data-theme="rose">୨ৎ Rose Cloud<small>Soft pink and plum</small></button>
+      <button class="choice" data-theme="classic">◇ Classic Pastel<small>Clean traditional colours</small></button>
+    </div>
+  </div>
 
-  <button id="startButton" class="primary">Start the game ♡</button>
+  <div class="panel">
+    <h2>Token style</h2>
+    <div class="grid">
+      <button class="choice selected" data-token="gem">◆ Crystal<small>Diamond-shaped tokens</small></button>
+      <button class="choice" data-token="orb">● Moon Orb<small>Glossy round tokens</small></button>
+      <button class="choice" data-token="heart">♥ Heart<small>Heart-marked tokens</small></button>
+      <button class="choice" data-token="crown">♛ Royal<small>Crown-marked tokens</small></button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Player names &amp; avatars</h2>
+    <p>Tap an avatar to change it. In Computer mode, player 1 is you and the remaining players are computers.</p>
+    <div class="player-grid" id="playerCards"></div>
+  </div>
+
+  <button class="primary" id="start" type="button">Start Game ♡</button>
+  <p style="max-width:650px;text-align:center">The board opens after you press Start Game. Roll a six to bring a token out. Tap a highlighted token to move.</p>
 </section>
 
-<section id="game" class="hidden">
-  <div class="panel">
-    <div class="turn-card">
-      <div id="turnDot" class="turn-dot"></div>
-      <div class="turn-copy">
-        <strong id="turnName">Player 1</strong>
-        <small id="turnHint">Roll the dice to begin.</small>
-      </div>
-      <button id="rollButton" class="roll-button" aria-label="Roll dice">⚄</button>
+<section id="game" class="screen">
+  <header class="topbar">
+    <strong>LUDO ♡</strong>
+    <div style="display:flex;gap:5px;flex-wrap:wrap">
+      <button class="secondary" id="sound">♫ Sound: Off</button>
+      <button class="secondary" id="restart">↻ Restart</button>
+      <button class="secondary" id="back">Setup</button>
     </div>
+  </header>
+  <main class="game-layout">
+    <div class="status">
+      <div><span id="turnDot" class="dot"></span> <strong id="turnText">Gold's turn</strong></div>
+      <span id="turnDetail">Roll the dice</span>
+    </div>
+    <div class="board-wrap"><svg id="board" viewBox="0 0 600 600" aria-label="Ludo board"></svg></div>
     <div class="controls">
-      <button id="newGameButton" class="secondary">↻ New game</button>
-      <button id="setupButton" class="secondary">⚙ Setup</button>
+      <div class="dice-box">
+        <div id="dice" class="dice">–</div>
+        <div><strong id="diceTitle">Ready?</strong><div id="diceText" class="dice-info">Roll to begin</div></div>
+      </div>
+      <button class="primary" id="roll">Roll Dice</button>
     </div>
-    <div id="status" class="status">Roll a 6 to bring a token out of home.</div>
-  </div>
-
-  <div class="board-wrap">
-    <canvas id="board" width="600" height="600" aria-label="Ludo game board"></canvas>
-  </div>
-
-  <div class="panel">
-    <h2>Players</h2>
-    <div id="roster" class="roster"></div>
-  </div>
-
-  <div class="panel rules">
-    <strong>How to play</strong><br>
-    Roll a 6 to release a token. Tap one of your movable tokens to move it. Roll a 6 for another turn. Landing on an opponent on an ordinary square sends that token home. Reach the centre with all four tokens to win. The star squares are safe.
-  </div>
+    <div class="players-strip" id="playersStrip"></div>
+    <div class="hint" id="hint">Roll the dice to begin.</div>
+  </main>
 </section>
-<footer>Made with ♡ · Ludo</footer>
+
+<div class="overlay" id="result">
+  <div class="modal">
+    <div class="emoji" id="resultEmoji">🏆</div>
+    <h2 id="resultTitle">Winner!</h2>
+    <p id="resultText"></p>
+    <button class="primary" id="continue">New Game ♡</button>
+    <button class="secondary" id="resultSetup">Setup</button>
+  </div>
 </div>
+<div id="confetti" class="confetti hidden"></div>
 
 <script>
 "use strict";
 
-const $ = id => document.getElementById(id);
-const canvas = $("board");
-const ctx = canvas.getContext("2d");
-
-const COLORS = [
- {name:"Ruby",hex:"#c43f69",light:"#ff9bb8",dark:"#79213f",symbol:"♡"},
- {name:"Emerald",hex:"#269b79",light:"#8de8c3",dark:"#125b49",symbol:"❀"},
- {name:"Golden",hex:"#d4a126",light:"#ffe99a",dark:"#805715",symbol:"✦"},
- {name:"Lavender",hex:"#8963d7",light:"#d4bdff",dark:"#4d338d",symbol:"☾"}
+const $=id=>document.getElementById(id);
+const COLORS=[
+ {name:"Gold",hex:"#d6a62b",light:"#ffefac",dark:"#805d13",avatar:"👑"},
+ {name:"Emerald",hex:"#239c70",light:"#a8efd0",dark:"#12583f",avatar:"🍀"},
+ {name:"Blood",hex:"#c43d58",light:"#ffc2d0",dark:"#772034",avatar:"🌹"},
+ {name:"Space",hex:"#7762d7",light:"#d8cdff",dark:"#44328c",avatar:"🌙"},
+ {name:"Rose",hex:"#e779b8",light:"#ffd3ed",dark:"#99446f",avatar:"🎀"}
 ];
+const AVATARS=["👑","🐰","🐱","🦊","🐻","🐼","🦋","🌙","⭐","🍓","🪻","🎀","🍀","🐸","🦄","🧸","💎","♡"];
+const GLYPHS={gem:"◆",orb:"●",heart:"♥",crown:"♛"};
+const THEMES={
+ lavender:{page:"#191425",board:"#f7f1fb",tile:"#fffdfd",grid:"#bcb0c9"},
+ midnight:{page:"#11121d",board:"#dcd9e8",tile:"#fff",grid:"#8f879f"},
+ rose:{page:"#281824",board:"#fff0f5",tile:"#fffdfd",grid:"#d1a9bd"},
+ classic:{page:"#20202a",board:"#f8f6ee",tile:"#fff",grid:"#a9a9a2"}
+};
 
-const SYMBOLS = ["♡","❀","✦","☾"];
-const TRACK = [
+let cfg={mode:"pass",count:3,theme:"lavender",token:"gem"};
+let players=[],current=0,die=null,over=false,finishOrder=[];
+let soundOn=false,audio=null,turnId=0;
+
+const TRACK=[
  [1,6],[2,6],[3,6],[4,6],[5,6],
- [6,5],[6,4],[6,3],[6,2],[6,1],[6,0],
- [7,0],[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],
- [9,6],[10,6],[11,6],[12,6],[13,6],[14,6],
- [14,7],[14,8],[13,8],[12,8],[11,8],[10,8],[9,8],
- [8,9],[8,10],[8,11],[8,12],[8,13],[8,14],
- [7,14],[6,14],[6,13],[6,12],[6,11],[6,10],[6,9],
- [5,8],[4,8],[3,8],[2,8],[1,8],[0,8],
- [0,7],[0,6]
+ [6,5],[6,4],[6,3],[6,2],[6,1],[6,0],[7,0],[8,0],
+ [8,1],[8,2],[8,3],[8,4],[8,5],
+ [9,6],[10,6],[11,6],[12,6],[13,6],[14,6],[14,7],[14,8],
+ [13,8],[12,8],[11,8],[10,8],[9,8],
+ [8,9],[8,10],[8,11],[8,12],[8,13],[8,14],[7,14],[6,14],
+ [6,13],[6,12],[6,11],[6,10],[6,9],
+ [5,8],[4,8],[3,8],[2,8],[1,8],[0,8],[0,7],[0,6]
 ];
-
-const START_INDEX = [0,13,26,39];
-const SAFE_INDICES = new Set([0,8,13,21,26,34,39,47]);
-const HOME_LANES = [
+const START=[0,13,26,39,4];
+const LANES=[
  [[1,7],[2,7],[3,7],[4,7],[5,7]],
  [[7,1],[7,2],[7,3],[7,4],[7,5]],
  [[13,7],[12,7],[11,7],[10,7],[9,7]],
- [[7,13],[7,12],[7,11],[7,10],[7,9]]
+ [[7,13],[7,12],[7,11],[7,10],[7,9]],
+ [[1,7],[2,7],[3,7],[4,7],[5,7]]
 ];
-const BASES = [
- {x:0,y:0},{x:9,y:0},{x:9,y:9},{x:0,y:9}
-];
+const SAFE=new Set([0,8,13,21,26,34,39,47]);
 
-let mode = "pass";
-let playerCount = 2;
-let players = [];
-let current = 0;
-let rolled = null;
-let gameOver = false;
-let locked = false;
-let hitAreas = [];
-let statusMessage = "";
-let gameStarted = false;
-let computerTimer = null;
+function bindChoices(selector,key,convert=v=>v){
+ document.querySelectorAll(selector).forEach(b=>b.addEventListener("click",()=>{
+  cfg[key]=convert(b.dataset[key]);
+  document.querySelectorAll(selector).forEach(q=>q.classList.toggle("selected",q===b));
+  updatePlayerCards();
+ }));
+}
+bindChoices("[data-mode]","mode");
+bindChoices("[data-count]","count",Number);
+bindChoices("[data-theme]","theme");
+bindChoices("[data-token]","token");
 
-document.querySelectorAll("[data-mode]").forEach(button => {
- button.addEventListener("click", () => {
-  mode = button.dataset.mode;
-  document.querySelectorAll("[data-mode]").forEach(b =>
-   b.classList.toggle("active",b===button));
-  renderSetup();
- });
-});
-
-document.querySelectorAll("[data-count]").forEach(button => {
- button.addEventListener("click", () => {
-  playerCount = Number(button.dataset.count);
-  document.querySelectorAll("[data-count]").forEach(b =>
-   b.classList.toggle("active",b===button));
-  renderSetup();
- });
-});
-
-function renderSetup(){
- const list=$("playerList");
- list.innerHTML="";
- for(let i=0;i<playerCount;i++){
-  const row=document.createElement("div");
-  row.className="player-row";
-
-  const avatar=document.createElement("div");
-  avatar.className="avatar";
-  avatar.style.color=COLORS[i].hex;
-  avatar.style.border="1px solid "+COLORS[i].light;
-  avatar.textContent=SYMBOLS[i];
-
-  const fields=document.createElement("div");
-  fields.className="player-fields";
-  const input=document.createElement("input");
-  input.id="playerName"+i;
-  input.maxLength=18;
-  input.value=(mode==="computer"&&i===playerCount-1)
-    ?"Computer":"Player "+(i+1);
-  input.setAttribute("aria-label","Player "+(i+1)+" name");
-
-  const meta=document.createElement("div");
-  meta.className="player-meta";
-  meta.textContent=(mode==="computer"&&i===playerCount-1)
-    ?"COMPUTER OPPONENT":"PLAYER "+(i+1);
-  fields.append(input,meta);
-
-  const select=document.createElement("select");
-  select.id="playerColor"+i;
-  select.setAttribute("aria-label","Player "+(i+1)+" colour");
-  COLORS.forEach((color,j)=>{
-   const option=document.createElement("option");
-   option.value=String(j);
-   option.textContent=color.name;
-   select.appendChild(option);
+function buildPlayerCards(){
+ const root=$("playerCards");
+ root.innerHTML="";
+ COLORS.forEach((c,i)=>{
+  const card=document.createElement("div");
+  card.className="player-card";
+  card.dataset.index=i;
+  card.innerHTML=`
+    <div class="player-heading">
+      <button class="avatar" type="button" data-avatar="${i}" aria-label="Change avatar">${c.avatar}</button>
+      <div><span class="dot" style="background:${c.hex}"></span> <strong>${c.name}</strong><div class="field-label" data-kind="${i}"></div></div>
+    </div>
+    <label class="field-label" for="name${i}">Player name</label>
+    <input id="name${i}" maxlength="16" value="${c.name}" autocomplete="off">`;
+  root.appendChild(card);
+  card.querySelector("[data-avatar]").addEventListener("click",()=>{
+   const b=card.querySelector("[data-avatar]");
+   b.dataset.avatarIndex=String((Number(b.dataset.avatarIndex||"-1")+1)%AVATARS.length);
+   b.textContent=AVATARS[Number(b.dataset.avatarIndex)];
   });
-  select.value=String(i);
-  select.addEventListener("change",updateColorOptions);
-
-  row.append(avatar,fields,select);
-  list.appendChild(row);
- }
- updateColorOptions();
+ });
+ updatePlayerCards();
 }
-
-function updateColorOptions(){
- const selects=Array.from(document.querySelectorAll(".player-row select"));
- const used=new Set();
- selects.forEach(s=>s.style.borderColor="#e5dced");
- selects.forEach(s=>{
-  if(used.has(s.value)){
-   const replacement=COLORS.findIndex((_,i)=>!used.has(String(i)));
-   if(replacement>=0)s.value=String(replacement);
-  }
-  used.add(s.value);
-  s.style.borderColor=COLORS[Number(s.value)].light;
+function updatePlayerCards(){
+ document.querySelectorAll(".player-card").forEach((card,i)=>{
+  const active=i<cfg.count;
+  card.classList.toggle("hidden",!active);
+  card.querySelector("input").disabled=!active;
+  card.querySelector(`[data-kind="${i}"]`).textContent=cfg.mode==="computer"?(i===0?"You":"Computer"):"Pass & Play";
  });
 }
-
 function startGame(){
- clearTimeout(computerTimer);
  players=[];
- for(let i=0;i<playerCount;i++){
-  const name=$("playerName"+i).value.trim()||"Player "+(i+1);
-  const color=Number($("playerColor"+i).value);
-  players.push({
-   name,color,
-   computer:mode==="computer"&&i===playerCount-1,
-   pieces:[-1,-1,-1,-1]
+ for(let i=0;i<cfg.count;i++){
+  const c=COLORS[i],card=document.querySelector(`.player-card[data-index="${i}"]`);
+  const avatar=card.querySelector("[data-avatar]").textContent;
+  players.push({...c,id:i,name:$(`name${i}`).value.trim()||c.name,avatar,
+   computer:cfg.mode==="computer"&&i>0,pieces:[-1,-1,-1,-1],finished:false});
+ }
+ current=0;die=null;over=false;finishOrder=[];turnId++;
+ $("setup").classList.remove("active");
+ $("game").classList.add("active");
+ $("result").classList.remove("show");
+ $("confetti").classList.add("hidden");
+ document.documentElement.style.setProperty("--bg",THEMES[cfg.theme].page);
+ document.body.style.background=`radial-gradient(ellipse at top,#382946,${THEMES[cfg.theme].page} 75%)`;
+ $("dice").textContent="–";
+ $("diceTitle").textContent="Ready?";
+ $("diceText").textContent="Roll to begin";
+ $("hint").textContent="Roll a six to leave home. Tap a highlighted token to move.";
+ drawBoard();renderPlayers();updateStatus();maybeComputer();
+}
+$("start").addEventListener("click",startGame);
+$("back").addEventListener("click",()=>{
+ turnId++;$("game").classList.remove("active");$("setup").classList.add("active");
+});
+$("restart").addEventListener("click",startGame);
+$("continue").addEventListener("click",startGame);
+$("resultSetup").addEventListener("click",()=>{
+ $("result").classList.remove("show");$("back").click();
+});
+
+function svg(tag,attrs={},text){
+ const el=document.createElementNS("http://www.w3.org/2000/svg",tag);
+ Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,String(v)));
+ if(text!==undefined)el.textContent=text;
+ return el;
+}
+function add(parent,tag,attrs,text){const el=svg(tag,attrs,text);parent.appendChild(el);return el;}
+function center(x,y){return [(x+.5)*40,(y+.5)*40];}
+function rect(parent,x,y,w,h,fill,stroke="#bcb0c9"){
+ return add(parent,"rect",{x:x*40,y:y*40,width:w*40,height:h*40,fill,stroke,"stroke-width":1.2});
+}
+function drawBase(parent,pi,x,y,w=6,h=6){
+ const p=players[pi]||COLORS[pi];
+ rect(parent,x,y,w,h,p.light,p.dark);
+ rect(parent,x+.55,y+.55,w-1.1,h-1.1,"#fffdfd","#c9bdd1");
+ const spots=[
+  [x+1.55,y+1.55],[x+w-1.55,y+1.55],
+  [x+1.55,y+h-1.55],[x+w-1.55,y+h-1.55]
+ ];
+ spots.forEach(([sx,sy])=>{
+  const [cx,cy]=center(sx-.5,sy-.5);
+  add(parent,"circle",{cx,cy,r:17,fill:p.light,stroke:p.dark,"stroke-width":1.5});
+  add(parent,"circle",{cx,cy,r:10,fill:p.hex||p.color||p.hex||p.hex});
+ });
+}
+function drawBoard(){
+ const board=$("board");board.innerHTML="";
+ const t=THEMES[cfg.theme];
+ add(board,"rect",{x:0,y:0,width:600,height:600,fill:t.board,stroke:t.grid,"stroke-width":3});
+
+ // Four classic home bases.
+ drawBase(board,0,0,0);
+ drawBase(board,1,9,0);
+ drawBase(board,2,9,9);
+ drawBase(board,3,0,9);
+
+ // Rose's fifth-player base is a small marked reserve beside the centre.
+ if(players.length===5){
+  add(board,"rect",{x:246,y:246,width:108,height:108,rx:8,fill:COLORS[4].light,stroke:COLORS[4].dark,"stroke-width":2});
+  add(board,"rect",{x:258,y:258,width:84,height:84,rx:5,fill:"#fffdfd",stroke:COLORS[4].hex,"stroke-width":2});
+  [[273,273],[327,273],[273,327],[327,327]].forEach(([x,y])=>{
+   add(board,"circle",{cx:x,cy:y,r:8,fill:COLORS[4].hex,stroke:"#fff","stroke-width":2});
   });
  }
- current=0;rolled=null;gameOver=false;locked=false;
- gameStarted=true;
- $("setup").classList.add("hidden");
- $("game").classList.remove("hidden");
- statusMessage="Roll a 6 to bring a token out of home.";
- renderAll();
+
+ // Draw all perimeter tiles with crisp grid lines.
+ TRACK.forEach(([x,y],idx)=>{
+  const c=START.indexOf(idx);
+  let fill=t.tile;
+  if(c>=0&&c<4)fill=COLORS[c].light;
+  rect(board,x,y,1,1,fill,t.grid);
+  if(SAFE.has(idx)){
+   const [cx,cy]=center(x,y);
+   add(board,"path",{d:`M${cx} ${cy-8} L${cx+8} ${cy} L${cx} ${cy+8} L${cx-8} ${cy}Z`,fill:"#e5d6ff",stroke:"#a98bcf","stroke-width":1.3});
+  }
+ });
+
+ // Four coloured home lanes.
+ for(let pi=0;pi<4;pi++){
+  LANES[pi].forEach(([x,y],j)=>{
+   rect(board,x,y,1,1,j===4?COLORS[pi].hex:COLORS[pi].light,t.grid);
+   if(j===4){
+    const [cx,cy]=center(x,y);
+    add(board,"path",{d:`M${cx} ${cy-9} L${cx+9} ${cy} L${cx} ${cy+9} L${cx-9} ${cy}Z`,fill:"#fff",stroke:COLORS[pi].dark,"stroke-width":1.5});
+   }
+  });
+ }
+
+ // Traditional four-colour diamond finish.
+ const x=300,y=300,d=60;
+ [
+  {points:`${x},${y} ${x-d},${y-d} ${x+d},${y-d}`,c:COLORS[0].hex},
+  {points:`${x},${y} ${x+d},${y-d} ${x+d},${y+d}`,c:COLORS[1].hex},
+  {points:`${x},${y} ${x+d},${y+d} ${x-d},${y+d}`,c:COLORS[2].hex},
+  {points:`${x},${y} ${x-d},${y+d} ${x-d},${y-d}`,c:COLORS[3].hex}
+ ].forEach(a=>add(board,"polygon",{points:a.points,fill:a.c,stroke:"#fff","stroke-width":2}));
+
+ add(board,"path",{d:"M300 274 L326 300 L300 326 L274 300Z",fill:"#fff",stroke:"#d6c6e7","stroke-width":2});
+ add(board,"path",{d:"M300 288 L312 300 L300 312 L288 300Z",fill:"#c7a9ff",stroke:"#fff","stroke-width":2});
+
+ // Rose markers are outside the finish diamond so its four colours remain clear.
+ if(players.length===5){
+  [[226,226],[374,226],[226,374],[374,374]].forEach(([cx,cy])=>{
+   add(board,"circle",{cx,cy,r:7,fill:COLORS[4].hex,stroke:"#fff","stroke-width":2});
+  });
+ }
+
+ players.forEach((p,pi)=>p.pieces.forEach((progress,ti)=>{
+  const [cx,cy]=piecePosition(pi,ti,progress);
+  drawToken(board,cx,cy,p,pi,ti,progress);
+ }));
+}
+function piecePosition(pi,ti,progress){
+ const bases=[
+  [[1.65,1.65],[4.35,1.65],[1.65,4.35],[4.35,4.35]],
+  [[10.65,1.65],[13.35,1.65],[10.65,4.35],[13.35,4.35]],
+  [[10.65,10.65],[13.35,10.65],[10.65,13.35],[13.35,13.35]],
+  [[1.65,10.65],[4.35,10.65],[1.65,13.35],[4.35,13.35]],
+  [[6.6,6.6],[8.4,6.6],[6.6,8.4],[8.4,8.4]]
+ ];
+ if(progress<0){
+  const [x,y]=bases[pi][ti];return [x*40,y*40];
+ }
+ if(progress>=52){
+  const [x,y]=LANES[pi][4];return [(x+.5)*40,(y+.5)*40];
+ }
+ if(progress>=0&&progress<=51){
+  const idx=(START[pi]+progress)%52,[x,y]=TRACK[idx];
+  const offsets=[[0,0],[-5,-5],[5,-5],[-5,5]];
+  return [(x+.5)*40+offsets[ti][0],(y+.5)*40+offsets[ti][1]];
+ }
+ return [300,300];
+}
+function drawToken(board,x,y,p,pi,ti,progress){
+ const movable=pi===current&&die!==null&&canMove(ti,die)&&!over&&!p.finished;
+ if(movable)add(board,"circle",{cx:x,cy:y,r:16,fill:"#fff0a8",opacity:.9});
+ const group=add(board,"g",{
+  class:"token"+(movable?" movable":""),
+  tabindex:movable?0:-1,role:"button",
+  "aria-label":`${p.name} token ${ti+1}`,
+  "data-p":pi,"data-t":ti
+ });
+ if(cfg.token==="gem"){
+  add(group,"path",{d:`M${x} ${y-12}L${x+10} ${y-5}L${x+7} ${y+8}L${x} ${y+12}L${x-7} ${y+8}L${x-10} ${y-5}Z`,fill:p.hex,stroke:"#fff","stroke-width":2});
+  add(group,"path",{d:`M${x} ${y-8}L${x+5} ${y-3}L${x} ${y+1}L${x-5} ${y-3}Z`,fill:p.light,stroke:"none"});
+ }else{
+  add(group,"circle",{cx:x,cy:y,r:11,fill:p.hex,stroke:"#fff","stroke-width":2});
+  add(group,"circle",{cx:x-3,cy:y-4,r:4,fill:p.light,stroke:"none"});
+  add(group,"text",{x,y:y+2,"text-anchor":"middle","font-size":12,"font-weight":"900",fill:"#fff","pointer-events":"none"},GLYPHS[cfg.token==="heart"?"heart":cfg.token==="crown"?"crown":"orb"]);
+ }
+ if(movable){
+  group.addEventListener("click",()=>movePiece(pi,ti));
+  group.addEventListener("keydown",e=>{
+   if(e.key==="Enter"||e.key===" "){
+    e.preventDefault();
+    movePiece(pi,ti);
+   }
+  });
+ }
 }
 
-function renderAll(){
- if(!gameStarted)return;
- drawBoard();
- renderTurn();
- renderRoster();
- $("status").textContent=statusMessage;
- const computerTurn=players[current]&&players[current].computer;
- $("rollButton").disabled=gameOver||locked||rolled!==null||computerTurn;
- $("rollButton").style.opacity=$("rollButton").disabled?".55":"1";
+function canMove(ti,value){
+ if(over||die===null||!players[current])return false;
+ const progress=players[current].pieces[ti];
+ if(progress===-1)return value===6;
+ return progress+value<=57;
 }
 
-function renderTurn(){
- const p=players[current];
- const c=COLORS[p.color];
- $("turnDot").style.background=
-  `linear-gradient(145deg,${c.light},${c.hex} 58%,${c.dark})`;
- $("turnDot").style.boxShadow=`0 3px 12px ${c.hex}44`;
- $("turnName").textContent=p.name+(p.computer?" · Computer":"");
- $("turnHint").textContent=gameOver?"Game finished":
-  rolled===null?"Roll the dice to begin.":
-  "Choose a highlighted token.";
- $("rollButton").textContent=rolled===null?"⚄":String(rolled);
-}
-
-function renderRoster(){
- const roster=$("roster");
- roster.innerHTML="";
+function renderPlayers(){
+ const strip=$("playersStrip");
+ strip.innerHTML="";
  players.forEach((p,i)=>{
-  const row=document.createElement("div");
-  row.className="roster-item"+(i===current&&!gameOver?" current":"");
-  const left=document.createElement("span");
-  left.className="roster-name";
-  const dot=document.createElement("span");
-  dot.className="roster-dot";
-  dot.style.background=COLORS[p.color].hex;
-  const name=document.createElement("span");
-  name.textContent=p.name+(p.computer?" (CPU)":"");
-  left.append(dot,name);
-  const right=document.createElement("span");
-  right.textContent=p.pieces.filter(v=>v===56).length+" / 4 home";
-  row.append(left,right);
-  roster.appendChild(row);
+  const card=document.createElement("div");
+  card.className="player-mini"+(i===current?" active":"");
+  card.innerHTML=`
+   <div class="mini-avatar">${p.avatar}</div>
+   <div class="mini-name"></div>
+   <div class="mini-score"></div>`;
+  card.querySelector(".mini-name").textContent=p.name;
+  card.querySelector(".mini-score").textContent=
+   p.finished?"Finished":p.pieces.filter(v=>v>=57).length+"/4 home";
+  card.style.borderColor=i===current?p.hex:"";
+  strip.appendChild(card);
  });
 }
 
-function nextTurn(extra=false){
- rolled=null;
- locked=false;
- if(!extra)current=(current+1)%players.length;
- statusMessage=extra?"You rolled a 6! Roll again.":"It's "+players[current].name+"'s turn.";
- renderAll();
- if(players[current].computer&&!gameOver){
-  computerTimer=setTimeout(computerPlay,850);
- }
+function updateStatus(){
+ const p=players[current];
+ if(!p)return;
+ $("turnDot").style.background=p.hex;
+ $("turnText").textContent=p.name+"'s turn";
+ $("turnDetail").textContent=p.computer?"Computer thinking…":
+  die===null?"Roll the dice":`You rolled ${die}`;
+ $("roll").disabled=over||die!==null||p.computer||p.finished;
+ $("roll").textContent=p.computer?"Computer…":
+  die===null?"Roll Dice":"Choose Token";
+ $("diceTitle").textContent=die===null?"Ready?":`Rolled ${die}`;
+ $("diceText").textContent=die===null?"Roll to begin":
+  "Tap a highlighted token";
+ renderPlayers();
+ drawBoard();
 }
 
-function canMove(piece,dice){
- const progress=players[current].pieces[piece];
- if(progress===56)return false;
- if(progress===-1)return dice===6;
- return progress+dice<=56;
-}
-
-function legalPieces(){
- if(rolled===null)return [];
- return players[current].pieces
-  .map((progress,i)=>canMove(i,rolled)?i:-1)
-  .filter(i=>i>=0);
+function nextPlayer(){
+ if(over)return;
+ let tries=0;
+ do{
+  current=(current+1)%players.length;
+  tries++;
+ }while(players[current].finished&&tries<=players.length);
+ die=null;
+ updateStatus();
+ maybeComputer();
 }
 
 function rollDice(){
- if(gameOver||locked||rolled!==null||players[current].computer)return;
- rolled=Math.floor(Math.random()*6)+1;
- const legal=legalPieces();
- if(legal.length===0){
-  statusMessage=rolled===6
-   ?"No token can move. Roll a 6 only when a token can leave home."
-   :"No legal move. Turn passes.";
-  renderAll();
-  locked=true;
-  setTimeout(()=>{if(!gameOver)nextTurn(rolled===6);},700);
+ if(over||die!==null||players[current].computer)return;
+ const p=players[current];
+ if(p.finished){nextPlayer();return;}
+ die=Math.floor(Math.random()*6)+1;
+ $("dice").textContent=["","⚀","⚁","⚂","⚃","⚄","⚅"][die];
+ $("diceTitle").textContent=`Rolled ${die}`;
+ const legal=p.pieces.some((_,ti)=>canMove(ti,die));
+ if(!legal){
+  $("hint").textContent=die===6?
+   "No token can move. Roll again!":
+   "No legal move. Next player's turn.";
+  if(die===6){
+   die=null;
+   updateStatus();
+   maybeComputer();
+  }else{
+   die=null;
+   setTimeout(nextPlayer,650);
+  }
   return;
  }
- statusMessage="You rolled "+rolled+". Tap a glowing token to move it.";
- renderAll();
+ $("hint").textContent="Choose one of the highlighted tokens.";
+ updateStatus();
 }
 
-function movePiece(pieceIndex){
- if(rolled===null||locked||gameOver||!canMove(pieceIndex,rolled))return;
- locked=true;
- const p=players[current];
- const old=p.pieces[pieceIndex];
- if(old===-1)p.pieces[pieceIndex]=0;
- else p.pieces[pieceIndex]=old+rolled;
+$("roll").addEventListener("click",rollDice);
 
- const progress=p.pieces[pieceIndex];
- let captured=0;
+function movePiece(pi,ti){
+ if(over||die===null||pi!==current)return;
+ const p=players[pi];
+ if(!p||p.finished||!canMove(ti,die))return;
+ const rolled=die;
+ let progress=p.pieces[ti];
+ if(progress===-1)progress=0;
+ else progress+=rolled;
+ p.pieces[ti]=progress;
+ die=null;
 
- if(progress>=0&&progress<=50){
-  const globalIndex=(START_INDEX[p.color]+progress)%52;
-  if(!SAFE_INDICES.has(globalIndex)){
-   players.forEach((other,oi)=>{
-    if(oi===current)return;
-    other.pieces=other.pieces.map(op=>{
-     if(op>=0&&op<=50&&
-       (START_INDEX[other.color]+op)%52===globalIndex){
-      captured++;
+ if(progress>=57){
+  p.pieces[ti]=57;
+  $("hint").textContent=p.name+" brought a token home!";
+ }
+
+ // Capture opponents on unprotected track spaces.
+ if(progress>=0&&progress<=51){
+  const globalIndex=(START[pi]+progress)%52;
+  if(!SAFE.has(globalIndex)){
+   for(let oi=0;oi<players.length;oi++){
+    if(oi===pi)continue;
+    const op=players[oi];
+    op.pieces=op.pieces.map(otherProgress=>{
+     if(otherProgress<0||otherProgress>51)return otherProgress;
+     const otherIndex=(START[oi]+otherProgress)%52;
+     if(otherIndex===globalIndex){
+      $("hint").textContent=p.name+" captured a token!";
       return -1;
      }
-     return op;
+     return otherProgress;
     });
-   });
+   }
   }
  }
 
- if(p.pieces.every(v=>v===56)){
-  gameOver=true;
-  rolled=null;locked=false;
-  statusMessage=p.name+" wins! All four tokens reached home. ♡";
-  renderAll();
-  return;
- }
-
- if(progress===56)statusMessage="A token reached home! ♡";
- else if(captured)statusMessage="Beautiful move! "+captured+" token(s) sent home.";
- else statusMessage=p.name+" moved a token.";
-
- const extra=rolled===6;
- setTimeout(()=>{if(!gameOver)nextTurn(extra);},450);
- renderAll();
-}
-
-function computerPlay(){
- if(gameOver||!players[current].computer)return;
- locked=false;
- if(rolled===null){
-  rolled=Math.floor(Math.random()*6)+1;
-  const legal=legalPieces();
-  if(!legal.length){
-   statusMessage="Computer rolled "+rolled+" and cannot move.";
-   renderAll();
-   const extra=rolled===6;
-   locked=true;
-   setTimeout(()=>{if(!gameOver)nextTurn(extra);},650);
+ if(p.pieces.every(v=>v>=57)&&!p.finished){
+  p.finished=true;
+  finishOrder.push(pi);
+  $("hint").textContent=p.name+" finished!";
+  if(finishOrder.length===players.length){
+   endGame();
    return;
   }
-  statusMessage="Computer rolled "+rolled+".";
-  renderAll();
-  computerTimer=setTimeout(computerPlay,650);
-  return;
  }
- const legal=legalPieces();
- if(!legal.length){
-  nextTurn(false);
-  return;
+
+ updateStatus();
+
+ if(rolled===6&&!p.finished){
+  $("hint").textContent="Six! "+p.name+" gets another turn.";
+  maybeComputer();
+ }else{
+  nextPlayer();
  }
+}
+
+function maybeComputer(){
+ if(over||!players.length)return;
  const p=players[current];
- // Prefer a winning move, then a capture, then a move toward home.
- const ranked=legal.map(i=>{
-  const old=p.pieces[i];
-  const next=old===-1?0:old+rolled;
-  let score=next===56?100:next;
-  if(old===-1)score+=10;
-  if(next>=0&&next<=50){
-   const g=(START_INDEX[p.color]+next)%52;
-   if(!SAFE_INDICES.has(g)){
-    players.forEach((op,oi)=>{
-     if(oi===current)return;
-     if(op.pieces.some(v=>v>=0&&v<=50&&
-       (START_INDEX[op.color]+v)%52===g))score+=30;
-    });
-   }
-  }
-  return {i,score};
- }).sort((a,b)=>b.score-a.score);
- movePiece(ranked[0].i);
+ if(!p||!p.computer||p.finished)return;
+ const id=++turnId;
+ $("roll").disabled=true;
+ $("roll").textContent="Computer…";
+ $("turnDetail").textContent="Computer is thinking…";
+ setTimeout(()=>{
+  if(id!==turnId||over||!players[current]||!players[current].computer)return;
+  if(die===null)rollComputer();
+ },650);
 }
 
-$("rollButton").addEventListener("click",rollDice);
-$("startButton").addEventListener("click",startGame);
-$("newGameButton").addEventListener("click",()=>{
- if(confirm("Start a new game with the same players?")){
-  players.forEach(p=>p.pieces=[-1,-1,-1,-1]);
-  current=0;rolled=null;gameOver=false;locked=false;
-  statusMessage="New game! Roll a 6 to bring a token out.";
-  renderAll();
+function rollComputer(){
+ if(over||!players[current]?.computer)return;
+ die=Math.floor(Math.random()*6)+1;
+ $("dice").textContent=["","⚀","⚁","⚂","⚃","⚄","⚅"][die];
+ const legal=players[current].pieces
+  .map((_,ti)=>ti)
+  .filter(ti=>canMove(ti,die));
+
+ if(!legal.length){
+  const rolled=die;
+  die=null;
+  updateStatus();
+  if(rolled===6)maybeComputer();
+  else setTimeout(nextPlayer,600);
+  return;
  }
-});
-$("setupButton").addEventListener("click",()=>{
- clearTimeout(computerTimer);
- gameStarted=false;
- $("game").classList.add("hidden");
- $("setup").classList.remove("hidden");
-});
 
-function drawBoard(){
- const S=600,C=40;
- ctx.clearRect(0,0,S,S);
- ctx.fillStyle="#fff";
- ctx.fillRect(0,0,S,S);
- hitAreas=[];
- drawBase(0,0,0);
- drawBase(1,360,0);
- drawBase(2,360,360);
- drawBase(3,0,360);
+ // Prefer captures, then home entries and tokens closest to home.
+ const p=players[current];
+ const choice=legal.sort((a,b)=>{
+  const pa=p.pieces[a],pb=p.pieces[b];
+  const sa=pa===-1?100:pa;
+  const sb=pb===-1?100:pb;
+  return sb-sa;
+ })[0];
 
- // Bright-white outer path tiles.
- TRACK.forEach(([x,y],i)=>{
-  const px=x*C,py=y*C;
-  ctx.fillStyle="#ffffff";
-  ctx.fillRect(px+1,py+1,C-2,C-2);
-  ctx.strokeStyle="#4d4358";
-  ctx.lineWidth=1.4;
-  ctx.strokeRect(px+1,py+1,C-2,C-2);
-  if(SAFE_INDICES.has(i)){
-   ctx.fillStyle="#f5eaff";
-   ctx.fillRect(px+3,py+3,C-6,C-6);
-   drawStar(px+C/2,py+C/2,9,"#aa8ad9");
-  }
+ const id=turnId;
+ setTimeout(()=>{
+  if(id!==turnId||over||die===null)return;
+  movePiece(current,choice);
+ },550);
+}
+
+function endGame(){
+ over=true;
+ turnId++;
+ die=null;
+ const winner=players[finishOrder[0]];
+ $("resultEmoji").textContent="🏆";
+ $("resultTitle").textContent=winner.name+" wins!";
+ const places=finishOrder.map((pi,index)=>{
+  const suffix=index===0?"st":index===1?"nd":index===2?"rd":"th";
+  return `${index+1}${suffix} — ${players[pi].name}`;
  });
+ const unfinished=players
+  .map((p,i)=>({p,i}))
+  .filter(x=>!finishOrder.includes(x.i))
+  .map(x=>x.p.name);
+ unfinished.forEach(name=>places.push("— "+name));
+ $("resultText").textContent=
+  "Congratulations! ♡  Final placements: "+places.join(" · ");
+ $("result").classList.add("show");
+ $("confetti").innerHTML="";
+ $("confetti").classList.remove("hidden");
 
- // Coloured starting squares.
- START_INDEX.forEach((index,pi)=>{
-  const [x,y]=TRACK[index];
-  const c=COLORS[pi];
-  ctx.fillStyle=c.light;
-  ctx.fillRect(x*C+2,y*C+2,C-4,C-4);
-  ctx.strokeStyle=c.dark;
-  ctx.lineWidth=2;
-  ctx.strokeRect(x*C+2,y*C+2,C-4,C-4);
- });
+ for(let i=0;i<65;i++){
+  const bit=document.createElement("i");
+  bit.style.left=Math.random()*100+"%";
+  bit.style.background=COLORS[i%COLORS.length].hex;
+  bit.style.animationDelay=Math.random()*1.5+"s";
+  bit.style.transform=`rotate(${Math.random()*360}deg)`;
+  $("confetti").appendChild(bit);
+ }
+ playWinSound();
+ updateStatus();
+}
 
- // Five-step home lanes.
- HOME_LANES.forEach((lane,pi)=>{
-  const c=COLORS[pi];
-  lane.forEach(([x,y],j)=>{
-   const px=x*C,py=y*C;
-   const g=ctx.createLinearGradient(px,py,px+C,py+C);
-   g.addColorStop(0,c.light);
-   g.addColorStop(1,c.hex);
-   ctx.fillStyle=g;
-   ctx.fillRect(px+1,py+1,C-2,C-2);
-   ctx.strokeStyle="#fff";
-   ctx.lineWidth=1.2;
-   ctx.strokeRect(px+2,py+2,C-4,C-4);
-   if(j===4){
-    ctx.fillStyle="#ffffffaa";
-    ctx.beginPath();ctx.arc(px+C/2,py+C/2,4,0,Math.PI*2);ctx.fill();
-   }
-  });
- });
+function playTone(frequency,duration=0.15){
+ if(!soundOn)return;
+ try{
+  audio=audio||new (window.AudioContext||window.webkitAudioContext)();
+  const oscillator=audio.createOscillator();
+  const gain=audio.createGain();
+  oscillator.frequency.value=frequency;
+  oscillator.type="sine";
+  gain.gain.setValueAtTime(0.06,audio.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001,audio.currentTime+duration);
+  oscillator.connect(gain);
+  gain.connect(audio.destination);
+  oscillator.start();
+  oscillator.stop(audio.currentTime+duration);
+ }catch(e){}
+}
 
- drawCentre();
- // Draw tokens after board tiles so tokens remain visible.
- players.forEach((p,pi)=>{
-  p.pieces.forEach((progress,ti)=>{
-   const pos=getTokenPosition(pi,ti,progress);
-   drawToken(pos.x,pos.y,COLORS[p.color],pi,ti,progress);
-  });
+function playWinSound(){
+ if(!soundOn)return;
+ [523,659,784,1047].forEach((f,i)=>{
+  setTimeout(()=>playTone(f,0.3),i*180);
  });
 }
 
-function drawBase(pi,x,y){
- const C=40,c=COLORS[pi];
- const g=ctx.createLinearGradient(x,y,x+240,y+240);
- g.addColorStop(0,c.light);
- g.addColorStop(.48,c.hex);
- g.addColorStop(1,c.dark);
- roundedRect(x+2,y+2,236,236,19,g);
- ctx.save();
- ctx.strokeStyle="#ffffffcc";ctx.lineWidth=2;
- roundedRect(x+8,y+8,224,224,15,"rgba(255,255,255,.12)",true);
- ctx.strokeStyle="#ffffff7a";ctx.lineWidth=1;
- roundedRect(x+15,y+15,210,210,12,"rgba(255,255,255,.08)",true);
- ctx.restore();
-
- // Four-token home nest.
- const bx=x+60,by=y+60;
- const nest=ctx.createLinearGradient(bx,by,bx+120,by+120);
- nest.addColorStop(0,"#ffffff");
- nest.addColorStop(1,"#f7f1ff");
- roundedRect(bx,by,120,120,17,nest);
- ctx.strokeStyle="#ffffff";ctx.lineWidth=3;
- roundedRect(bx+3,by+3,114,114,14,"rgba(255,255,255,0)",true);
-
-  // Decorative corner details.
- ctx.fillStyle="#ffffffb0";
- ctx.font="16px Georgia";
- ctx.textAlign="center";
- ctx.textBaseline="middle";
- ctx.fillText(c.symbol,x+24,y+24);
- ctx.fillText(c.symbol,x+216,y+216);
-}
-
-
-
-function getTokenPosition(pi,ti,progress){
- const C=40;
-
- if(progress===56){
-  const offsets=[[-9,-9],[9,-9],[-9,9],[9,9]];
-  return {
-   x:300+offsets[ti][0],
-   y:300+offsets[ti][1],
-   finished:true
-  };
- }
-function drawCentre(){
- const x=240,y=240,size=120;
- const mid=x+size/2;
- const end=y+size;
-
- // Four-colour winning square
- const triangles=[
-  {p:[[x,y],[x+size,y],[mid,mid]],c:COLORS[0]},
-  {p:[[x+size,y],[x+size,end],[mid,mid]],c:COLORS[1]},
-  {p:[[x+size,end],[x,end],[mid,mid]],c:COLORS[2]},
-  {p:[[x,end],[x,y],[mid,mid]],c:COLORS[3]}
- ];
-
- triangles.forEach(t=>{
-  ctx.beginPath();
-  t.p.forEach(([px,py],i)=>{
-   if(i===0) ctx.moveTo(px,py);
-   else ctx.lineTo(px,py);
-  });
-  ctx.closePath();
-
-  ctx.fillStyle=t.c.hex;
-  ctx.fill();
-
-  ctx.strokeStyle="#ffffff";
-  ctx.lineWidth=2;
-  ctx.stroke();
- });
-
- // Four-colour diamond at the finish
- ctx.beginPath();
- ctx.moveTo(mid,mid-20);
- ctx.lineTo(mid+20,mid);
- ctx.lineTo(mid,mid+20);
- ctx.lineTo(mid-20,mid);
- ctx.closePath();
-
- ctx.fillStyle="#ffffff";
- ctx.fill();
-
- ctx.strokeStyle="#b9a0f5";
- ctx.lineWidth=2;
- ctx.stroke();
-
- // Small centre diamond
- ctx.beginPath();
- ctx.moveTo(mid,mid-9);
- ctx.lineTo(mid+9,mid);
- ctx.lineTo(mid,mid+9);
- ctx.lineTo(mid-9,mid);
- ctx.closePath();
-
- ctx.fillStyle="#b9a0f5";
- ctx.fill();
-  }
-  
- if(progress===-1){
-  const base=BASES[pi];
-  const coords=[
-   [base.x+2,base.y+2],
-   [base.x+4,base.y+2],
-   [base.x+2,base.y+4],
-   [base.x+4,base.y+4]
-  ];
-  return {
-   x:(coords[ti][0]+.5)*C,
-   y:(coords[ti][1]+.5)*C,
-   home:true
-  };
- }
-
- if(progress<=50){
-  const global=(START_INDEX[pi]+progress)%52;
-  const [gx,gy]=TRACK[global];
-  const same=[];
-
-  players.forEach((p,oi)=>p.pieces.forEach((v,ti2)=>{
-   if(oi===pi&&ti2===ti)return;
-   if(v>=0&&v<=50&&
-    (START_INDEX[p.color]+v)%52===global){
-    same.push({pi:oi,ti:ti2});
-   }
-  }));
-
-  const offsets=[
-   [0,0],[-7,-7],[7,-7],[-7,7],[7,7]
-  ];
-  const off=offsets[Math.min(same.length,4)];
-
-  return {
-   x:(gx+.5)*C+off[0],
-   y:(gy+.5)*C+off[1]
-  };
- }
-
- const lane=HOME_LANES[pi][progress-51];
- return {
-  x:(lane[0]+.5)*C,
-  y:(lane[1]+.5)*C
- };
-}
-
-function drawToken(x,y,c,pi,ti,progress){
- const r=12;
- const isMovable=
-  pi===current&&rolled!==null&&
-  canMove(ti,rolled)&&!gameOver;
-
- if(isMovable){
-  ctx.beginPath();
-  ctx.arc(x,y,18,0,Math.PI*2);
-  ctx.fillStyle="#fff1a6";
-  ctx.fill();
-  ctx.strokeStyle="#e8b84c";
-  ctx.lineWidth=2;
-  ctx.stroke();
- }
-
- // Soft shadow.
- ctx.beginPath();
- ctx.ellipse(x,y+6,12,5,0,0,Math.PI*2);
- ctx.fillStyle="#35274330";
- ctx.fill();
-
- // Glossy dimensional token.
- const g=ctx.createRadialGradient(
-  x-5,y-7,1,x,y,r+4
- );
- g.addColorStop(0,"#ffffff");
- g.addColorStop(.24,c.light);
- g.addColorStop(.65,c.hex);
- g.addColorStop(1,c.dark);
-
- ctx.beginPath();
- ctx.arc(x,y,r,0,Math.PI*2);
- ctx.fillStyle=g;
- ctx.fill();
- ctx.strokeStyle="#ffffff";
- ctx.lineWidth=1.8;
- ctx.stroke();
-
- // Glossy reflection.
- ctx.beginPath();
- ctx.ellipse(x-3,y-5,5,2.5,-.5,0,Math.PI*2);
- ctx.fillStyle="#ffffffc9";
- ctx.fill();
-
- // Decorative symbol.
- ctx.fillStyle="#ffffff";
- ctx.font="bold 10px Georgia";
- ctx.textAlign="center";
- ctx.textBaseline="middle";
- ctx.fillText(c.symbol,x,y+1);
-
- hitAreas.push({
-  x,y,r:18,pi,ti,movable:isMovable
- });
-}
-
-function drawStar(cx,cy,r,color){
- ctx.save();
- ctx.beginPath();
-
- for(let i=0;i<10;i++){
-  const a=-Math.PI/2+i*Math.PI/5;
-  const rr=i%2===0?r:r*.45;
-  const x=cx+Math.cos(a)*rr;
-  const y=cy+Math.sin(a)*rr;
-
-  if(i===0)ctx.moveTo(x,y);
-  else ctx.lineTo(x,y);
- }
-
- ctx.closePath();
- ctx.fillStyle=color;
- ctx.fill();
- ctx.restore();
-}
-
-function roundedRect(x,y,w,h,r,fill,stroke=false){
- ctx.beginPath();
- ctx.moveTo(x+r,y);
- ctx.arcTo(x+w,y,x+w,y+h,r);
- ctx.arcTo(x+w,y+h,x,y+h,r);
- ctx.arcTo(x,y+h,x,y,r);
- ctx.arcTo(x,y,x+w,y,r);
- ctx.closePath();
-
- if(fill){
-  ctx.fillStyle=fill;
-  ctx.fill();
- }
- if(stroke)ctx.stroke();
-}
-
-canvas.addEventListener("click",event=>{
- if(!gameStarted||gameOver||locked||
-    rolled===null||players[current].computer)return;
-
- const rect=canvas.getBoundingClientRect();
- const x=(event.clientX-rect.left)*600/rect.width;
- const y=(event.clientY-rect.top)*600/rect.height;
-
- const hit=hitAreas.slice().reverse().find(h=>
-  h.pi===current&&h.movable&&
-  Math.hypot(h.x-x,h.y-y)<=h.r+4
- );
-
- if(hit)movePiece(hit.ti);
+$("sound").addEventListener("click",()=>{
+ soundOn=!soundOn;
+ $("sound").textContent=soundOn?"♫ Sound: On":"♫ Sound: Off";
+ if(soundOn)playTone(523);
 });
 
-function resizeCanvas(){
- if(gameStarted)drawBoard();
-}
-
-window.addEventListener("resize",resizeCanvas);
-
-renderSetup();
-</script>
+buildPlayerCards();
+updatePlayerCards();
+  </script>
 </body>
 </html>
