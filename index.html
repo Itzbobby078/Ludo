@@ -3,21 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#171321">
-<title>Ludo ♡</title>
+<meta name="theme-color" content="#09090c">
+<title>Ludo — Black & Gold</title>
 
 <style>
 :root {
-  --bg:#171321;
-  --panel:#241d32;
-  --panel2:#302640;
-  --lav:#c8b5ff;
-  --text:#fffaff;
-  --muted:#b5a9c7;
-  --red:#ed647e;
-  --green:#61d5a1;
-  --yellow:#ffd36b;
-  --blue:#80b7ff;
+  --bg:#09090c;
+  --panel:#15151b;
+  --gold:#e5c477;
+  --text:#fff8e8;
+  --muted:#a6a0a0;
+  --line:#39343a;
+  --cell:#f6f1e8;
+  --red:#f05b66;
+  --green:#5ed6a1;
+  --yellow:#edc45f;
+  --blue:#69a9ff;
 }
 
 * {
@@ -28,30 +29,33 @@
 body {
   margin:0;
   min-height:100vh;
+  background:
+    radial-gradient(ellipse at 50% 0%,#292016 0%,transparent 42%),
+    var(--bg);
   color:var(--text);
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  background:
-    radial-gradient(ellipse at 0% 0%,#463357,transparent 42%),
-    radial-gradient(ellipse at 100% 100%,#27334e,transparent 40%),
-    var(--bg);
 }
 
-button,select {font:inherit}
-button {touch-action:manipulation;cursor:pointer}
-button:disabled {opacity:.45;cursor:not-allowed}
+button,input,select {font:inherit}
+
+button {
+  cursor:pointer;
+  touch-action:manipulation;
+}
 
 .app {
-  width:min(100%,760px);
+  width:100%;
+  max-width:1150px;
   margin:auto;
-  padding:16px 12px 30px;
+  padding:12px;
 }
 
 header {
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:10px;
-  margin-bottom:15px;
+  margin-bottom:12px;
 }
 
 .brand {
@@ -61,1681 +65,1534 @@ header {
 }
 
 .brand-mark {
-  width:45px;
-  height:45px;
+  width:43px;
+  height:43px;
   display:grid;
   place-items:center;
-  border-radius:15px;
-  background:linear-gradient(140deg,#d9c9ff,#8b72c0);
-  color:#261c36;
-  font-size:27px;
+  border:1px solid var(--gold);
+  border-radius:14px;
+  color:var(--gold);
+  font-size:25px;
+  background:linear-gradient(145deg,#332918,#111);
+  box-shadow:0 0 20px #d7ae4530;
 }
 
-.brand h1 {margin:0;font-size:25px}
-.brand p {
-  margin:2px 0 0;
+.brand h1 {
+  margin:0;
+  font-size:22px;
+  letter-spacing:3px;
+  color:var(--gold);
+}
+
+.brand small {
+  display:block;
+  font-size:9px;
+  letter-spacing:3px;
   color:var(--muted);
-  font-size:10px;
-  letter-spacing:1.4px;
-  text-transform:uppercase;
 }
 
-.badge {
-  padding:8px 10px;
-  border:1px solid #68577f;
-  border-radius:99px;
-  background:#292138;
-  color:#e9ddff;
-  font-size:10px;
-  white-space:nowrap;
+.header-btn {
+  background:#1a1713;
+  color:var(--gold);
+  border:1px solid #6b5833;
+  border-radius:12px;
+  padding:10px 12px;
 }
 
-.panel {
-  border:1px solid #ffffff14;
-  border-radius:19px;
-  background:linear-gradient(145deg,#2c2439,#201a2c);
-  box-shadow:0 10px 28px #00000019;
-}
-
-.turn-panel {
-  padding:13px 15px;
-  margin-bottom:12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.layout {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
   gap:12px;
 }
 
-.small-label {
-  color:var(--muted);
-  font-size:10px;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-}
-
-#turnName {
-  margin-top:3px;
-  font-size:20px;
-  font-weight:850;
-}
-
-#gameStatus {
-  margin-top:3px;
-  font-size:11px;
-  color:var(--muted);
-}
-
-.turn-indicator {
-  width:14px;
-  height:14px;
-  border-radius:50%;
-  background:var(--lav);
-  box-shadow:0 0 14px currentColor;
-}
-
-.board-shell {
-  padding:7px;
-  background:#100d18;
-  border:1px solid #ffffff20;
+.board-panel {
+  width:100%;
+  background:linear-gradient(145deg,#201b17,#111115);
+  border:1px solid #5b4829;
   border-radius:19px;
-  box-shadow:0 15px 40px #00000038;
+  padding:7px;
+  box-shadow:0 12px 45px #0009;
 }
 
 .board-wrap {
-  position:relative;
   width:100%;
   aspect-ratio:1;
+  position:relative;
+  overflow:hidden;
+  border-radius:12px;
+  background:#17171a;
 }
 
 #board {
   display:block;
   width:100%;
   height:100%;
-  background:#f8f5fc;
-  border-radius:12px;
   touch-action:manipulation;
-  user-select:none;
 }
 
-#board .movable {
-  cursor:pointer;
-  filter:drop-shadow(0 0 5px #fff3b5);
-}
-
-#board .movable:active {opacity:.75}
-
-.controls {
+.side {
   display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-  margin-top:12px;
-}
-
-.dice-panel {
-  padding:10px;
-  display:flex;
-  align-items:center;
+  grid-template-columns:1fr;
   gap:12px;
-  min-width:0;
 }
 
-#dice {
-  width:64px;
-  height:64px;
-  flex-shrink:0;
-  border:1px solid #ffffff80;
+.card {
+  background:linear-gradient(145deg,#1b1a1e,#111115);
+  border:1px solid #353038;
   border-radius:17px;
-  color:#3d3051;
-  background:linear-gradient(145deg,#fffaff,#ded0ff);
-  font-size:42px;
-  display:grid;
-  place-items:center;
-  box-shadow:0 5px 17px #00000025;
+  padding:14px;
 }
 
-#dice:active {transform:scale(.94)}
-
-#dice.rolling {
-  animation:roll .13s linear infinite alternate;
-}
-
-@keyframes roll {
-  from {transform:rotate(-9deg) scale(.96)}
-  to {transform:rotate(9deg) scale(1.04)}
-}
-
-.dice-copy {min-width:0}
-.dice-copy h3 {margin:0 0 4px;font-size:13px}
-.dice-copy p {
-  margin:0;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.5;
-}
-
-.side-buttons {
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-
-.btn {
-  min-height:39px;
-  padding:9px 12px;
-  border:1px solid #ffffff1c;
-  border-radius:12px;
-  background:#332941;
-  color:var(--text);
+.card-title {
+  color:var(--gold);
+  letter-spacing:2px;
   font-size:11px;
-  font-weight:750;
+  font-weight:800;
+  margin:0 0 12px;
 }
 
-.btn-primary {
-  background:linear-gradient(135deg,#e0d2ff,#bda4f5);
-  border:0;
-  color:#241a34;
-}
-
-.btn-secondary {color:#e3d7ff}
-.btn:active {transform:scale(.97)}
-
-.section-title {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  margin:21px 2px 10px;
-}
-
-.section-title h2 {margin:0;font-size:15px}
-.section-title span {font-size:10px;color:var(--muted)}
-
-.player-grid {
+.players {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:8px;
 }
 
-.player-card {
+.player {
+  border:1px solid #39343a;
+  background:#101014;
+  border-radius:12px;
+  padding:10px;
   min-width:0;
+  transition:.2s;
+}
+
+.player.active {
+  border-color:var(--gold);
+  box-shadow:inset 0 0 0 1px #e5c47740,0 0 14px #e5c47712;
+}
+
+.player-top {
   display:flex;
   align-items:center;
-  gap:9px;
-  padding:11px;
-  border:1px solid #ffffff12;
+  gap:7px;
+  min-width:0;
+}
+
+.player-dot {
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  flex:none;
+  border:2px solid #ffffff90;
+}
+
+.player-name {
+  font-size:12px;
+  font-weight:750;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.player-state {
+  font-size:10px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+.status {
+  color:#f5dfad;
+  font-size:13px;
+  line-height:1.5;
+  min-height:40px;
+  margin:0 0 12px;
+}
+
+.dice-row {
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.dice {
+  width:64px;
+  height:64px;
   border-radius:15px;
-  background:#251f32;
-}
-
-.player-card.active {
-  border-color:#c8b5ff99;
-  background:#342943;
-  box-shadow:inset 0 0 0 1px #c8b5ff18;
-}
-
-.swatch {
-  width:35px;
-  height:35px;
-  flex-shrink:0;
+  background:linear-gradient(145deg,#fffdf7,#dcd3c1);
+  border:2px solid var(--gold);
+  color:#191511;
   display:grid;
   place-items:center;
-  border-radius:11px;
-  color:#20182c;
+  font-size:40px;
   font-weight:900;
+  box-shadow:0 6px 20px #0006;
+  flex:none;
 }
 
-.player-details {min-width:0}
-.player-details strong {display:block;font-size:12px}
-.player-details small {
+.dice.rolling {animation:roll .28s ease}
+
+@keyframes roll {
+  0%{transform:rotate(0) scale(1)}
+  50%{transform:rotate(15deg) scale(1.1)}
+  100%{transform:rotate(0) scale(1)}
+}
+
+.primary {
+  flex:1;
+  min-height:49px;
+  border:1px solid #f3d99b;
+  border-radius:13px;
+  color:#19130b;
+  background:linear-gradient(130deg,#f4d995,#c59b43);
+  font-weight:900;
+  letter-spacing:1px;
+  box-shadow:0 5px 15px #d6a94a20;
+}
+
+.primary:disabled {
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.action-row {
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+.secondary {
+  flex:1;
+  min-height:42px;
+  border-radius:11px;
+  border:1px solid #474047;
+  background:#201d22;
+  color:#f5e9ce;
+  padding:8px;
+  font-size:12px;
+}
+
+.settings-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.field label {
   display:block;
-  margin-top:3px;
+  color:var(--muted);
   font-size:10px;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+
+.field select,.field input {
+  width:100%;
+  min-width:0;
+  color:var(--text);
+  background:#0e0e12;
+  border:1px solid #464047;
+  border-radius:10px;
+  padding:10px 8px;
+  outline:none;
+}
+
+.field select:focus,.field input:focus {
+  border-color:var(--gold);
+}
+
+.token-options {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:7px;
+}
+
+.token-choice {
+  background:#101014;
+  border:1px solid #39343a;
+  color:var(--text);
+  border-radius:11px;
+  padding:9px 3px;
+  font-size:23px;
+}
+
+.token-choice span {
+  display:block;
+  font-size:9px;
+  margin-top:4px;
   color:var(--muted);
 }
 
-.rules {
-  margin-top:16px;
-  padding:14px;
+.token-choice.selected {
+  border-color:var(--gold);
+  background:#352918;
 }
 
-.rules h2 {margin:0 0 9px;font-size:14px}
-.rules p {
-  margin:7px 0;
-  color:#d0c5df;
+.help {
+  color:var(--muted);
   font-size:11px;
-  line-height:1.6;
+  line-height:1.7;
+  margin:10px 0 0;
 }
 
-.rules p::before {
-  content:"♡";
-  color:var(--lav);
-  margin-right:8px;
+.legend {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:10px;
 }
 
-footer {
-  text-align:center;
-  margin-top:19px;
-  color:#9287a3;
+.legend span {
   font-size:10px;
-}
-
-/* Start and result dialogs */
-
-.overlay {
-  position:fixed;
-  inset:0;
-  z-index:100;
+  color:#d5caca;
   display:flex;
   align-items:center;
-  justify-content:center;
-  padding:16px;
-  background:#100d19ed;
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  overflow:auto;
+  gap:5px;
 }
 
-.overlay.hidden {display:none}
+.legend i {
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  display:inline-block;
+}
 
-.dialog {
-  width:min(100%,410px);
-  max-height:calc(100dvh - 32px);
-  overflow:auto;
-  padding:23px 19px;
+.footer {
   text-align:center;
-  border:1px solid #ffffff22;
-  border-radius:24px;
-  background:
-    radial-gradient(ellipse at top,#443451,transparent 65%),
-    #211a2e;
-  box-shadow:0 24px 80px #00000060;
+  color:#746c68;
+  font-size:10px;
+  letter-spacing:2px;
+  padding:15px 0 5px;
 }
 
-.dialog-mark {
-  width:70px;
-  height:70px;
-  display:grid;
-  place-items:center;
-  margin:0 auto 13px;
-  border-radius:23px;
-  background:linear-gradient(140deg,#ddceff,#8d73c3);
-  color:#271d38;
-  font-size:38px;
-}
-
-.dialog h2 {margin:0;font-size:27px}
-.dialog > p {
-  margin:9px 0 17px;
-  color:#c2b5d4;
-  font-size:12px;
-  line-height:1.7;
-}
-
-.option-label {
-  display:block;
-  margin:15px 0 8px;
-  text-align:left;
-  font-size:12px;
-  font-weight:800;
-}
-
-.mode-options {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-
-.mode-option {
-  padding:12px 8px;
-  text-align:left;
+dialog {
+  width:min(92%,420px);
+  background:#17151a;
   color:var(--text);
-  border:1px solid #ffffff20;
-  border-radius:13px;
-  background:#30263e;
+  border:1px solid var(--gold);
+  border-radius:18px;
+  padding:20px;
 }
 
-.mode-option.selected {
-  border-color:var(--lav);
-  background:#443453;
+dialog::backdrop {background:#000b}
+
+dialog h2 {color:var(--gold);margin-top:0}
+
+.dialog-actions {
+  display:flex;
+  gap:8px;
+  margin-top:16px;
 }
 
-.mode-option strong {display:block;font-size:11px}
-.mode-option small {
-  display:block;
-  margin-top:5px;
-  color:#c0b3d2;
-  font-size:10px;
-  line-height:1.5;
-}
-
-select {
-  width:100%;
-  padding:12px;
-  border:1px solid #655477;
-  border-radius:12px;
-  color:white;
-  background:#30263e;
-}
-
-.start-button {
-  width:100%;
-  min-height:49px;
-  margin-top:20px;
-  border:0;
-  border-radius:14px;
-  color:#241a34;
-  background:linear-gradient(135deg,#e4d8ff,#b99ef3);
-  font-weight:900;
-  font-size:14px;
-}
-
-.start-button:active {transform:scale(.98)}
-
-.dialog-note {
-  display:block;
-  margin-top:12px;
-  color:#998ca9;
-  font-size:10px;
-  line-height:1.6;
-}
-
-#celebration {z-index:120}
-.celebration-dialog {position:relative;overflow:hidden}
-#fireworks {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-}
-.celebration-content {position:relative;z-index:1}
-#celebrationMessage {
-  color:#e3d8ff;
-  font-size:13px;
-  line-height:1.7;
-}
-#ranking {
-  display:grid;
-  gap:7px;
-  margin:15px 0;
-  text-align:left;
-}
-.ranking-item {
-  padding:10px 12px;
-  border:1px solid #ffffff15;
-  border-radius:11px;
-  background:#ffffff08;
-  font-size:12px;
-}
-
-@media(max-width:390px) {
-  .app {padding:11px 8px 25px}
-  .brand h1 {font-size:22px}
-  .badge {font-size:9px;padding:7px}
-  .board-shell {padding:4px;border-radius:14px}
-  .controls {grid-template-columns:1fr}
-  .side-buttons {flex-direction:row}
-  .side-buttons .btn {flex:1}
-  #dice {width:59px;height:59px}
-}
-
-@media(prefers-reduced-motion:reduce) {
-  *,*::before,*::after {
-    animation-duration:.01ms!important;
-    transition-duration:.01ms!important;
+@media(min-width:760px) {
+  .app {padding:18px}
+  .layout {
+    grid-template-columns:minmax(0,1.65fr) minmax(300px,.85fr);
+    align-items:start;
   }
+  .side {gap:12px}
+  .brand h1 {font-size:27px}
+}
+
+@media(max-width:380px) {
+  .app {padding:7px}
+  .board-panel {padding:4px}
+  .card {padding:11px}
+  .brand h1 {font-size:18px}
+  .header-btn {padding:8px}
+  .dice {width:56px;height:56px;font-size:35px}
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
 <header>
   <div class="brand">
-    <div class="brand-mark">♡</div>
+    <div class="brand-mark">♟</div>
     <div>
-      <h1>Ludo</h1>
-      <p>Dreamy game night</p>
+      <h1>LUDO</h1>
+      <small>THE GOLDEN EDITION</small>
     </div>
   </div>
-  <div class="badge">4 PLAYERS · CLASSIC</div>
+  <button class="header-btn" id="newGameTop">↻ New Game</button>
 </header>
 
-<section class="panel turn-panel">
-  <div>
-    <div class="small-label">Current turn</div>
-    <div id="turnName">Ruby</div>
-    <div id="gameStatus" aria-live="polite">Choose a mode to begin.</div>
-  </div>
-  <div id="turnDot" class="turn-indicator"></div>
-</section>
+<main class="layout">
 
-<main>
-  <section class="board-shell">
+  <section class="board-panel">
     <div class="board-wrap">
-      <svg id="board"
-           viewBox="0 0 600 600"
-           xmlns="http://www.w3.org/2000/svg"
-           role="img"
-           aria-label="Four-player Ludo board"></svg>
+      <svg id="board" viewBox="0 0 600 600"
+           role="img" aria-label="Ludo game board"></svg>
+    </div>
+    <div class="legend">
+      <span><i style="background:#f05b66"></i>Ruby</span>
+      <span><i style="background:#5ed6a1"></i>Emerald</span>
+      <span><i style="background:#edc45f"></i>Gold</span>
+      <span><i style="background:#69a9ff"></i>Sapphire</span>
     </div>
   </section>
 
-  <section class="controls">
-    <div class="panel dice-panel">
-      <button id="dice" type="button" aria-label="Roll dice" disabled>⚄</button>
-      <div class="dice-copy">
-        <h3 id="diceTitle">Your dice</h3>
-        <p id="rollHint" aria-live="polite">Start a game to begin.</p>
+  <aside class="side">
+
+    <section class="card">
+      <h2 class="card-title">PLAYER TABLE</h2>
+      <div class="players" id="players"></div>
+    </section>
+
+    <section class="card">
+      <h2 class="card-title">YOUR TURN</h2>
+      <p class="status" id="status">Roll the dice to begin.</p>
+      <div class="dice-row">
+        <button class="dice" id="dice" aria-label="Roll dice">⚄</button>
+        <button class="primary" id="rollBtn">ROLL DICE</button>
       </div>
-    </div>
-    <div class="side-buttons">
-      <button id="restart" class="btn btn-secondary" type="button">↻ Restart</button>
-      <button id="newGame" class="btn btn-primary" type="button">New game</button>
-    </div>
-  </section>
+      <div class="action-row">
+        <button class="secondary" id="passBtn">Pass turn</button>
+        <button class="secondary" id="restartBtn">Restart match</button>
+      </div>
+      <p class="help">
+        Roll a 6 to release a token. Tap a highlighted token to move.
+        Capture opponents, use safe squares, and reach home with an exact roll.
+      </p>
+    </section>
 
-  <div class="section-title">
-    <h2>Players</h2>
-    <span>Four tokens each</span>
-  </div>
+    <section class="card">
+      <h2 class="card-title">GAME SETTINGS</h2>
+      <div class="settings-grid">
+        <div class="field">
+          <label for="mode">GAME MODE</label>
+          <select id="mode">
+            <option value="pass">Pass &amp; Play</option>
+            <option value="computer">Vs Computer</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="boardTheme">BOARD THEME</label>
+          <select id="boardTheme">
+            <option value="gold">Black &amp; Gold</option>
+            <option value="lavender">Lavender Dream</option>
+            <option value="ruby">Ruby Night</option>
+            <option value="ocean">Midnight Ocean</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="playerCount">PLAYERS</label>
+          <select id="playerCount">
+            <option value="2">2 Players</option>
+            <option value="3">3 Players</option>
+            <option value="4" selected>4 Players</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="startPlayer">FIRST PLAYER</label>
+          <select id="startPlayer">
+            <option value="0">Ruby</option>
+            <option value="1">Emerald</option>
+            <option value="2">Gold</option>
+            <option value="3">Sapphire</option>
+          </select>
+        </div>
+      </div>
+    </section>
 
-  <section class="player-grid">
-    <div class="player-card" data-player-card="0">
-      <div class="swatch" style="background:var(--red)">R</div>
-      <div class="player-details"><strong>Ruby</strong><small id="playerCount0">0 / 4 home</small></div>
-    </div>
-    <div class="player-card" data-player-card="1">
-      <div class="swatch" style="background:var(--green)">E</div>
-      <div class="player-details"><strong>Emerald</strong><small id="playerCount1">0 / 4 home</small></div>
-    </div>
-    <div class="player-card" data-player-card="2">
-      <div class="swatch" style="background:var(--yellow)">A</div>
-      <div class="player-details"><strong>Amber</strong><small id="playerCount2">0 / 4 home</small></div>
-    </div>
-    <div class="player-card" data-player-card="3">
-      <div class="swatch" style="background:var(--blue)">S</div>
-      <div class="player-details"><strong>Sapphire</strong><small id="playerCount3">0 / 4 home</small></div>
-    </div>
-  </section>
+    <section class="card">
+      <h2 class="card-title">TOKEN STYLE</h2>
+      <div class="token-options" id="tokenOptions">
+        <button class="token-choice selected" data-token="classic">♟<span>Classic</span></button>
+        <button class="token-choice" data-token="crown">♛<span>Crown</span></button>
+        <button class="token-choice" data-token="gem">◆<span>Gem</span></button>
+        <button class="token-choice" data-token="star">✦<span>Star</span></button>
+      </div>
+      <p class="help">Choose a style to update all 16 tokens on the board.</p>
+    </section>
 
-  <section class="panel rules">
-    <h2>♡ Classic Ludo rules</h2>
-    <p>Roll a 6 to bring a token out of its base.</p>
-    <p>Move clockwise around the outer path and enter your colored home lane.</p>
-    <p>Capture an opponent by landing on their unprotected token.</p>
-    <p>Safe squares protect tokens from capture.</p>
-    <p>You need an exact roll to finish.</p>
-    <p>Rolling a 6 or capturing an opponent grants an extra turn.</p>
-  </section>
+    <section class="card">
+      <h2 class="card-title">PLAYER NAMES</h2>
+      <div class="settings-grid" id="nameFields"></div>
+      <div class="action-row">
+        <button class="secondary" id="applyNames">Apply names</button>
+        <button class="secondary" id="resetNames">Default names</button>
+      </div>
+    </section>
+
+  </aside>
 </main>
 
-<footer>Made for cozy game nights ♡</footer>
+<div class="footer">ROLL • MOVE • CAPTURE • CONQUER</div>
 </div>
 
-<!-- START SCREEN -->
-
-<div id="startScreen" class="overlay">
-  <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
-    <div class="dialog-mark">♡</div>
-    <h2 id="welcomeTitle">Let's play Ludo</h2>
-    <p>Bring your tokens home and race to the finish.</p>
-
-    <span class="option-label">Choose game mode</span>
-
-    <div class="mode-options">
-      <button class="mode-option selected" type="button" data-mode-choice="pass" aria-pressed="true">
-        <strong>Pass &amp; Play</strong>
-        <small>Four players share one device.</small>
-      </button>
-      <button class="mode-option" type="button" data-mode-choice="computer" aria-pressed="false">
-        <strong>Vs Computer</strong>
-        <small>You against three computer players.</small>
-      </button>
-    </div>
-
-    <label class="option-label" for="boardStyle">Board style</label>
-    <select id="boardStyle">
-      <option value="classic">Classic Ludo</option>
-      <option value="lavender">Lavender Dream</option>
-    </select>
-
-    <label class="option-label" for="tokenStyle">Token style</label>
-    <select id="tokenStyle">
-      <option value="classic">Classic glossy tokens</option>
-      <option value="gem">Gem tokens</option>
-    </select>
-
-    <button id="startButton" class="start-button" type="button">Start playing ♡</button>
-    <small class="dialog-note">Four players · Four tokens each · Classic movement</small>
-  </section>
-</div>
-
-<!-- RESULTS SCREEN -->
-
-<div id="celebration" class="overlay hidden">
-  <section class="dialog celebration-dialog" role="dialog" aria-modal="true" aria-labelledby="winTitle">
-    <canvas id="fireworks"></canvas>
-    <div class="celebration-content">
-      <div class="dialog-mark">♡</div>
-      <h2 id="winTitle">Game complete!</h2>
-      <p id="celebrationMessage">The final results are in.</p>
-      <div id="ranking"></div>
-      <button id="playAgain" class="start-button" type="button">Play again ♡</button>
-      <button id="backToMenu" class="btn btn-secondary" type="button" style="width:100%;margin-top:9px">Back to menu</button>
-    </div>
-  </section>
-</div>
+<dialog id="winnerDialog">
+  <h2 id="winnerTitle">Victory!</h2>
+  <p id="winnerText"></p>
+  <div class="dialog-actions">
+    <button class="primary" id="playAgain">PLAY AGAIN</button>
+    <button class="secondary" id="closeDialog">CLOSE</button>
+  </div>
+</dialog>
 
 <script>
 "use strict";
 
-/* =========================================
-   CONFIGURATION
-   ========================================= */
-
-const NS = "http://www.w3.org/2000/svg";
-const SIZE = 600;
-const CELL = 40;
+/* -------------------- CONSTANTS -------------------- */
 
 const COLORS = [
   {
-    name:"Ruby",
-    fill:"#ed647e",
-    dark:"#8e2945",
-    light:"#ffe0e7",
-    start:13,
-    lane:0
+    name:"Ruby", color:"#f05b66", dark:"#872c39",
+    light:"#ffb0b4", start:0, angle:0
   },
   {
-    name:"Emerald",
-    fill:"#61d5a1",
-    dark:"#176f51",
-    light:"#d5ffeb",
-    start:0,
-    lane:1
+    name:"Emerald", color:"#5ed6a1", dark:"#176e54",
+    light:"#b1ffda", start:13, angle:90
   },
   {
-    name:"Amber",
-    fill:"#e9b94f",
-    dark:"#98701b",
-    light:"#fff1be",
-    start:39,
-    lane:2
+    name:"Gold", color:"#edc45f", dark:"#95651b",
+    light:"#fff0b2", start:26, angle:180
   },
   {
-    name:"Sapphire",
-    fill:"#80b7ff",
-    dark:"#315a9b",
-    light:"#deebff",
-    start:26,
-    lane:3
+    name:"Sapphire", color:"#69a9ff", dark:"#234f9b",
+    light:"#c2ddff", start:39, angle:270
   }
 ];
 
-/*
-  Outer route: 52 distinct cells.
-  Each player moves clockwise from their own start.
-*/
+const THEMES = {
+  gold:{
+    bg:"#111114",tile:"#f0e7d7",line:"#c2b08c",
+    home:"#201c19",center:"#201c19",accent:"#e5c477",
+    base:["#5a2029","#174d3a","#69501a","#1e3f70"]
+  },
+  lavender:{
+    bg:"#15111d",tile:"#f1eafa",line:"#b9a0d7",
+    home:"#241a30",center:"#241a30",accent:"#e2caff",
+    base:["#70364b","#285e50","#795b2a","#3a4c87"]
+  },
+  ruby:{
+    bg:"#180d12",tile:"#f3e6e7",line:"#c47c85",
+    home:"#2b131a",center:"#2b131a",accent:"#ff9ba9",
+    base:["#7e2434","#275542","#71541e","#263d73"]
+  },
+  ocean:{
+    bg:"#09151c",tile:"#e5f1f4",line:"#7daab5",
+    home:"#11252d",center:"#11252d",accent:"#8bd8ed",
+    base:["#712c3a","#155e4b","#796022","#224e8a"]
+  }
+};
 
-const TRACK_GRID = [
-  [6,1],[6,2],[6,3],[6,4],[6,5],
-  [5,6],[4,6],[3,6],[2,6],[1,6],[0,6],
-  [0,7],[0,8],
-  [1,8],[2,8],[3,8],[4,8],[5,8],
-  [6,9],[6,10],[6,11],[6,12],[6,13],[6,14],
-  [7,14],[8,14],
-  [8,13],[8,12],[8,11],[8,10],[8,9],
-  [9,8],[10,8],[11,8],[12,8],[13,8],[14,8],
-  [14,7],[14,6],
-  [13,6],[12,6],[11,6],[10,6],[9,6],
-  [8,5],[8,4],[8,3],[8,2],[8,1],[8,0],
-  [7,0],[6,0]
-];
+const TOKEN_GLYPHS = {
+  classic:"♟",
+  crown:"♛",
+  gem:"◆",
+  star:"✦"
+};
 
-function cell(col,row) {
-  return {x:col*CELL+CELL/2,y:row*CELL+CELL/2};
-}
-
-const TRACK = TRACK_GRID.map(([c,r]) => cell(c,r));
-
-/*
-  Lanes are ordered from the outer track towards the center.
-  The final lane cell is the center finish.
-*/
-
-const LANE_GRID = [
-  [[1,7],[2,7],[3,7],[4,7],[5,7],[6,7]],
-  [[7,1],[7,2],[7,3],[7,4],[7,5],[7,6]],
-  [[13,7],[12,7],[11,7],[10,7],[9,7],[8,7]],
-  [[7,13],[7,12],[7,11],[7,10],[7,9],[7,8]]
-];
-
-const LANES = LANE_GRID.map(lane =>
-  lane.map(([c,r]) => cell(c,r))
-);
-
-const HOME_SPOTS = {
-  Ruby:[
-    cell(2,10),cell(4,10),cell(2,12),cell(4,12)
-  ],
-  Emerald:[
-    cell(10,2),cell(12,2),cell(10,4),cell(12,4)
-  ],
-  Amber:[
-    cell(10,10),cell(12,10),cell(10,12),cell(12,12)
-  ],
-  Sapphire:[
-    cell(2,2),cell(4,2),cell(2,4),cell(4,4)
-  ]
+const BASE_CELLS = {
+  0:[[1,1],[4,1],[1,4],[4,4]],
+  1:[[10,1],[13,1],[10,4],[13,4]],
+  2:[[10,10],[13,10],[10,13],[13,13]],
+  3:[[1,10],[4,10],[1,13],[4,13]]
 };
 
 /*
-  These indices are safe squares on the 52-cell route.
+  The 52 outside-track squares are arranged clockwise.
+  Grid coordinates are cell centers on a 15 x 15 board.
 */
+function buildTrack(){
+  const p=[];
 
-const SAFE = new Set([1,9,14,22,27,35,40,48]);
+  // Upper-left side
+  for(let x=1;x<=5;x++) p.push([x,6]);
+  for(let y=5;y>=1;y--) p.push([6,y]);
+  p.push([7,1]);
 
-const $ = id => document.getElementById(id);
-const board = $("board");
+  // Upper-right side
+  for(let y=1;y<=5;y++) p.push([8,y]);
+  for(let x=9;x<=13;x++) p.push([x,6]);
+  p.push([13,7]);
 
-let players = [];
-let current = 0;
-let die = null;
-let mode = "pass";
-let boardStyle = "classic";
-let tokenStyle = "classic";
-let started = false;
-let rolling = false;
-let over = false;
-let finishOrder = [];
-let rollTimer = null;
-let aiTimer = null;
-let fireworksTimer = null;
-let fireworksFrame = null;
-let fireworksParticles = [];
+  // Lower-right side
+  for(let x=13;x>=9;x--) p.push([x,8]);
+  for(let y=9;y<=13;y++) p.push([8,y]);
+  p.push([7,13]);
 
-/* =========================================
-   SVG HELPERS
-   ========================================= */
+  // Lower-left side
+  for(let y=13;y>=9;y--) p.push([6,y]);
+  for(let x=5;x>=1;x--) p.push([x,8]);
+  p.push([1,7]);
 
-function svg(parent,tag,attrs={}) {
-  const element = document.createElementNS(NS,tag);
+  return p;
+}
 
-  for (const [key,value] of Object.entries(attrs)) {
-    if (value !== undefined && value !== null) {
-      element.setAttribute(key,String(value));
-    }
+/*
+  Construct an ordered perimeter route with exactly 52 unique
+  squares. The final route follows the board's outside circuit.
+*/
+function createRing(){
+  const result=[];
+  const add=(x,y)=>{
+    if(!result.some(p=>p[0]===x&&p[1]===y)) result.push([x,y]);
+  };
+
+  // Start at Ruby's entry square and travel clockwise.
+  for(let x=1;x<=5;x++) add(x,6);
+  for(let y=5;y>=1;y--) add(6,y);
+  add(7,1);
+  for(let y=1;y<=5;y++) add(8,y);
+  for(let x=9;x<=13;x++) add(x,6);
+  add(13,7);
+  for(let x=13;x>=9;x--) add(x,8);
+  for(let y=9;y<=13;y++) add(8,y);
+  add(7,13);
+  for(let y=13;y>=9;y--) add(6,y);
+  for(let x=5;x>=1;x--) add(x,8);
+  add(1,7);
+
+  /*
+    Fill missing track squares in the outside ring so each player
+    travels a consistent 52-square circuit.
+  */
+  const perimeter=[
+    ...Array.from({length:5},(_,i)=>[i+1,6]),
+    ...Array.from({length:5},(_,i)=>[6,5-i]),
+    [7,1],
+    ...Array.from({length:5},(_,i)=>[8,i+1]),
+    ...Array.from({length:5},(_,i)=>[9+i,6]),
+    [13,7],
+    ...Array.from({length:5},(_,i)=>[13-i,8]),
+    ...Array.from({length:5},(_,i)=>[8,9+i]),
+    [7,13],
+    ...Array.from({length:5},(_,i)=>[6,13-i]),
+    ...Array.from({length:5},(_,i)=>[5-i,8]),
+    [1,7]
+  ];
+
+  const unique=[];
+  for(const c of perimeter){
+    if(!unique.some(p=>p[0]===c[0]&&p[1]===c[1])) unique.push(c);
   }
 
-  parent.appendChild(element);
-  return element;
+  // A valid standard perimeter contains 40 cells on this compact
+  // coordinate system; preserve those cells and add 12 edge-track
+  // positions to complete the circuit.
+  const extra=[
+    [1,5],[1,4],[1,3],[1,2],[1,1],
+    [2,1],[3,1],[4,1],[5,1],[9,1],[10,1],[11,1]
+  ];
+
+  for(const c of extra){
+    if(!unique.some(p=>p[0]===c[0]&&p[1]===c[1])) unique.push(c);
+  }
+
+  return unique.slice(0,52);
 }
 
-function rect(parent,x,y,w,h,fill,extra={}) {
-  return svg(parent,"rect",{
-    x,y,width:w,height:h,fill,...extra
-  });
+/*
+  Track cells are explicitly ordered to ensure movement, capture,
+  and player-relative progress use the same path.
+*/
+const TRACK = [
+ [1,6],[2,6],[3,6],[4,6],[5,6],
+ [6,5],[6,4],[6,3],[6,2],[6,1],
+ [7,1],[8,1],[8,2],[8,3],[8,4],[8,5],
+ [9,6],[10,6],[11,6],[12,6],[13,6],
+ [13,7],[13,8],[12,8],[11,8],[10,8],[9,8],
+ [8,9],[8,10],[8,11],[8,12],[8,13],
+ [7,13],[6,13],[6,12],[6,11],[6,10],[6,9],
+ [5,8],[4,8],[3,8],[2,8],[1,8],
+ [1,7]
+];
+
+// Expand the route to 52 distinct positions around the board.
+while(TRACK.length<52){
+  const additions=[
+    [2,7],[3,7],[4,7],[5,7],
+    [9,7],[10,7],[11,7],[12,7]
+  ];
+  for(const c of additions){
+    if(TRACK.length>=52) break;
+    if(!TRACK.some(p=>p[0]===c[0]&&p[1]===c[1])){
+      TRACK.push(c);
+    }
+  }
 }
 
-function circle(parent,x,y,r,fill,extra={}) {
-  return svg(parent,"circle",{
-    cx:x,cy:y,r,fill,...extra
-  });
+/*
+  Home-lane cells are kept separate from the shared track.
+*/
+const HOME_LANES = {
+  0:[[7,2],[7,3],[7,4],[7,5],[7,6]],
+  1:[[12,7],[11,7],[10,7],[9,7],[8,7]],
+  2:[[7,12],[7,11],[7,10],[7,9],[7,8]],
+  3:[[2,7],[3,7],[4,7],[5,7],[6,7]]
+};
+
+const SAFE = new Set([0,8,13,21,26,34,39,47]);
+
+/* -------------------- GAME STATE -------------------- */
+
+let mode="pass";
+let playerCount=4;
+let current=0;
+let die=null;
+let hasRolled=false;
+let over=false;
+let tokenStyle="classic";
+let themeName="gold";
+let names=["Ruby","Emerald","Gold","Sapphire"];
+let players=[];
+let fireworksTimer=null;
+
+const $=id=>document.getElementById(id);
+const board=$("board");
+
+function makePlayers(){
+  players=COLORS.map((c,i)=>({
+    ...c,
+    index:i,
+    pieces:[-1,-1,-1,-1],
+    finished:false,
+    rank:null,
+    isComputer:mode==="computer"&&i!==0
+  }));
+  current=Number($("startPlayer").value)||0;
+  die=null;
+  hasRolled=false;
+  over=false;
+  players.forEach((p,i)=>p.name=names[i]||p.name);
 }
 
-function text(parent,x,y,value,extra={}) {
-  const node = svg(parent,"text",{
-    x,y,
-    "text-anchor":"middle",
-    "dominant-baseline":"middle",
-    ...extra
-  });
+function theme(){
+  return THEMES[themeName]||THEMES.gold;
+}
 
-  node.textContent = value;
+/* -------------------- SVG HELPERS -------------------- */
+
+function el(tag,attrs={},parent=board){
+  const node=document.createElementNS("http://www.w3.org/2000/svg",tag);
+  for(const [k,v] of Object.entries(attrs)){
+    node.setAttribute(k,String(v));
+  }
+  parent.appendChild(node);
   return node;
 }
 
-/* =========================================
-   BOARD DRAWING
-   ========================================= */
-
-function drawHomeBase(player,x,y,label) {
-  const g = svg(board,"g",{"data-home":player.name});
-
-  rect(g,x,y,240,240,player.dark,{
-    stroke:"#352b43","stroke-width":2
-  });
-
-  rect(g,x+16,y+16,208,208,player.fill,{
-    rx:14,stroke:player.light,"stroke-width":2
-  });
-
-  text(g,x+120,y+38,label,{
-    fill:"#ffffff","font-size":16,
-    "font-weight":900,"letter-spacing":1
-  });
-
-  HOME_SPOTS[player.name].forEach((spot,index) => {
-    circle(g,spot.x,spot.y,27,player.dark,{
-      stroke:"#ffffffaa","stroke-width":2
-    });
-
-    circle(g,spot.x,spot.y,22,player.light,{
-      stroke:"#ffffff","stroke-width":2
-    });
-
-    circle(g,spot.x,spot.y,15,player.fill,{
-      stroke:player.dark,"stroke-width":1.5
-    });
-
-    text(g,spot.x,spot.y+1,String(index+1),{
-      fill:"#ffffff","font-size":11,"font-weight":900
-    });
-  });
+function rect(x,y,w,h,fill,rx=0,stroke="none",sw=0,parent=board){
+  return el("rect",{
+    x,y,width:w,height:h,fill,rx,
+    stroke, "stroke-width":sw
+  },parent);
 }
 
-function drawBoardBackground() {
-  board.replaceChildren();
+function circle(x,y,r,fill,stroke="none",sw=0,parent=board){
+  return el("circle",{
+    cx:x,cy:y,r,fill,stroke,"stroke-width":sw
+  },parent);
+}
 
-  const defs = svg(board,"defs");
+function textSvg(x,y,txt,size,fill,weight="700",parent=board){
+  const t=el("text",{
+    x,y,"text-anchor":"middle","dominant-baseline":"central",
+    "font-size":size,fill,"font-weight":weight,
+    "font-family":"system-ui,sans-serif"
+  },parent);
+  t.textContent=txt;
+  return t;
+}
 
-  const shadow = svg(defs,"filter",{
-    id:"tokenShadow",
-    x:"-50%",y:"-50%",width:"200%",height:"200%"
-  });
+function cellCenter(gx,gy){
+  const s=40;
+  return [20+gx*s,20+gy*s];
+}
 
-  svg(shadow,"feDropShadow",{
-    dx:0,dy:2,stdDeviation:2,
-    "flood-color":"#171321",
-    "flood-opacity":.35
-  });
+function polygon(points,fill,stroke="none",sw=0,parent=board){
+  return el("polygon",{
+    points:points.map(p=>p.join(",")).join(" "),
+    fill,stroke,"stroke-width":sw,
+    "stroke-linejoin":"round"
+  },parent);
+}
 
-  rect(board,0,0,SIZE,SIZE,
-    boardStyle==="lavender" ? "#eee7fa" : "#f8f5fc"
-  );
+/* -------------------- DRAW BOARD -------------------- */
 
-  /*
-    Home bases are arranged in four corners.
-  */
+function drawBase(x,y,colorIndex){
+  const th=theme();
+  const color=COLORS[colorIndex];
 
-  drawHomeBase(COLORS[0],0,360,"RUBY");
-  drawHomeBase(COLORS[1],360,0,"EMERALD");
-  drawHomeBase(COLORS[2],360,360,"AMBER");
-  drawHomeBase(COLORS[3],0,0,"SAPPHIRE");
+  rect(x*40,y*40,240,240,th.base[colorIndex],8,"#ffffff35",2);
 
-  /*
-    Clear central cross behind the route.
-  */
+  rect(x*40+22,y*40+22,196,196,th.home,15,"#ffffff30",2);
 
-  rect(board,240,0,120,240,"#f8f5fc");
-  rect(board,0,240,240,120,"#f8f5fc");
-  rect(board,360,240,240,120,"#f8f5fc");
-  rect(board,240,360,120,240,"#f8f5fc");
+  // Decorative base frame
+  rect(x*40+34,y*40+34,172,172,"none",12,color.color,2);
 
-  /*
-    Draw the 52 outer path squares.
-  */
+  const spots=BASE_CELLS[colorIndex];
+  for(let i=0;i<spots.length;i++){
+    const [gx,gy]=spots[i];
+    const [cx,cy]=cellCenter(gx,gy);
 
-  TRACK_GRID.forEach(([col,row],index) => {
-    const x=col*CELL;
-    const y=row*CELL;
-    const startOwner=COLORS.find(p=>p.start===index);
-    const fill=startOwner ? startOwner.fill : "#ffffff";
+    circle(cx,cy,23,"#08090d55","#ffffff30",1);
+    circle(cx,cy,18,color.dark,color.light,2);
+    circle(cx-5,cy-6,5,color.light);
+  }
 
-    rect(board,x,y,CELL,CELL,fill,{
-      stroke:"#bdb4cc","stroke-width":1.4
-    });
+  textSvg(x*40+120,y*40+211,color.name.toUpperCase(),12,color.light,"900");
+}
 
-    if (SAFE.has(index)) {
-      text(board,x+20,y+21,"★",{
-        fill:startOwner ? "#ffffff" : "#9b8cad",
-        "font-size":17
-      });
+function drawCell(gx,gy,fill,stroke=theme().line){
+  rect(gx*40,gy*40,40,40,fill,0,stroke,1);
+}
+
+function drawHomeLane(){
+  for(let c=0;c<4;c++){
+    const lane=HOME_LANES[c];
+    for(let i=0;i<lane.length;i++){
+      const [gx,gy]=lane[i];
+      drawCell(gx,gy,COLORS[c].color,"#ffffff90");
+      const [cx,cy]=cellCenter(gx,gy);
+      circle(cx,cy,7,COLORS[c].dark,"#ffffff80",1);
+    }
+  }
+}
+
+function drawCenter(){
+  const th=theme();
+
+  // Center square with four colored triangular wedges.
+  polygon([[240,240],[360,240],[300,300]],COLORS[0].color);
+  polygon([[360,240],[360,360],[300,300]],COLORS[1].color);
+  polygon([[360,360],[240,360],[300,300]],COLORS[2].color);
+  polygon([[240,360],[240,240],[300,300]],COLORS[3].color);
+
+  circle(300,300,24,th.center,th.accent,2);
+  textSvg(300,300,"L",21,th.accent,"900");
+
+  // Small decorative center accents.
+  circle(300,300,34,"none",th.accent,1);
+}
+
+function drawTrack(){
+  const th=theme();
+
+  TRACK.forEach(([gx,gy],i)=>{
+    drawCell(gx,gy,th.tile,th.line);
+    const [cx,cy]=cellCenter(gx,gy);
+
+    if(SAFE.has(i)){
+      circle(cx,cy,10,th.bg,th.accent,2);
+      textSvg(cx,cy,"✦",13,th.accent,"900");
     }
   });
 
-  /*
-    Colored home lanes.
-  */
-
-  LANE_GRID.forEach((lane,laneIndex) => {
-    const player=COLORS[laneIndex];
-
-    lane.forEach(([col,row],laneStep) => {
-      const x=col*CELL;
-      const y=row*CELL;
-
-      rect(board,x,y,CELL,CELL,player.light,{
-        stroke:player.dark,"stroke-width":1.2
-      });
-
-      if (laneStep===5) {
-        circle(board,x+20,y+20,10,player.fill,{
-          stroke:player.dark,"stroke-width":1.5
-        });
-      }
-    });
-  });
-
-  /*
-    Start markers.
-  */
-
-  COLORS.forEach(player => {
-    const point=TRACK[player.start];
-
-    circle(board,point.x,point.y,13,player.fill,{
-      stroke:"#ffffff","stroke-width":2
-    });
-  });
-
-  /*
-    Four-piece central finish.
-  */
-
-  const center=svg(board,"g",{id:"centerFinish"});
-
-  svg(center,"polygon",{
-    points:"240,240 360,240 300,300",
-    fill:COLORS[0].fill,
-    stroke:"#ffffff",    "stroke-width": 2,
-    "stroke-linejoin": "round"
-  });
-
-  svg(center,"polygon",{
-    points:"360,240 360,360 300,300",
-    fill:COLORS[1].fill,
-    stroke:"#ffffff",
-    "stroke-width":2,
-    "stroke-linejoin":"round"
-  });
-
-  svg(center,"polygon",{
-    points:"360,360 240,360 300,300",
-    fill:COLORS[2].fill,
-    stroke:"#ffffff",
-    "stroke-width":2,
-    "stroke-linejoin":"round"
-  });
-
-  svg(center,"polygon",{
-    points:"240,360 240,240 300,300",
-    fill:COLORS[3].fill,
-    stroke:"#ffffff",
-    "stroke-width":2,
-    "stroke-linejoin":"round"
-  });
-
-  svg(center,"circle",{
-    cx:300,
-    cy:300,
-    r:15,
-    fill:"#ffffff",
-    opacity:0.9
-  });
-
-  svg(center,"circle",{
-    cx:300,
-    cy:300,
-    r:7,
-    fill:"#7660b5"
+  // Colored entry cells
+  COLORS.forEach((p,i)=>{
+    const [gx,gy]=TRACK[p.start];
+    const [cx,cy]=cellCenter(gx,gy);
+    circle(cx,cy,15,p.color,"#ffffff",2);
+    textSvg(cx,cy,"↗",16,"#151515","900");
   });
 }
 
 function drawBoard(){
-  const board=$("board");
   board.innerHTML="";
+  const th=theme();
 
-  drawBoardBackground(board);
-  drawTrack(board);
-  drawHomeLanes(board);
-  drawCenter(board);
+  rect(0,0,600,600,th.bg);
 
-  players.forEach((player,pi)=>{
-    player.pieces.forEach((progress,ti)=>{
-      const pos=positionForProgress(player,progress,ti);
-      drawToken(board,pos.x,pos.y,player,pi,ti,progress);
-    });
-  });
+  // Four colored home areas.
+  drawBase(0,0,0);
+  drawBase(9,0,1);
+  drawBase(9,9,2);
+  drawBase(0,9,3);
+
+  drawTrack();
+  drawHomeLane();
+  drawCenter();
+
+  // Gold outline gives the board a finished frame.
+  rect(3,3,594,594,"none",4,th.accent,3);
+
+    drawTokens();
 }
 
-function drawToken(board,x,y,player,pi,ti,progress){
-  const movable=
-    started &&
-    pi===current &&
-    die!==null &&
-    canMove(ti,die) &&
-    !over &&
-    !player.isComputer;
+/* -------------------- TOKEN DRAWING -------------------- */
 
-  if(movable){
-    svg(board,"circle",{
-      cx:x,
-      cy:y,
-      r:18,
-      fill:"#ffffff",
-      opacity:0.9
-    });
-  }
+function tokenCoordinates(pIndex,tokenIndex,progress){
+  const player=players[pIndex];
 
-  const token=svg(board,"g",{
-    class:movable?"token movable":"token",
-    "data-player":pi,
-    "data-token":ti,
-    style:movable?"cursor:pointer":"cursor:default"
-  });
-
-  svg(token,"circle",{
-    cx:x,
-    cy:y+2,
-    r:13,
-    fill:"#000000",
-    opacity:0.25
-  });
-
-  svg(token,"circle",{
-    cx:x,
-    cy:y,
-    r:12,
-    fill:player.color.fill,
-    stroke:"#ffffff",
-    "stroke-width":2
-  });
-
-  svg(token,"circle",{
-    cx:x-3,
-    cy:y-3,
-    r:4,
-    fill:"#ffffff",
-    opacity:0.7
-  });
-
-  svg(token,"circle",{
-    cx:x,
-    cy:y,
-    r:3,
-    fill:"#ffffff",
-    opacity:0.85
-  });
-
-  if(progress===56){
-    svg(token,"circle",{
-      cx:x,
-      cy:y,
-      r:15,
-      fill:"none",
-      stroke:"#ffffff",
-      "stroke-width":2
-    });
-  }
-
-  if(movable){
-    token.addEventListener("click",()=>{
-      moveToken(ti);
-    });
-  }
-}
-
-function positionForProgress(player,progress,tokenIndex){
   if(progress===-1){
-    const spots=HOME_SPOTS[player.color.lane];
-    const p=spots[tokenIndex];
-    return {
-      x:(p[0]+0.5)*CELL,
-      y:(p[1]+0.5)*CELL
-    };
+    const [gx,gy]=BASE_CELLS[pIndex][tokenIndex];
+    return cellCenter(gx,gy);
   }
 
-  if(progress>=56){
-    return {x:300,y:300};
+  if(progress>=52){
+    const lane=HOME_LANES[pIndex];
+    const laneIndex=Math.min(4,progress-52);
+    return cellCenter(lane[laneIndex][0],lane[laneIndex][1]);
   }
 
-  if(progress>=51){
-    const p=LANES[player.color.lane][progress-51];
-    return {
-      x:(p[0]+0.5)*CELL,
-      y:(p[1]+0.5)*CELL
-    };
-  }
-
-  const globalIndex=(player.color.start+progress)%52;
-  const p=TRACK_GRID[globalIndex];
-
-  return {
-    x:(p[0]+0.5)*CELL,
-    y:(p[1]+0.5)*CELL
-  };
+  const trackIndex=(player.start+progress)%52;
+  const [gx,gy]=TRACK[trackIndex];
+  return cellCenter(gx,gy);
 }
 
-function drawBoardBackground(board){
-  svg(board,"rect",{
-    x:0,y:0,width:600,height:600,
-    rx:12,fill:"#f5f1ff"
-  });
+function tokenShape(cx,cy,color,style,scale=1,parent=board){
+  const r=12*scale;
 
-  const homes=[
-    {x:0,y:0,c:COLORS[3]},
-    {x:360,y:0,c:COLORS[1]},
-    {x:0,y:360,c:COLORS[0]},
-    {x:360,y:360,c:COLORS[2]}
-  ];
+  circle(cx,cy,r+2,"#00000045");
+  circle(cx,cy,r,color.dark,"#ffffffd0",1.5);
 
-  homes.forEach(h=>{
-    svg(board,"rect",{
-      x:h.x,y:h.y,width:240,height:240,
-      fill:h.c.fill,
+  if(style==="classic"){
+    circle(cx,cy-3*scale,4.8*scale,color.light);
+    el("path",{
+      d:`M ${cx-6*scale} ${cy+7*scale}
+         L ${cx-4*scale} ${cy-1*scale}
+         L ${cx+4*scale} ${cy-1*scale}
+         L ${cx+6*scale} ${cy+7*scale} Z`,
+      fill:color.light
+    },parent);
+  }else if(style==="crown"){
+    el("path",{
+      d:`M ${cx-8*scale} ${cy+5*scale}
+         L ${cx-7*scale} ${cy-4*scale}
+         L ${cx-3*scale} ${cy}
+         L ${cx} ${cy-8*scale}
+         L ${cx+3*scale} ${cy}
+         L ${cx+7*scale} ${cy-4*scale}
+         L ${cx+8*scale} ${cy+5*scale} Z`,
+      fill:color.light,
       stroke:"#ffffff",
-      "stroke-width":3
-    });
+      "stroke-width":.6
+    },parent);
+  }else if(style==="gem"){
+    polygon([
+      [cx,cy-8*scale],
+      [cx+7*scale,cy-2*scale],
+      [cx+4*scale,cy+7*scale],
+      [cx-4*scale,cy+7*scale],
+      [cx-7*scale,cy-2*scale]
+    ],color.light,"#ffffff",.8,parent);
 
-    svg(board,"rect",{
-      x:h.x+30,y:h.y+30,width:180,height:180,
-      rx:16,fill:"#ffffff",
-      stroke:h.c.fill,
-      "stroke-width":3
-    });
+    el("path",{
+      d:`M ${cx-7*scale} ${cy-2*scale}
+         L ${cx+7*scale} ${cy-2*scale}
+         M ${cx} ${cy-8*scale}
+         L ${cx} ${cy+7*scale}`,
+      fill:"none",
+      stroke:color.color,
+      "stroke-width":.7
+    },parent);
+  }else{
+    const pts=[];
 
-    svg(board,"rect",{
-      x:h.x+48,y:h.y+48,width:144,height:144,
-      rx:12,fill:h.c.dark,
-      opacity:0.13
-    });
-  });
+    for(let i=0;i<10;i++){
+      const angle=-Math.PI/2+i*Math.PI/5;
+      const rr=(i%2===0?8:3.8)*scale;
 
-  for(let row=0;row<15;row++){
-    for(let col=0;col<15;col++){
-      const onTrack=TRACK_GRID.some(p=>p[0]===col&&p[1]===row);
-      const onLane=LANES.some(lane=>lane.some(p=>p[0]===col&&p[1]===row));
-
-      if(onTrack||onLane){
-        svg(board,"rect",{
-          x:col*CELL,
-          y:row*CELL,
-          width:CELL,
-          height:CELL,
-          fill:"#ffffff",
-          stroke:"#c9c1d9",
-          "stroke-width":1
-        });
-      }
+      pts.push([
+        cx+Math.cos(angle)*rr,
+        cy+Math.sin(angle)*rr
+      ]);
     }
+
+    polygon(pts,color.light,"#ffffff",.8,parent);
   }
 }
 
-function drawTrack(board){
-  TRACK_GRID.forEach((p,index)=>{
-    const x=p[0]*CELL;
-    const y=p[1]*CELL;
-    const startColor=COLORS.find(c=>c.start===index);
+function drawTokens(){
+  const groups=new Map();
 
-    svg(board,"rect",{
-      x,y,width:CELL,height:CELL,
-      fill:startColor?startColor.fill:"#ffffff",
-      stroke:"#c9c1d9",
-      "stroke-width":1
+  players.forEach((p,pi)=>{
+    p.pieces.forEach((progress,ti)=>{
+      if(progress===57) return;
+
+      const [x,y]=tokenCoordinates(pi,ti,progress);
+      const key=`${Math.round(x)},${Math.round(y)}`;
+
+      if(!groups.has(key)) groups.set(key,[]);
+      groups.get(key).push({pi,ti,progress,x,y});
     });
+  });
 
-    if(SAFE.has(index)){
-      svg(board,"circle",{
-        cx:x+CELL/2,
-        cy:y+CELL/2,
-        r:5,
-        fill:"#b9a0f5",
-        stroke:"#7660b5",
-        "stroke-width":1
+  for(const items of groups.values()){
+    const offsets=[
+      [0,0],[-9,-9],[9,9],[-9,9],[9,-9],
+      [0,-10],[0,10],[-10,0],[10,0]
+    ];
+
+    items.forEach((item,i)=>{
+      const [ox,oy]=offsets[i%offsets.length];
+      const cx=item.x+ox;
+      const cy=item.y+oy;
+      const p=players[item.pi];
+
+      const g=el("g",{
+        role:"button",
+        tabindex:"0",
+        "aria-label":`${p.name} token ${item.ti+1}`,
+        style:"cursor:pointer"
       });
+
+      if(canSelectToken(item.pi,item.ti)){
+        circle(cx,cy,18,"#f6df9c33","#f7d98c",1.5,g);
+      }
+
+      tokenShape(cx,cy,p,tokenStyle,1,g);
+
+      circle(cx+8,cy+8,4,"#111111","#ffffff90",.6,g);
+
+      textSvg(
+        cx+8,cy+8,String(item.ti+1),6,
+        "#ffffff","900",g
+      );
+
+      const activate=()=>{
+        if(item.pi!==current) return;
+        if(!hasRolled) return;
+        if(!canSelectToken(item.pi,item.ti)) return;
+
+        moveToken(item.pi,item.ti);
+      };
+
+      g.addEventListener("click",activate);
+
+      g.addEventListener("keydown",e=>{
+        if(e.key==="Enter"||e.key===" "){
+          e.preventDefault();
+          activate();
+        }
+      });
+    });
+  }
+}
+
+/* -------------------- GAME RULES -------------------- */
+
+function globalIndex(pi,progress){
+  if(progress<0||progress>=52) return -1;
+
+  return (players[pi].start+progress)%52;
+}
+
+function isFinished(progress){
+  return progress===57;
+}
+
+function canMove(pi,ti,roll){
+  if(roll===null||roll===undefined) return false;
+
+  const progress=players[pi].pieces[ti];
+
+  if(progress===57) return false;
+
+  if(progress===-1) return roll===6;
+
+  return progress+roll<=57;
+}
+
+function canSelectToken(pi,ti){
+  return pi===current&&
+    hasRolled&&
+    canMove(pi,ti,die);
+}
+
+function validTokens(pi,roll){
+  const result=[];
+
+  players[pi].pieces.forEach((progress,ti)=>{
+    if(canMove(pi,ti,roll)){
+      result.push(ti);
     }
   });
+
+  return result;
 }
 
-function drawHomeLanes(board){
-  LANES.forEach((lane,li)=>{
-    lane.forEach((p,index)=>{
-      svg(board,"rect",{
-        x:p[0]*CELL,
-        y:p[1]*CELL,
-        width:CELL,
-        height:CELL,
-        fill:COLORS[li].fill,
-        stroke:"#ffffff",
-        "stroke-width":1
-      });
-
-      svg(board,"circle",{
-        cx:(p[0]+0.5)*CELL,
-        cy:(p[1]+0.5)*CELL,
-        r:4,
-        fill:"#ffffff",
-        opacity:0.65
-      });
-    });
-  });
-}
-
-function drawCenter(board){
-  const center=svg(board,"g",{});
-
-  svg(center,"polygon",{
-    points:"240,240 360,240 300,300",
-    fill:COLORS[0].fill,
-    stroke:"#ffffff",
-    "stroke-width":2,
-    "stroke-linejoin":"round"
-  });
-
-  svg(center,"polygon",{
-    points:"360,240 360,360 300,300",
-    fill:COLORS[1].fill,
-    stroke:"#ffffff",
-    "stroke-width":2,
-    "stroke-linejoin":"round"
-  });
-
-  svg(center,"polygon",{
-    points:"360,360 240,360 300,300",
-    fill:COLORS[2].fill,
-    stroke:"#ffffff",
-    "stroke-width":2,
-    "stroke-linejoin":"round"
-  });
-
-  svg(center,"polygon",{
-    points:"240,360 240,240 300,300",
-    fill:COLORS[3].fill,
-    stroke:"#ffffff",
-    "stroke-width":2,
-    "stroke-linejoin":"round"
-  });
-
-  svg(center,"circle",{
-    cx:300,cy:300,r:12,
-    fill:"#ffffff",
-    stroke:"#7660b5",
-    "stroke-width":2
-  });
-      }
-  function refresh(){
-  drawBoard();
-  updateUI();
-}
-
-function updateUI(){
-  const player=players[current];
-
-  $("turn-name").textContent=player?player.name:"";
-  $("turn-color").style.background=player?player.color.fill:"#ffffff";
-  $("turn-label").textContent=player
-    ?(player.isComputer?"Computer's turn":"Your turn")
-    :"Ready to play";
-
-  $("dice-number").textContent=die===null?"?":die;
-
-  $("roll-button").disabled=
-    !started||over||rolling||!player||player.isComputer||die!==null;
-
-  $("restart-button").disabled=!started;
-
-  $("status").textContent=over
-    ?"Game finished!"
-    :!started
-      ?"Choose a mode and start your game."
-      :die===null
-        ?"Roll the dice to play."
-        :getLegalMoves().length
-          ?"Select one of the highlighted tokens."
-          :"No valid move. Your turn will pass.";
-
-  $("players-list").innerHTML="";
-
-  players.forEach((p,index)=>{
-    const card=document.createElement("div");
-    card.className="player-card"+(index===current&&!over?" active":"");
-
-    const heading=document.createElement("div");
-    heading.className="player-heading";
-
-    const dot=document.createElement("span");
-    dot.className="player-dot";
-    dot.style.background=p.color.fill;
-
-    const name=document.createElement("span");
-    name.textContent=p.name+(p.isComputer?" · CPU":"");
-
-    heading.append(dot,name);
-
-    const count=document.createElement("div");
-    count.className="player-count";
-    count.textContent=
-      p.pieces.filter(n=>n===56).length+" / 4 finished";
-
-    card.append(heading,count);
-    $("players-list").append(card);
-  });
-}
-
-function getLegalMoves(){
-  if(die===null||!players[current])return [];
-
-  const player=players[current];
-
-  return player.pieces
-    .map((progress,index)=>({progress,index}))
-    .filter(item=>canMove(item.index,die))
-    .map(item=>item.index);
-}
-
-function canMove(tokenIndex,roll){
-  const player=players[current];
-  if(!player||roll===null)return false;
-
-  const progress=player.pieces[tokenIndex];
-
-  if(progress===56)return false;
-  if(progress===-1)return roll===6;
-
-  return progress+roll<=56;
+function announce(message){
+  $("status").textContent=message;
 }
 
 function rollDice(){
-  if(!started||over||rolling||die!==null)return;
-  if(players[current].isComputer)return;
+  if(over||hasRolled) return;
+  if(players[current].isComputer) return;
 
-  rolling=true;
-  $("roll-button").disabled=true;
+  const roll=Math.floor(Math.random()*6)+1;
 
-  let ticks=0;
+  die=roll;
+  hasRolled=true;
 
-  const animation=setInterval(()=>{
-    $("dice-number").textContent=
-      String(Math.floor(Math.random()*6)+1);
+  $("dice").textContent=
+    ["","⚀","⚁","⚂","⚃","⚄","⚅"][roll];
 
-    ticks++;
+  $("dice").classList.remove("rolling");
+  void $("dice").offsetWidth;
+  $("dice").classList.add("rolling");
 
-    if(ticks>=10){
-      clearInterval(animation);
-      rolling=false;
-      die=Math.floor(Math.random()*6)+1;
+  const valid=validTokens(current,roll);
 
-      $("dice-number").textContent=die;
-      refresh();
+  if(valid.length===0){
+    announce(
+      `${players[current].name} rolled ${roll}. No legal move.`
+    );
 
-      if(getLegalMoves().length===0){
-        $("status").textContent=
-          die===6
-            ?"No legal move. Try again for another six."
-            :"No legal move. Passing the turn...";
+    drawAll();
 
-        setTimeout(()=>{
-          if(!over&&die!==null&&getLegalMoves().length===0){
-            const rolled=die;
-            die=null;
-
-            if(rolled!==6)nextTurn();
-            else refresh();
-          }
-        },900);
+    setTimeout(()=>{
+      if(hasRolled&&!over){
+        finishTurn();
       }
-    }
-  },70);
+    },800);
+
+    return;
+  }
+
+  if(valid.length===1){
+    announce(
+      `${players[current].name} rolled ${roll}. Tap the highlighted token.`
+    );
+  }else{
+    announce(
+      `${players[current].name} rolled ${roll}. Choose a highlighted token.`
+    );
+  }
+
+  drawAll();
+
+  if(players[current].isComputer){
+    setTimeout(computerMove,650);
+  }
 }
 
-function moveToken(tokenIndex){
-  if(!started||over||die===null)return;
-  if(players[current].isComputer)return;
-  if(!canMove(tokenIndex,die))return;
+function moveToken(pi,ti){
+  if(over||pi!==current||!hasRolled) return;
 
-  const player=players[current];
+  const p=players[pi];
+  const old=p.pieces[ti];
+
+  if(!canMove(pi,ti,die)) return;
+
   const roll=die;
-  const oldProgress=player.pieces[tokenIndex];
-
-  player.pieces[tokenIndex]=oldProgress===-1?0:oldProgress+roll;
-
   let captured=false;
+  let reachedHome=false;
 
-  if(player.pieces[tokenIndex]>=0&&player.pieces[tokenIndex]<=50){
-    const globalIndex=
-      (player.color.start+player.pieces[tokenIndex])%52;
+  if(old===-1){
+    p.pieces[ti]=0;
+  }else{
+    p.pieces[ti]=old+roll;
+  }
 
-    if(!SAFE.has(globalIndex)){
-      for(let oi=0;oi<players.length;oi++){
-        if(oi===current)continue;
+  if(p.pieces[ti]===57){
+    reachedHome=true;
+  }
 
-        for(let otherToken=0;otherToken<4;otherToken++){
-          const otherProgress=players[oi].pieces[otherToken];
+  const landedIndex=globalIndex(pi,p.pieces[ti]);
 
-          if(otherProgress<0||otherProgress>50)continue;
+  if(landedIndex!==-1&&!SAFE.has(landedIndex)){
+    for(let oi=0;oi<players.length;oi++){
+      if(oi===pi) continue;
 
-          const otherIndex=
-            (players[oi].color.start+otherProgress)%52;
+      for(let ot=0;ot<4;ot++){
+        const other=players[oi].pieces[ot];
 
-          if(otherIndex===globalIndex){
-            players[oi].pieces[otherToken]=-1;
-            captured=true;
-          }
+        if(other<0||other>=52) continue;
+
+        if(globalIndex(oi,other)===landedIndex){
+          players[oi].pieces[ot]=-1;
+          captured=true;
         }
       }
     }
   }
 
-  const justFinished=player.pieces[tokenIndex]===56;
+  const allDone=p.pieces.every(isFinished);
 
-  if(justFinished){
-    $("status").textContent=player.name+" finished a token!";
-  }else if(captured){
-    $("status").textContent="Captured! "+player.name+" sent a token home.";
+  if(allDone&&!p.finished){
+    p.finished=true;
+    p.rank=players.filter(q=>q.rank!==null).length+1;
+  }
+
+  if(captured){
+    announce(`${p.name} captured a token! Bonus turn.`);
+  }else if(reachedHome){
+    announce(`${p.name} brought a token home!`);
+  }else if(allDone){
+    announce(`${p.name} finished in position ${p.rank}!`);
   }else{
-    $("status").textContent=player.name+" moved.";
+    announce(`${p.name} moved token ${ti+1}.`);
   }
 
-  if(player.pieces.every(p=>p===56)&&!finishOrder.includes(current)){
-    finishOrder.push(current);
-  }
+  const bonus=roll===6||captured||reachedHome;
 
   die=null;
+  hasRolled=false;
 
-  if(players.every(p=>p.pieces.every(n=>n===56))){
-    over=true;
-    showResults();
-    refresh();
-    return;
+  if(allDone){
+    const unfinished=players.filter(q=>!q.finished);
+
+    if(unfinished.length===0){
+      over=true;
+      drawAll();
+      showWinner();
+      return;
+    }
+
+    if(unfinished.length===1){
+      unfinished[0].finished=true;
+      unfinished[0].rank=
+        players.filter(q=>q.rank!==null).length+1;
+
+      over=true;
+      drawAll();
+      showWinner();
+      return;
+    }
   }
 
-  if(roll===6||captured||justFinished){
-    refresh();
-    maybeComputer();
+  if(!bonus){
+    nextPlayer();
+  }
+
+  drawAll();
+
+  if(bonus&&!over){
+    announce(`${p.name} gets another turn!`);
+
+    if(p.isComputer){
+      setTimeout(computerRoll,650);
+    }
   }else{
-    nextTurn();
+    maybeComputer();
   }
 }
 
-function nextTurn(){
-  die=null;
-
-  if(players.every(p=>p.pieces.every(n=>n===56))){
-    over=true;
-    showResults();
-    refresh();
-    return;
-  }
-
+function nextPlayer(){
   let tries=0;
 
   do{
     current=(current+1)%players.length;
     tries++;
   }while(
-    players[current].pieces.every(p=>p===56)&&
-    tries<players.length
+    players[current].finished&&
+    tries<=players.length
   );
 
-  refresh();
+  die=null;
+  hasRolled=false;
+
+  $("dice").textContent="⚄";
+
+  if(!over){
+    announce(`${players[current].name}'s turn. Roll the dice.`);
+  }
+}
+
+function finishTurn(){
+  nextPlayer();
+  drawAll();
   maybeComputer();
 }
 
-function maybeComputer(){
-  if(!started||over)return;
-  if(!players[current].isComputer)return;
+/* -------------------- COMPUTER PLAYER -------------------- */
 
-  setTimeout(()=>{
-    if(!started||over||!players[current].isComputer)return;
-    performComputerRoll();
-  },650);
-}
+function computerRoll(){
+  if(over||!players[current].isComputer||hasRolled) return;
 
-function performComputerRoll(){
-  if(rolling||die!==null||over)return;
+  die=Math.floor(Math.random()*6)+1;
+  hasRolled=true;
 
-  rolling=true;
-  $("dice-number").textContent="…";
+  $("dice").textContent=
+    ["","⚀","⚁","⚂","⚃","⚄","⚅"][die];
 
-  setTimeout(()=>{
-    rolling=false;
-    die=Math.floor(Math.random()*6)+1;
+  const valid=validTokens(current,die);
 
-    const legal=getLegalMoves();
+  if(valid.length===0){
+    announce(
+      `${players[current].name} rolled ${die}. No legal move.`
+    );
 
-    if(!legal.length){
-      const rolled=die;
-      die=null;
-      refresh();
+    drawAll();
 
-      setTimeout(()=>{
-        if(over)return;
-
-        if(rolled===6){
-          maybeComputer();
-        }else{
-          nextTurn();
-        }
-      },500);
-
-      return;
-    }
-
-    const choices=legal.map(index=>({
-      index,
-      score:computerScore(players[current].pieces[index],die,index)
-    }));
-
-    choices.sort((a,b)=>b.score-a.score);
-
-    refresh();
-
-    setTimeout(()=>{
-      if(over||die===null)return;
-      moveComputerToken(choices[0].index);
-    },450);
-  },700);
-}
-
-function computerScore(progress,roll,tokenIndex){
-  let score=Math.random()*2;
-
-  if(progress===-1)return 25+score;
-
-  const next=progress+roll;
-
-  if(next===56)score+=100;
-  if(next>=51)score+=15;
-  if(next>progress)score+=next/4;
-
-  if(next<=50){
-    const index=(players[current].color.start+next)%52;
-
-    if(!SAFE.has(index)){
-      for(let oi=0;oi<players.length;oi++){
-        if(oi===current)continue;
-
-        for(const otherProgress of players[oi].pieces){
-          if(otherProgress<0||otherProgress>50)continue;
-
-          const otherIndex=
-            (players[oi].color.start+otherProgress)%52;
-
-          if(otherIndex===index)score+=40;
-        }
-      }
-    }
+    setTimeout(finishTurn,750);
+    return;
   }
 
-  return score;
+  drawAll();
+
+  setTimeout(computerMove,650);
 }
 
-function moveComputerToken(tokenIndex){
-  if(!players[current].isComputer||die===null||over)return;
+function computerMove(){
+  if(over||!players[current].isComputer||!hasRolled) return;
 
-  const player=players[current];
-  const roll=die;
-  const oldProgress=player.pieces[tokenIndex];
+  const valid=validTokens(current,die);
 
-  player.pieces[tokenIndex]=oldProgress===-1?0:oldProgress+roll;
+  if(!valid.length){
+    finishTurn();
+    return;
+  }
 
-  let captured=false;
+  let chosen=valid[0];
+  let best=-Infinity;
 
-  if(player.pieces[tokenIndex]>=0&&player.pieces[tokenIndex]<=50){
-    const globalIndex=
-      (player.color.start+player.pieces[tokenIndex])%52;
+  for(const ti of valid){
+    const progress=players[current].pieces[ti];
+    let score=0;
 
-    if(!SAFE.has(globalIndex)){
+    if(progress===-1) score+=8;
+    if(progress>=0) score+=progress/10;
+    if(progress+die===57) score+=100;
+
+    const nextProgress=progress===-1?0:progress+die;
+    const index=globalIndex(current,nextProgress);
+
+    if(index!==-1&&!SAFE.has(index)){
       for(let oi=0;oi<players.length;oi++){
-        if(oi===current)continue;
+        if(oi===current) continue;
 
-        for(let ti=0;ti<4;ti++){
-          const progress=players[oi].pieces[ti];
-
-          if(progress<0||progress>50)continue;
-
-          const otherIndex=
-            (players[oi].color.start+progress)%52;
-
-          if(otherIndex===globalIndex){
-            players[oi].pieces[ti]=-1;
-            captured=true;
+        for(const other of players[oi].pieces){
+          if(
+            other>=0&&
+            other<52&&
+            globalIndex(oi,other)===index
+          ){
+            score+=50;
           }
         }
       }
     }
+
+    if(score>best){
+      best=score;
+      chosen=ti;
+    }
   }
 
-  const justFinished=player.pieces[tokenIndex]===56;
+  moveToken(current,chosen);
+}
 
-  if(player.pieces.every(p=>p===56)&&!finishOrder.includes(current)){
-    finishOrder.push(current);
-  }
-
-  die=null;
-
-  if(players.every(p=>p.pieces.every(n=>n===56))){
-    over=true;
-    showResults();
-    refresh();
-    return;
-  }
-
-  refresh();
-
-  if(roll===6||captured||justFinished){
-    maybeComputer();
-  }else{
-    nextTurn();
+function maybeComputer(){
+  if(!over&&players[current].isComputer){
+    setTimeout(computerRoll,500);
   }
 }
 
-function showResults(){
-  const ranking=document.createElement("div");
-  ranking.className="results-list";
+/* -------------------- PLAYER TABLE -------------------- */
 
-  const ordered=[...finishOrder];
+function drawPlayerTable(){
+  const container=$("players");
+  container.innerHTML="";
 
   players.forEach((p,i)=>{
-    if(!ordered.includes(i))ordered.push(i);
-  });
+    const div=document.createElement("div");
 
-  const names=["1st","2nd","3rd","4th"];
+    div.className=
+      "player"+(i===current&&!over?" active":"");
 
-  ordered.forEach((playerIndex,rank)=>{
-    const player=players[playerIndex];
-    const row=document.createElement("div");
-    row.className="result-row";
-
-    const badge=document.createElement("span");
-    badge.className="result-rank";
-    badge.textContent=names[rank]||"—";
+    const top=document.createElement("div");
+    top.className="player-top";
 
     const dot=document.createElement("span");
     dot.className="player-dot";
-    dot.style.background=player.color.fill;
+    dot.style.background=p.color;
 
     const name=document.createElement("span");
-    name.textContent=player.name;
+    name.className="player-name";
+    name.textContent=p.name;
 
-    row.append(badge,dot,name);
-    ranking.append(row);
+    top.append(dot,name);
+
+    const state=document.createElement("div");
+    state.className="player-state";
+
+    const home=p.pieces.filter(isFinished).length;
+
+    state.textContent=p.finished
+      ?`Finished · #${p.rank}`
+      :`${home}/4 home${p.isComputer?" · CPU":""}`;
+
+    div.append(top,state);
+    container.appendChild(div);
   });
-
-  $("results-content").innerHTML="";
-  $("results-content").append(ranking);
-  $("results-modal").classList.add("show");
 }
+
+function drawAll(){
+  drawBoard();
+  drawPlayerTable();
+
+  $("rollBtn").disabled=
+    over||hasRolled||players[current].isComputer;
+
+  $("passBtn").disabled=
+    over||players[current].isComputer;
+
+  $("rollBtn").textContent=
+    players[current].isComputer
+      ?"COMPUTER TURN"
+      :"ROLL DICE";
+}
+
+/* -------------------- WINNER -------------------- */
+
+function showWinner(){
+  const ranked=players
+    .filter(p=>p.rank!==null)
+    .sort((a,b)=>a.rank-b.rank);
+
+  if(!ranked.length) return;
+
+  const first=ranked[0];
+
+  $("winnerTitle").textContent=`${first.name} wins!`;
+
+  $("winnerText").textContent=ranked.map(p=>{
+    const points=
+      p.rank===1?3:
+      p.rank===2?2:
+      p.rank===3?1:0;
+
+    return `${p.rank}. ${p.name} — ${points} points`;
+  }).join("\n");
+
+  $("winnerText").style.whiteSpace="pre-line";
+
+  $("winnerDialog").showModal();
+}
+
+/* -------------------- RESTART -------------------- */
 
 function restartGame(){
-  if(!started)return;
+  mode=$("mode").value;
+  playerCount=Number($("playerCount").value);
+  themeName=$("boardTheme").value;
 
-  const mode=$("mode").value;
-  startGame(mode);
-}
+  makePlayers();
 
-function startGame(mode){
-  current=0;
-  die=null;
-  rolling=false;
-  over=false;
-  finishOrder=[];
+  if(playerCount<4){
+    players=players.slice(0,playerCount);
+  }
 
-  createPlayers(mode);
+  drawAll();
 
-  started=true;
+  announce(`${players[current].name}'s turn. Roll the dice.`);
 
-  $("start-screen").classList.add("hidden");
-  $("results-modal").classList.remove("show");
+  $("dice").textContent="⚄";
 
-  refresh();
+  if($("winnerDialog").open){
+    $("winnerDialog").close();
+  }
+
   maybeComputer();
 }
 
-function createPlayers(mode){
-  players=COLORS.map((color,index)=>({
-    name:color.name,
-    color,
-    isComputer:mode==="computer"&&index>0,
-    pieces:[-1,-1,-1,-1]
-  }));
+/* -------------------- PLAYER NAMES -------------------- */
+
+function buildNameFields(){
+  const holder=$("nameFields");
+  holder.innerHTML="";
+
+  COLORS.forEach((c,i)=>{
+    const field=document.createElement("div");
+    field.className="field";
+
+    const label=document.createElement("label");
+    label.textContent=c.name.toUpperCase();
+
+    const input=document.createElement("input");
+    input.id=`name${i}`;
+    input.maxLength=18;
+    input.value=names[i];
+
+    input.setAttribute(
+      "aria-label",
+      `${c.name} player name`
+    );
+
+    field.append(label,input);
+    holder.appendChild(field);
+  });
 }
 
-function setup(){
-  createPlayers("pass");
-
-  $("start-button").addEventListener("click",()=>{
-    startGame($("mode").value);
+function applyNames(){
+  names=COLORS.map((c,i)=>{
+    const value=$(`name${i}`).value.trim();
+    return value||c.name;
   });
 
-  $("roll-button").addEventListener("click",rollDice);
-
-  $("restart-button").addEventListener("click",restartGame);
-
-  $("play-again").addEventListener("click",()=>{
-    $("results-modal").classList.remove("show");
-    startGame($("mode").value);
+  players.forEach((p,i)=>{
+    p.name=names[i];
   });
 
-  $("close-results").addEventListener("click",()=>{
-    $("results-modal").classList.remove("show");
-  });
-
-  $("mode").addEventListener("change",()=>{
-    $("mode-description").textContent=
-      $("mode").value==="computer"
-        ?"Play against three computer players."
-        :"Four players take turns on the same device.";
-  });
-
-  $("board-style").addEventListener("change",()=>{
-    document.body.dataset.boardStyle=$("board-style").value;
-    refresh();
-  });
-
-  $("token-style").addEventListener("change",()=>{
-    document.body.dataset.tokenStyle=$("token-style").value;
-    refresh();
-  });
-
-  refresh();
+  drawAll();
+  announce("Player names updated.");
 }
 
-setup();
+function resetNames(){
+  names=COLORS.map(c=>c.name);
+  buildNameFields();
+  applyNames();
+}
+
+/* -------------------- BUTTON EVENTS -------------------- */
+
+$("rollBtn").addEventListener("click",()=>{
+  if(!players[current].isComputer){
+    rollDice();
+  }
+});
+
+$("dice").addEventListener("click",()=>{
+  if(!players[current].isComputer){
+    rollDice();
+  }
+});
+
+$("passBtn").addEventListener("click",()=>{
+  if(over||players[current].isComputer) return;
+  if(hasRolled) return;
+
+  finishTurn();
+});
+
+$("restartBtn").addEventListener("click",restartGame);
+$("newGameTop").addEventListener("click",restartGame);
+
+$("mode").addEventListener("change",restartGame);
+$("playerCount").addEventListener("change",restartGame);
+$("startPlayer").addEventListener("change",restartGame);
+
+$("boardTheme").addEventListener("change",()=>{
+  themeName=$("boardTheme").value;
+  drawAll();
+});
+
+$("tokenOptions").addEventListener("click",e=>{
+  const button=e.target.closest("[data-token]");
+
+  if(!button) return;
+
+  tokenStyle=button.dataset.token;
+
+  document.querySelectorAll(".token-choice").forEach(b=>{
+    b.classList.toggle("selected",b===button);
+  });
+
+  drawAll();
+});
+
+$("applyNames").addEventListener("click",applyNames);
+$("resetNames").addEventListener("click",resetNames);
+
+$("playAgain").addEventListener("click",restartGame);
+
+$("closeDialog").addEventListener("click",()=>{
+  if($("winnerDialog").open){
+    $("winnerDialog").close();
+  }
+});
+
+/* -------------------- INITIALIZE GAME -------------------- */
+
+buildNameFields();
+restartGame();
+
 </script>
 </body>
 </html>
