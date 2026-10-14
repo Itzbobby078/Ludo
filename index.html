@@ -47,9 +47,66 @@ p{color:var(--muted);font-size:13px;line-height:1.5}
 .token.movable{filter:drop-shadow(0 0 5px #fff2a5)}
 .controls{width:100%;display:grid;grid-template-columns:1fr auto;gap:8px}
 .dice-box{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px}
-.dice{display:grid;place-items:center;flex-shrink:0;width:45px;height:45px;background:#fff;color:#322440;border-radius:10px;font-size:28px;font-weight:900}
-.dice-info{font-size:12px;color:var(--muted)}
-#roll{min-width:112px}
+.dice {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  padding: 0;
+  border: 2px solid #d9c5ff;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #f7f0ff, #c7a9f5 55%, #9873d4);
+  color: #392653;
+  font-size: 70px;
+  font-weight: 900;
+  box-shadow:
+    inset 0 4px 7px #ffffffcc,
+    inset 0 -7px 10px #70509b55,
+    0 8px 0 #5c437c,
+    0 12px 24px #0006;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  perspective: 500px;
+  transition: transform .15s, box-shadow .15s;
+}
+
+.dice:active {
+  transform: translateY(5px) scale(.97);
+  box-shadow:
+    inset 0 4px 7px #ffffffcc,
+    inset 0 -7px 10px #70509b55,
+    0 3px 0 #5c437c,
+    0 5px 12px #0005;
+}
+
+.dice:disabled {
+  cursor: not-allowed;
+  opacity: .65;
+}
+
+#diceFace {
+  display: block;
+  transform-style: preserve-3d;
+}
+
+#dice.rolling #diceFace {
+  animation: diceTumble .85s cubic-bezier(.2,.7,.3,1);
+}
+
+@keyframes diceTumble {
+  0%   { transform: rotateX(0) rotateY(0) scale(1); }
+  35%  { transform: rotateX(360deg) rotateY(240deg) scale(1.12); }
+  70%  { transform: rotateX(610deg) rotateY(500deg) scale(1.08); }
+  100% { transform: rotateX(720deg) rotateY(720deg) scale(1); }
+}
+
+.dice-info {
+  font-size: 12px;
+  color: var(--muted);
+}
 .players-strip{width:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
 .player-mini{min-width:0;text-align:center;padding:6px 2px;background:var(--panel);border:1px solid var(--line);border-radius:9px;opacity:.7}
 .player-mini.active{opacity:1;border-color:#e0c2ff;background:#49375e}
