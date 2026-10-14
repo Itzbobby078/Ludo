@@ -707,9 +707,16 @@ $("turnDot").style.background=p.hex;
 $("turnText").textContent=p.name+"'s turn";
 $("turnDetail").textContent=p.computer?"Computer thinking…":die===null?"Roll the dice":`You rolled ${die}`;
 
-$("roll").disabled=over||die!==null||p.computer||p.finished;
-$("roll").textContent=p.computer?"Computer…":die===null?"Roll Dice":"Choose Token";
+$("dice").disabled =
+  over || die !== null || p.computer || p.finished;
 
+$("diceTitle").textContent =
+  p.computer ? "Computer…" :
+  die === null ? "Ready?" : `Rolled ${die}`;
+
+$("diceText").textContent =
+  p.computer ? "Please wait" :
+  die === null ? "Tap the dice to roll" : "Choose a token";
 renderPlayers();
 drawBoard();
 }
