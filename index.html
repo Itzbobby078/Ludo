@@ -700,25 +700,37 @@ strip.appendChild(card);
 }
 
 function updateStatus(){
-const p=players[current];
-if(!p)return;
+  const p = players[current];
+  if(!p) return;
 
-$("turnDot").style.background=p.hex;
-$("turnText").textContent=p.name+"'s turn";
-$("turnDetail").textContent=p.computer?"Computer thinking…":die===null?"Roll the dice":`You rolled ${die}`;
+  $("turnDot").style.background = p.hex;
+  $("turnText").textContent = p.name + "'s turn";
 
-$("dice").disabled =
-  over || die !== null || p.computer || p.finished;
+  $("turnDetail").textContent = p.computer
+    ? "Computer thinking…"
+    : die === null
+      ? "Tap the dice to roll"
+      : `You rolled ${die}`;
 
-$("diceTitle").textContent =
-  p.computer ? "Computer…" :
-  die === null ? "Ready?" : `Rolled ${die}`;
+  $("dice").disabled =
+    over || die !== null || p.computer || p.finished;
 
-$("diceText").textContent =
-  p.computer ? "Please wait" :
-  die === null ? "Tap the dice to roll" : "Choose a token";
-renderPlayers();
-drawBoard();
+  $("diceTitle").textContent =
+    p.computer
+      ? "Computer…"
+      : die === null
+        ? "Ready?"
+        : `Rolled ${die}`;
+
+  $("diceText").textContent =
+    p.computer
+      ? "Please wait"
+      : die === null
+        ? "Tap the dice to roll"
+        : "Choose a highlighted token";
+
+  renderPlayers();
+  drawBoard();
 }
 
 function nextPlayer(){
