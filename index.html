@@ -161,14 +161,16 @@ p{color:var(--muted);font-size:13px;line-height:1.5}
 </div>
 
 <div class="controls">
-<div class="dice-box">
-<div id="dice" class="dice">–</div>
-<div>
-<strong id="diceTitle">Ready?</strong>
-<div id="diceText" class="dice-info">Roll to begin</div>
-</div>
-</div>
-<button class="primary" id="roll">Roll Dice</button>
+  <div class="dice-box">
+    <button id="dice" class="dice" type="button"
+      aria-label="Tap to roll the dice">
+      <span id="diceFace">–</span>
+    </button>
+    <div>
+      <strong id="diceTitle">Ready?</strong>
+      <div id="diceText" class="dice-info">Tap the dice to roll</div>
+    </div>
+  </div>
 </div>
 
 <div class="players-strip" id="playersStrip"></div>
